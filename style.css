@@ -4,7 +4,7 @@ div[data-testid="stVerticalBlock"] {
 }
 
 
-div.stButton {
+section[tabindex=0] div.stButton {
     position: absolute;
     left: -999em;
     /* yeah...this is a very hacky way to send buttons probably to mars */
@@ -127,7 +127,8 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .bbutton-right {
@@ -139,6 +140,8 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .bbutton-up {
@@ -150,7 +153,8 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .bbutton-down {
@@ -162,6 +166,8 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 @media all and (min-width: 600px) {
