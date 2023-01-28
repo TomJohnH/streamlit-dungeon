@@ -58,6 +58,13 @@ class Character:
 
 # ------------------------------------------------------------
 #
+#                        Objects
+#
+# ------------------------------------------------------------
+
+
+# ------------------------------------------------------------
+#
 #                  Variables and constants
 #
 # ------------------------------------------------------------
@@ -291,6 +298,12 @@ tileset_movable = {
     "FMNE": True,  # floor mud ne
 }
 
+# ---------------- level renderer ----------------
+
+# this is the heart of graphical engine
+# whole game is based on a grid div with x & y columns
+# placement of objects is done by manipulating grid-column-start: & grid-row-start:
+
 
 def level_renderer(df, game_objects):
     i = 0
@@ -322,13 +335,14 @@ def level_renderer(df, game_objects):
     return level_html
 
 
-# fetch level with certain number
-df = fetch_data("test.csv")
-if "level" not in st.session_state:  # or st.session_state["level_change"]:
-    st.session_state["level"] = df.values
+# ------------------------------------------------------------
+#
+#             Game enigne - frontend html creator
+#
+# ------------------------------------------------------------
 
 
-# this is very subotimal change to classes
+# ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
     st.session_state["player"] = Character(4, 5, "player.gif", True)
@@ -336,7 +350,7 @@ if "player" not in st.session_state:
 player = f"""
 <img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
 
-# --- monsters constructor ------
+# ---------------- creating monsters html ----------------
 
 if "monster1" not in st.session_state:
     st.session_state["monster1"] = Character(42, 30, "monster.gif", True)
@@ -344,13 +358,14 @@ if "monster1" not in st.session_state:
 if "monster2" not in st.session_state:
     st.session_state["monster2"] = Character(20, 22, "imp.gif", True)
 
-
-game_objects = (
+enemies = (
     st.session_state["monster1"].html
     + st.session_state["monster2"].html
     + f"""
 <img src="{cat}" style="grid-column-start: 33; grid-row-start: 3;">"""
 )
+
+# ---------------- creating visual layers ----------------
 
 boxes = f"""
 <img src="{tileset["BOX"]}" style="grid-column-start: 4; grid-row-start: 17;">
@@ -370,6 +385,8 @@ torches = f"""
 <img src="{tileset["T"]}" style="grid-column-start: 33; grid-row-start: 13">
 """
 
+# ---------------- creating visual layers textboxes ----------------
+
 if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
     text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
 elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
@@ -378,10 +395,24 @@ else:
     text_boxes = ""
 
 
+# ---------------- fetching level data ----------------
+
+# fetch level with certain number
+df = fetch_data("test.csv")
+if "level" not in st.session_state:  # or st.session_state["level_change"]:
+    st.session_state["level"] = df.values
+
+# ------------------------------------------------------------
+#
+#             Game enigne - frontend html renderer
+#
+# ------------------------------------------------------------
+
 html = level_renderer(
     st.session_state["level"],
-    player + game_objects + boxes + voids + torches + text_boxes,
+    player + enemies + boxes + voids + torches + text_boxes,
 )
+
 display_html = st.empty()
 display_html = st.markdown(html, unsafe_allow_html=True)
 
@@ -395,6 +426,11 @@ st.button("D", on_click=down_callback)
 #     unsafe_allow_html=True,
 # )
 
+# ------------------------------------------------------------
+#
+#                Game enigne - sidebar for backup input
+#
+# ------------------------------------------------------------
 
 # ------------ sidebar for backup input ---------------------------
 
@@ -418,7 +454,11 @@ with st.sidebar:
         st.button("DOWN", on_click=down_callback, key="DOWN")
 
 
-# ------------ Console div  ---------------------------
+# ------------------------------------------------------------
+#
+#               Game enigne - console div
+#
+# ------------------------------------------------------------
 
 st.markdown(
     f"""
@@ -426,9 +466,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ------------ JS for catching input ---------------------------
-
+# ------------------------------------------------------------
 #
+#               Game enigne - JS trickery
+#
+# ------------------------------------------------------------
 
 components.html(
     """
