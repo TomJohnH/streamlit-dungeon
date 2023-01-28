@@ -4,6 +4,7 @@ import pandas as pd
 import random
 from random import randrange
 import numpy as np
+import json
 
 # -------------- refrence docs: --------------
 
@@ -387,10 +388,18 @@ torches = f"""
 
 # ---------------- creating visual layers textboxes ----------------
 
+
+def text_box_quote(text, x, y):
+    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
+
+
 if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
-    text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
+    # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
+    text_boxes = text_box_quote("What?", 10, 4)
 elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
-    text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 16; grid-row-start: 10; grid-column-end: 20;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">Strange</div></div>"""
+    text_boxes = text_box_quote("Strange", 16, 10)
+elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
+    text_boxes = text_box_quote("Monsters?", 5, 20)
 else:
     text_boxes = ""
 
@@ -565,3 +574,29 @@ down_button2.addEventListener("click",function() {
     height=0,
     width=0,
 )
+
+#
+#       WORK IN PROGRESS
+#
+
+level_config = """
+{
+    "level1": {
+        "player_xy": [4,5],
+        "monsters": {
+            "monster1":[42,30,"monster.gif"],
+            "monster2":[20,22,"imp.gif"]},
+        "relatives": [
+            {
+                "name": ["Zaphod Beeblebrox","xxxx"],
+                "species": "Betelgeusian"
+            }
+        ]
+    }
+}
+"""
+# data = json.loads(level_config)
+# st.write(data["level1"]["player_xy"][0])
+# st.write(data["level1"]["monsters"]["monster1"])
+# st.write("Player x:" + str(st.session_state["player"].x))
+# st.write("Player y:" + str(st.session_state["player"].y))
