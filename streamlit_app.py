@@ -39,7 +39,7 @@ class Character:
         self.x = x
         self.y = y
         self.file = (
-            "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/"
+            "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/"
             + file
         )
         self.alive = alive
@@ -89,10 +89,10 @@ if "steps" not in st.session_state:
 
 # ---------------- links ----------------
 
-cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/cat.gif"
-player = "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/player.gif"
-chort = "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/monster.gif"
-imp = "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/imp.gif"
+cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
+player = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/player.gif"
+chort = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/monster.gif"
+imp = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/imp.gif"
 
 # ------------------------------------------------------------
 #
@@ -248,27 +248,27 @@ tileset = {
     "W": "https://thumbs2.imgbox.com/10/db/7zaxbIP8_t.png",  # wall
     "FP": "https://thumbs2.imgbox.com/29/22/5rTLr6WH_t.png",  # floor_plain
     # "FP": "https://oshi.at/PQkn/ExtR.png",  # floor 1 tilset 2
-    "CAT": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/cat.gif",  # cat
-    "M": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/other/monster.gif",  # monster, skeleton
-    "FS": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/floor_stain_1.png",
+    "CAT": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif",  # cat
+    "M": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/monster.gif",  # monster, skeleton
+    "FS": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_stain_1.png",
     "E": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-    "FE3": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/floor_edge_3.png",  # floor_edge_3
-    "WON": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_outer_n.png",  # Wall_outer_n
-    "WOE": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_outer_e.png",  # Wall_outer_e
-    "WONE": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_outer_ne.png",  # Wall_outer_ne
-    "WOW": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_outer_w.png",  # Wall_outer_w
-    "WONW": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_outer_nw.png",  # wall_outer_nw
-    "WFR": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/Wall_front_right.png",  # wall front right
+    "FE3": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_edge_3.png",  # floor_edge_3
+    "WON": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_outer_n.png",  # Wall_outer_n
+    "WOE": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_outer_e.png",  # Wall_outer_e
+    "WONE": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_outer_ne.png",  # Wall_outer_ne
+    "WOW": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_outer_w.png",  # Wall_outer_w
+    "WONW": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_outer_nw.png",  # wall_outer_nw
+    "WFR": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Wall_front_right.png",  # wall front right
     "WTR": "https://oshi.at/QpWg/Mfxv.png",  # wall top right
-    # "DK": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/wall_missing_brick_2.png",  # darkness
-    "WMB": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/wall_missing_brick_2.png",  # wall missing brick 1
-    "BOX": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/box.png",  # box
-    "DR": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/darkness_right.png",  # darkenss right
-    "DB": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/darkness_bottom.png",  # darkness bottom
-    "T": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/torch_1.png",  # torch
-    "FMN1": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/floor_mud_n_1.png",  # floor_mud_n_1
-    "FMN2": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/floor_mud_n_2.png",  # floor_mud_n_2
-    "FMNE": "https://raw.githubusercontent.com/TomJohnH/streamlit-rogue/main/graphics/tileset/floor_mud_ne.png",  # floor_mud_ne
+    # "DK": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/wall_missing_brick_2.png",  # darkness
+    "WMB": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/wall_missing_brick_2.png",  # wall missing brick 1
+    "BOX": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/box.png",  # box
+    "DR": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/darkness_right.png",  # darkenss right
+    "DB": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/darkness_bottom.png",  # darkness bottom
+    "T": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/torch_1.png",  # torch
+    "FMN1": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_1.png",  # floor_mud_n_1
+    "FMN2": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_2.png",  # floor_mud_n_2
+    "FMNE": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_ne.png",  # floor_mud_ne
 }
 
 tileset_movable = {
