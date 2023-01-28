@@ -357,7 +357,7 @@ if "monster1" not in st.session_state:
     st.session_state["monster1"] = Character(42, 30, "monster.gif", True)
 
 if "monster2" not in st.session_state:
-    st.session_state["monster2"] = Character(20, 22, "imp.gif", True)
+    st.session_state["monster2"] = Character(24, 22, "imp.gif", True)
 
 enemies = (
     st.session_state["monster1"].html
@@ -407,7 +407,7 @@ else:
 # ---------------- fetching level data ----------------
 
 # fetch level with certain number
-df = fetch_data("test.csv")
+df = fetch_data("level1.csv")
 if "level" not in st.session_state:  # or st.session_state["level_change"]:
     st.session_state["level"] = df.values
 
