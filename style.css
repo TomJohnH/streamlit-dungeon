@@ -127,8 +127,7 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
 }
 
 .bbutton-right {
@@ -140,8 +139,7 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
 }
 
 .bbutton-up {
@@ -153,8 +151,7 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
 }
 
 .bbutton-down {
@@ -166,8 +163,7 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
 }
 
 @media all and (min-width: 600px) {
