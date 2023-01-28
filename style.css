@@ -119,6 +119,7 @@ section[tabindex="0"] {
 
 
 .bbutton-left {
+    position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
     bottom: 8rem;
@@ -127,10 +128,11 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-    transform: translate3d(0, 0, 0);
+
 }
 
 .bbutton-right {
+    position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
     bottom: 8rem;
@@ -139,10 +141,11 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
-    transform: translate3d(0, 0, 0);
+
 }
 
 .bbutton-up {
+    position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
     bottom: 6rem;
@@ -151,10 +154,11 @@ section[tabindex="0"] {
     width: 50%;
     margin-right: auto;
     opacity: 0.5;
-    transform: translate3d(0, 0, 0);
+
 }
 
 .bbutton-down {
+    position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
     bottom: 6rem;
@@ -163,7 +167,7 @@ section[tabindex="0"] {
     width: 50%;
     margin-left: auto;
     opacity: 0.5;
-    transform: translate3d(0, 0, 0);
+
 }
 
 @media all and (min-width: 600px) {
