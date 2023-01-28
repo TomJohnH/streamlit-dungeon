@@ -4,6 +4,13 @@ div[data-testid="stVerticalBlock"] {
 }
 
 
+div.stButton {
+    position: absolute;
+    left: -999em;
+    /* yeah...this is a very hacky way to send buttons probably to mars */
+}
+
+
 p {
     font-size: 14px;
     line-height: 16px;
@@ -107,6 +114,7 @@ section[tabindex="0"] {
     border-top: 3px solid #1e3937;
     text-align: center;
 }
+
 
 
 

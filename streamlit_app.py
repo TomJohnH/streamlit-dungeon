@@ -5,6 +5,8 @@ import random
 from random import randrange
 import numpy as np
 import json
+import time
+import hydralit_components as hc
 
 # -------------- refrence docs: --------------
 
@@ -87,6 +89,13 @@ if "down_clicked" not in st.session_state:
 if "steps" not in st.session_state:
     st.session_state["steps"] = 0
 
+if "bubble_text" not in st.session_state:
+    st.session_state["bubble_text"] = ""
+
+if "cold_start" not in st.session_state:
+    st.session_state["cold_start"] = True
+
+
 # ---------------- links ----------------
 
 cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
@@ -117,6 +126,8 @@ def left_callback():
 
     random_move("monster1")
     random_move("monster2")
+    alive("monster1")
+    alive("monster2")
 
 
 def right_callback():
@@ -132,6 +143,8 @@ def right_callback():
 
     random_move("monster1")
     random_move("monster2")
+    alive("monster1")
+    alive("monster2")
 
 
 def up_callback():
@@ -146,6 +159,8 @@ def up_callback():
 
     random_move("monster1")
     random_move("monster2")
+    alive("monster1")
+    alive("monster2")
 
 
 def down_callback():
@@ -160,6 +175,8 @@ def down_callback():
 
     random_move("monster1")
     random_move("monster2")
+    alive("monster1")
+    alive("monster2")
 
 
 # ------------------------------------------------------------
@@ -223,6 +240,20 @@ def random_move(movable_object):
             st.session_state[movable_object].x,
         ):
             st.session_state[movable_object].y -= 1
+
+
+# ---------------- beign alive ----------------
+
+
+def alive(enemy):
+    if (
+        st.session_state["player"].x == st.session_state[enemy].x
+        and st.session_state["player"].y == st.session_state[enemy].y
+    ):
+        st.session_state["bubble_text"] = text_bubble_html(
+            "OMG", st.session_state["player"].x, st.session_state["player"].y - 1
+        )
+        st.session_state[enemy].alive = False
 
 
 # ------------------------------------------------------------
@@ -360,23 +391,31 @@ if "monster2" not in st.session_state:
     st.session_state["monster2"] = Character(24, 22, "imp.gif", True)
 
 enemies = (
-    st.session_state["monster1"].html
-    + st.session_state["monster2"].html
-    + f"""
-<img src="{cat}" style="grid-column-start: 33; grid-row-start: 3;">"""
+    f"""
+        <img src="{cat}" style="grid-column-start: 33; grid-row-start: 3;">
+    """
+    + (st.session_state["monster1"].html if st.session_state["monster1"].alive else "")
+    + (st.session_state["monster2"].html if st.session_state["monster2"].alive else "")
 )
 
 # ---------------- creating visual layers ----------------
 
-boxes = f"""
-<img src="{tileset["BOX"]}" style="grid-column-start: 4; grid-row-start: 17;">
-<img src="{tileset["BOX"]}" style="grid-column-start: 6; grid-row-start: 3;">
-<img src="{tileset["BOX"]}" style="grid-column-start: 37; grid-row-start: 29;">
-"""
+
+def tile_html(text, x, y, z):
+    return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
+
+
+boxes = (
+    tile_html(tileset["BOX"], 4, 17, 4)
+    + tile_html(tileset["BOX"], 6, 3, 6)
+    + tile_html(tileset["BOX"], 37, 29, 37)
+)
 
 voids = f"""
 <img src="{tileset["DR"]}" style="grid-column-start: 47; grid-row-start: 13; grid-column-end:49">
-
+<img src="{tileset["DR"]}" style="grid-column-start: 19; grid-row-start: 23; grid-column-end:21">
+<img src="{tileset["DR"]}" style="grid-column-start: 16; grid-row-start: 11; grid-column-end:18">
+<img src="{tileset["DR"]}" style="grid-column-start: 40; grid-row-start: 37; grid-column-end:42">
 """
 torches = f"""
 <img src="{tileset["T"]}" style="grid-column-start: 21; grid-row-start: 5">
@@ -389,17 +428,20 @@ torches = f"""
 # ---------------- creating visual layers textboxes ----------------
 
 
-def text_box_quote(text, x, y):
+def text_bubble_html(text, x, y):
     return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
 
 
 if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
     # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
-    text_boxes = text_box_quote("What?", 10, 4)
+    text_boxes = text_bubble_html("What?", 10, 4)
 elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
-    text_boxes = text_box_quote("Strange", 16, 10)
+    text_boxes = text_bubble_html("Strange", 16, 10)
 elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
-    text_boxes = text_box_quote("Monsters?", 5, 20)
+    text_boxes = text_bubble_html("Monsters?", 5, 20)
+elif st.session_state["bubble_text"] != "":
+    text_boxes = st.session_state["bubble_text"]
+    st.session_state["bubble_text"] = ""
 else:
     text_boxes = ""
 
@@ -417,18 +459,20 @@ if "level" not in st.session_state:  # or st.session_state["level_change"]:
 #
 # ------------------------------------------------------------
 
+
 html = level_renderer(
     st.session_state["level"],
     player + enemies + boxes + voids + torches + text_boxes,
 )
 
+
 display_html = st.empty()
 display_html = st.markdown(html, unsafe_allow_html=True)
 
-st.button("L", on_click=left_callback)
-st.button("R", on_click=right_callback)
-st.button("U", on_click=up_callback)
-st.button("D", on_click=down_callback)
+st.button("L", on_click=left_callback, key="L")
+st.button("R", on_click=right_callback, key="R")
+st.button("U", on_click=up_callback, key="U")
+st.button("D", on_click=down_callback, key="D")
 
 # st.markdown(
 #     '<div class="console-container">Hp: 20/20<br> Exp: 0/30<br> Gold: 0 </div>',
@@ -481,9 +525,15 @@ st.markdown(
 #
 # ------------------------------------------------------------
 
+
 components.html(
     """
 <script>
+Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'L').classList.add('bbutton-left');
+Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'R').classList.add('bbutton-right');
+Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'U').classList.add('bbutton-up');
+Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'D').classList.add('bbutton-down');
+
 const doc = window.parent.document;
 buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
 const left_button = buttons.find(el => el.innerText === 'LEFT');
@@ -496,11 +546,6 @@ const right_button2 = buttons.find(el => el.innerText === 'R');
 const up_button2 = buttons.find(el => el.innerText === 'U');
 const down_button2 = buttons.find(el => el.innerText === 'D');
 
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'L').classList.add('bbutton-left');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'R').classList.add('bbutton-right');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'U').classList.add('bbutton-up');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'D').classList.add('bbutton-down');
-
 
 doc.addEventListener('keydown', function(e) {
 switch (e.keyCode) {
@@ -510,7 +555,7 @@ switch (e.keyCode) {
         break;
     case 39: // (39 = right arrow)
         right_button.click();
-        window.parent.document.getElementById('player').scrollIntoView(); 
+        window.parent.document.getElementById('player').scrollIntoView();
         break;
     case 38: // (39 = right arrow)
         up_button.click();
@@ -518,11 +563,10 @@ switch (e.keyCode) {
         break;
     case 40: // (39 = right arrow)
         down_button.click();
-        window.parent.document.getElementById('player').scrollIntoView();   
+        window.parent.document.getElementById('player').scrollIntoView();
         break;
 }
 });
-
 
 
 left_button.addEventListener("click",function() {
@@ -566,14 +610,12 @@ down_button2.addEventListener("click",function() {
 });
 
 
-
-
-
 </script>
 """,
     height=0,
     width=0,
 )
+
 
 #
 #       WORK IN PROGRESS
