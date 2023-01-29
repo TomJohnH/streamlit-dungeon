@@ -38,13 +38,14 @@ def local_css(file_name):
 
 
 class Character:
-    def __init__(self, x, y, file, alive):
+    def __init__(self, x, y, file, hp, alive):
         self.x = x
         self.y = y
         self.file = (
             "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/"
             + file
         )
+        self.hp = hp
         self.alive = alive
 
     @property
@@ -72,6 +73,9 @@ class Character:
 #                  Variables and constants
 #
 # ------------------------------------------------------------
+
+# variable responsible for checking if player provided his name and game can be started
+start = False
 
 # ---------------- initiat session states ----------------
 
@@ -127,8 +131,8 @@ def left_callback():
 
     random_move("monster1")
     random_move("monster2")
-    alive("monster1")
-    alive("monster2")
+    encounter("monster1")
+    encounter("monster2")
 
 
 def right_callback():
@@ -144,8 +148,8 @@ def right_callback():
 
     random_move("monster1")
     random_move("monster2")
-    alive("monster1")
-    alive("monster2")
+    encounter("monster1")
+    encounter("monster2")
 
 
 def up_callback():
@@ -160,8 +164,8 @@ def up_callback():
 
     random_move("monster1")
     random_move("monster2")
-    alive("monster1")
-    alive("monster2")
+    encounter("monster1")
+    encounter("monster2")
 
 
 def down_callback():
@@ -176,8 +180,8 @@ def down_callback():
 
     random_move("monster1")
     random_move("monster2")
-    alive("monster1")
-    alive("monster2")
+    encounter("monster1")
+    encounter("monster2")
 
 
 # ------------------------------------------------------------
@@ -243,17 +247,21 @@ def random_move(movable_object):
             st.session_state[movable_object].y -= 1
 
 
-# ---------------- beign alive ----------------
+# ---------------- encounter with monster ----------------
 
 
-def alive(enemy):
+def encounter(enemy):
     if (
         st.session_state["player"].x == st.session_state[enemy].x
         and st.session_state["player"].y == st.session_state[enemy].y
     ):
+        damage = randrange(30)
         st.session_state["bubble_text"] = text_bubble_html(
-            "OMG", st.session_state["player"].x, st.session_state["player"].y - 1
+            "OMG -" + str(damage) + "hp",
+            st.session_state["player"].x,
+            st.session_state["player"].y - 1,
         )
+        st.session_state["player"].hp = st.session_state["player"].hp - damage
         st.session_state[enemy].alive = False
 
 
@@ -378,7 +386,7 @@ def level_renderer(df, game_objects):
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
-    st.session_state["player"] = Character(4, 5, "player.gif", True)
+    st.session_state["player"] = Character(4, 5, "player.gif", 20, True)
 
 player = f"""
 <img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
@@ -386,10 +394,10 @@ player = f"""
 # ---------------- creating monsters html ----------------
 
 if "monster1" not in st.session_state:
-    st.session_state["monster1"] = Character(42, 30, "monster.gif", True)
+    st.session_state["monster1"] = Character(42, 30, "monster.gif", 10, True)
 
 if "monster2" not in st.session_state:
-    st.session_state["monster2"] = Character(24, 22, "imp.gif", True)
+    st.session_state["monster2"] = Character(24, 22, "imp.gif", 5, True)
 
 enemies = (
     f"""
@@ -460,186 +468,199 @@ if "level" not in st.session_state:  # or st.session_state["level_change"]:
 #
 # ------------------------------------------------------------
 
+tab1, tab2 = st.tabs(["intro", "start game"])
 
-html = level_renderer(
-    st.session_state["level"],
-    player + enemies + boxes + voids + torches + text_boxes,
-)
+# ----------------- game start --------
 
+with tab1:
 
-display_html = st.empty()
-display_html = st.markdown(html, unsafe_allow_html=True)
-
-st.button("L", on_click=left_callback, key="L")
-st.button("R", on_click=right_callback, key="R")
-st.button("U", on_click=up_callback, key="U")
-st.button("D", on_click=down_callback, key="D")
-
-# st.markdown(
-#     '<div class="console-container">Hp: 20/20<br> Exp: 0/30<br> Gold: 0 </div>',
-#     unsafe_allow_html=True,
-# )
-
-# ------------------------------------------------------------
-#
-#                Game enigne - sidebar for backup input
-#
-# ------------------------------------------------------------
-
-# ------------ sidebar for backup input ---------------------------
-
-with st.sidebar:
-    st.write("Use keyboard arrows or buttons below")
-    st.markdown("<br>", unsafe_allow_html=True)
-    left_col, middle_col, right_col = st.columns([1, 1, 1])
-    with middle_col:
-        st.button("&nbsp;UP&nbsp;", on_click=up_callback, key="UP")
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    left_col, middle_col, right_col = st.columns([1, 1, 1])
-    with left_col:
-        st.button("LEFT", on_click=left_callback, key="LEFT")
-
-    with right_col:
-        st.button("RIGHT", on_click=right_callback, key="RIGHT")
-    st.markdown("<br>", unsafe_allow_html=True)
-    left_col, middle_col, right_col = st.columns([1, 1, 1])
-    with middle_col:
-        st.button("DOWN", on_click=down_callback, key="DOWN")
-
-
-# ------------------------------------------------------------
-#
-#               Game enigne - console div
-#
-# ------------------------------------------------------------
-
-st.markdown(
-    f"""
-    <div class="bpad" id="bpad">HP: 20/20 | Exp: 0/30 | Steps: {st.session_state["steps"]}</div>""",
-    unsafe_allow_html=True,
-)
-
-# ------------------------------------------------------------
-#
-#               Game enigne - JS trickery
-#
-# ------------------------------------------------------------
-
-
-components.html(
+    intro_text = """
+    Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game! 
+    Navigate through dangerous traps, defeat fearsome monsters and uncover the secrets of the DuNgeOn. 
+    With intuitive controls and beautiful graphics, this game will keep you entertained for hours. 
+    Experience the thrill of adventure as you progress through levels and uncover powerful treasures. 
+    Join the adventure today and become the hero of the dungeon!
     """
-<script>
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'L').classList.add('bbutton-left');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'R').classList.add('bbutton-right');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'U').classList.add('bbutton-up');
-Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'D').classList.add('bbutton-down');
 
-const doc = window.parent.document;
-buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
-const left_button = buttons.find(el => el.innerText === 'LEFT');
-const right_button = buttons.find(el => el.innerText === 'RIGHT');
-const up_button = buttons.find(el => el.innerText === String.fromCharCode(160)+'UP'+String.fromCharCode(160));
-const down_button = buttons.find(el => el.innerText === 'DOWN');
+    st.write(intro_text)
 
-const left_button2 = buttons.find(el => el.innerText === 'L');
-const right_button2 = buttons.find(el => el.innerText === 'R');
-const up_button2 = buttons.find(el => el.innerText === 'U');
-const down_button2 = buttons.find(el => el.innerText === 'D');
+with tab2:
+
+    html = level_renderer(
+        st.session_state["level"],
+        player + enemies + boxes + voids + torches + text_boxes,
+    )
+
+    display_html = st.empty()
+    display_html = st.markdown(html, unsafe_allow_html=True)
+
+    st.button("L", on_click=left_callback, key="L")
+    st.button("R", on_click=right_callback, key="R")
+    st.button("U", on_click=up_callback, key="U")
+    st.button("D", on_click=down_callback, key="D")
+
+    # st.markdown(
+    #     '<div class="console-container">Hp: 20/20<br> Exp: 0/30<br> Gold: 0 </div>',
+    #     unsafe_allow_html=True,
+    # )
+
+    # ------------------------------------------------------------
+    #
+    #                Game enigne - sidebar for backup input
+    #
+    # ------------------------------------------------------------
+
+    # ------------ sidebar for backup input ---------------------------
+
+    with st.sidebar:
+        st.write("Use keyboard arrows or buttons below")
+        st.markdown("<br>", unsafe_allow_html=True)
+        left_col, middle_col, right_col = st.columns([1, 1, 1])
+        with middle_col:
+            st.button("&nbsp;UP&nbsp;", on_click=up_callback, key="UP")
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        left_col, middle_col, right_col = st.columns([1, 1, 1])
+        with left_col:
+            st.button("LEFT", on_click=left_callback, key="LEFT")
+
+        with right_col:
+            st.button("RIGHT", on_click=right_callback, key="RIGHT")
+        st.markdown("<br>", unsafe_allow_html=True)
+        left_col, middle_col, right_col = st.columns([1, 1, 1])
+        with middle_col:
+            st.button("DOWN", on_click=down_callback, key="DOWN")
+
+    # ------------------------------------------------------------
+    #
+    #               Game enigne - console div
+    #
+    # ------------------------------------------------------------
+
+    st.markdown(
+        f"""
+        <div class="bpad" id="bpad">HP: {st.session_state["player"].hp}/20 | Exp: 0/30 | Steps: {st.session_state["steps"]}</div>""",
+        unsafe_allow_html=True,
+    )
+
+    # ------------------------------------------------------------
+    #
+    #               Game enigne - JS trickery
+    #
+    # ------------------------------------------------------------
+
+    components.html(
+        """
+    <script>
+    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'L').classList.add('bbutton-left');
+    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'R').classList.add('bbutton-right');
+    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'U').classList.add('bbutton-up');
+    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'D').classList.add('bbutton-down');
+
+    const doc = window.parent.document;
+    buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
+    const left_button = buttons.find(el => el.innerText === 'LEFT');
+    const right_button = buttons.find(el => el.innerText === 'RIGHT');
+    const up_button = buttons.find(el => el.innerText === String.fromCharCode(160)+'UP'+String.fromCharCode(160));
+    const down_button = buttons.find(el => el.innerText === 'DOWN');
+
+    const left_button2 = buttons.find(el => el.innerText === 'L');
+    const right_button2 = buttons.find(el => el.innerText === 'R');
+    const up_button2 = buttons.find(el => el.innerText === 'U');
+    const down_button2 = buttons.find(el => el.innerText === 'D');
 
 
-doc.addEventListener('keydown', function(e) {
-switch (e.keyCode) {
-    case 37: // (37 = left arrow)
-        left_button.click();
-        window.parent.document.getElementById('player').scrollIntoView();
-        break;
-    case 39: // (39 = right arrow)
-        right_button.click();
-        window.parent.document.getElementById('player').scrollIntoView();
-        break;
-    case 38: // (39 = right arrow)
-        up_button.click();
-        window.parent.document.getElementById('player').scrollIntoView();
-        break;
-    case 40: // (39 = right arrow)
-        down_button.click();
-        window.parent.document.getElementById('player').scrollIntoView();
-        break;
-}
-});
-
-
-left_button.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("left")
-});
-
-right_button.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("right")
-});
-
-left_button2.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("left")
-});
-
-right_button2.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("right")
-});
-
-up_button.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("up")
-});
-
-down_button.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("down")
-});
-
-up_button2.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("up")
-});
-
-down_button2.addEventListener("click",function() {
-  window.parent.document.getElementById('player').scrollIntoView();
-  console.log("down")
-});
-
-
-</script>
-""",
-    height=0,
-    width=0,
-)
-
-
-#
-#       WORK IN PROGRESS
-#
-
-level_config = """
-{
-    "level1": {
-        "player_xy": [4,5],
-        "monsters": {
-            "monster1":[42,30,"monster.gif"],
-            "monster2":[20,22,"imp.gif"]},
-        "relatives": [
-            {
-                "name": ["Zaphod Beeblebrox","xxxx"],
-                "species": "Betelgeusian"
-            }
-        ]
+    doc.addEventListener('keydown', function(e) {
+    switch (e.keyCode) {
+        case 37: // (37 = left arrow)
+            left_button.click();
+            window.parent.document.getElementById('player').scrollIntoView();
+            break;
+        case 39: // (39 = right arrow)
+            right_button.click();
+            window.parent.document.getElementById('player').scrollIntoView();
+            break;
+        case 38: // (39 = right arrow)
+            up_button.click();
+            window.parent.document.getElementById('player').scrollIntoView();
+            break;
+        case 40: // (39 = right arrow)
+            down_button.click();
+            window.parent.document.getElementById('player').scrollIntoView();
+            break;
     }
-}
-"""
-# data = json.loads(level_config)
-# st.write(data["level1"]["player_xy"][0])
-# st.write(data["level1"]["monsters"]["monster1"])
-# st.write("Player x:" + str(st.session_state["player"].x))
-# st.write("Player y:" + str(st.session_state["player"].y))
+    });
+
+
+    left_button.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("left")
+    });
+
+    right_button.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("right")
+    });
+
+    left_button2.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("left")
+    });
+
+    right_button2.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("right")
+    });
+
+    up_button.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("up")
+    });
+
+    down_button.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("down")
+    });
+
+    up_button2.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("up")
+    });
+
+    down_button2.addEventListener("click",function() {
+    window.parent.document.getElementById('player').scrollIntoView();
+    console.log("down")
+    });
+
+
+    </script>
+    """,
+        height=0,
+        width=0,
+    )
+
+    #
+    #       WORK IN PROGRESS
+    #
+
+    level_config = """
+    {
+        "level1": {
+            "player_xy": [4,5],
+            "monsters": {
+                "monster1":[42,30,"monster.gif"],
+                "monster2":[20,22,"imp.gif"]},
+            "relatives": [
+                {
+                    "name": ["Zaphod Beeblebrox","xxxx"],
+                    "species": "Betelgeusian"
+                }
+            ]
+        }
+    }
+    """
+    # data = json.loads(level_config)
+    # st.write(data["level1"]["player_xy"][0])
+    # st.write(data["level1"]["monsters"]["monster1"])
+    # st.write("Player x:" + str(st.session_state["player"].x))
+    # st.write("Player y:" + str(st.session_state["player"].y))

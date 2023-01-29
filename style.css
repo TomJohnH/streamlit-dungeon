@@ -10,7 +10,7 @@ section[tabindex=0] div.stButton {
     /* yeah...this is a very hacky way to send buttons probably to mars */
 }
 
-
+/* 
 p {
     font-size: 14px;
     line-height: 16px;
@@ -30,7 +30,7 @@ p {
         font-size: 10px;
         line-height: 10px;
     }
-}
+} */
 
 .appview-container .main .block-container {
     padding-top: 2.875rem;
@@ -111,7 +111,7 @@ section[tabindex="0"] {
     /* width: 100%; */
     overflow: auto;
     font-family: monospace;
-    border-top: 3px solid #1e3937;
+    border-top: 2px solid #ff4b4b;
     text-align: center;
 }
 

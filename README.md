@@ -6,5 +6,9 @@ The concept of Streamlit refresh on each interaction refers to the way in which 
 
 Change log:
 
+29.01.2023
+- added intro screen
+- added damage mechanics
+
 28.01.2023
 - completely new engine - WIP
