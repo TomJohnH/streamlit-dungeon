@@ -305,7 +305,7 @@ tileset = {
     "BOX": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/box.png",  # box
     "DR": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/darkness_right.png",  # darkenss right
     "DB": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/darkness_bottom.png",  # darkness bottom
-    "T": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/torch_1.png",  # torch
+    "T": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/torch.gif",  # torch
     "FMN1": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_1.png",  # floor_mud_n_1
     "FMN2": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_2.png",  # floor_mud_n_2
     "FMNE": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_ne.png",  # floor_mud_ne
@@ -473,16 +473,33 @@ tab1, tab2 = st.tabs(["intro", "start game"])
 # ----------------- game start --------
 
 with tab1:
+    st.subheader("| Intro")
+    col1, col2 = st.columns(2, gap="small")
+    with col1:
+        # main_image
+        st.image("graphics/other/dungeon_crawler.png")
 
-    intro_text = """
-    Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game! 
-    Navigate through dangerous traps, defeat fearsome monsters and uncover the secrets of the DuNgeOn. 
-    With intuitive controls and beautiful graphics, this game will keep you entertained for hours. 
-    Experience the thrill of adventure as you progress through levels and uncover powerful treasures. 
-    Join the adventure today and become the hero of the dungeon!
-    """
+        st.caption("Dungeon Delve: A Streamlit Adventure", unsafe_allow_html=True)
+    with col2:
+        intro_text = """
+        Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game! 
+        Navigate through dangerous traps, defeat fearsome monsters and uncover the secrets of the DuNgeOn. 
+        With intuitive controls and beautiful graphics, this game will keep you entertained for hours. 
+        Experience the thrill of adventure as you progress through levels and uncover powerful treasures. 
+        Join the adventure today and become the hero of the dungeon!
+        """
+        st.write(f'<p style="color:#9c9d9f">{intro_text}</p>', unsafe_allow_html=True)
+    st.subheader("| Game start")
+    st.write(
+        '<p style="color:#9c9d9f">To start the game go to the "start game" tab.</p>',
+        unsafe_allow_html=True,
+    )
+    st.subheader("| Controls")
+    st.write(
+        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile: please use on-screen buttons | iOS:scrolling JS does not work yet.</p>',
+        unsafe_allow_html=True,
+    )
 
-    st.write(intro_text)
 
 with tab2:
 

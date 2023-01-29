@@ -10,6 +10,10 @@ section[tabindex=0] div.stButton {
     /* yeah...this is a very hacky way to send buttons probably to mars */
 }
 
+h3 {
+    color: #756760;
+}
+
 /* 
 p {
     font-size: 14px;
@@ -60,7 +64,7 @@ img {
 
 section[tabindex="0"] {
     overflow: hidden;
-    scroll-padding: 60px;
+    scroll-padding: 20%;
     /* scroll-margin: 60px; */
     /* no scroll */
 }
@@ -149,7 +153,7 @@ section[tabindex="0"] {
     position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
-    bottom: 6rem;
+    bottom: 5rem;
     left: 0;
     right: 0;
     width: 50%;
@@ -162,7 +166,7 @@ section[tabindex="0"] {
     position: -webkit-sticky;
     padding-left: 10px;
     position: fixed;
-    bottom: 6rem;
+    bottom: 5rem;
     left: 0;
     right: 0;
     width: 50%;
