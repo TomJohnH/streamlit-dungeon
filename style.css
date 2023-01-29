@@ -111,7 +111,8 @@ section[tabindex="0"] {
     /* width: 100%; */
     overflow: auto;
     font-family: monospace;
-    border-top: 2px solid #ff4b4b;
+    border-top: 2px solid;
+    border-image: linear-gradient(to right, #26282e 5%, #26282e 5%, #ff4b4b 5%, #ff4b4b 95%, #ff4b4b 95%, #26282e 95%, #26282e 100%) 4;
     text-align: center;
 }
 
