@@ -254,6 +254,7 @@ def encounter(enemy):
     if (
         st.session_state["player"].x == st.session_state[enemy].x
         and st.session_state["player"].y == st.session_state[enemy].y
+        and st.session_state[enemy].alive == True
     ):
         damage = randrange(30)
         st.session_state["bubble_text"] = text_bubble_html(
@@ -479,7 +480,9 @@ with tab1:
         # main_image
         st.image("graphics/other/dungeon_crawler.png")
 
-        st.caption("Dungeon Delve: A Streamlit Adventure", unsafe_allow_html=True)
+        st.caption(
+            "The Dungeon: a streamlit dungeon crawler game", unsafe_allow_html=True
+        )
     with col2:
         intro_text = """
         Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game! 
@@ -496,7 +499,7 @@ with tab1:
     )
     st.subheader("| Controls")
     st.write(
-        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile: please use on-screen buttons | iOS:scrolling JS does not work yet.</p>',
+        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile: please use on-screen buttons | iOS: scrolling JS does not work yet.</p><br>',
         unsafe_allow_html=True,
     )
 
