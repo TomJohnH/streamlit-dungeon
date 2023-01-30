@@ -205,3 +205,8 @@ section[tabindex="0"] {
     justify-content: center;
     display: flex;
 }
+
+div.stTabs>div>div:nth-of-type(3) {
+    overflow-x: hidden;
+    height: 80vh;
+}
