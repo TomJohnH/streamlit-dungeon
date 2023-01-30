@@ -62,13 +62,14 @@ class Character:
 
 
 class thingo:
-    def __init__(self, x, y, file):
+    def __init__(self, x, y, file, visible):
         self.x = x
         self.y = y
         self.file = (
             "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/"
             + file
         )
+        self.visible = visible
 
     @property
     def html(self):
@@ -155,6 +156,8 @@ def left_callback():
     random_move("monster2")
     encounter("monster1")
     encounter("monster2")
+    treasures("chest1")
+    treasures("chest2")
 
 
 def right_callback():
@@ -172,6 +175,8 @@ def right_callback():
     random_move("monster2")
     encounter("monster1")
     encounter("monster2")
+    treasures("chest1")
+    treasures("chest2")
 
 
 def up_callback():
@@ -188,6 +193,8 @@ def up_callback():
     random_move("monster2")
     encounter("monster1")
     encounter("monster2")
+    treasures("chest1")
+    treasures("chest2")
 
 
 def down_callback():
@@ -204,6 +211,8 @@ def down_callback():
     random_move("monster2")
     encounter("monster1")
     encounter("monster2")
+    treasures("chest1")
+    treasures("chest2")
 
 
 # ------------------------------------------------------------
@@ -287,6 +296,21 @@ def encounter(enemy):
         )
         st.session_state["player"].hp = st.session_state["player"].hp - damage
         st.session_state[enemy].alive = False
+
+
+def treasures(treasure):
+    if (
+        st.session_state["player"].x == st.session_state[treasure].x
+        and st.session_state["player"].y == st.session_state[treasure].y
+        and st.session_state[treasure].visible
+    ):
+        gold = randrange(20)
+        st.session_state["bubble_text"] = text_bubble_html(
+            "yeah! +" + str(gold) + " g",
+            st.session_state["player"].x,
+            st.session_state["player"].y - 1,
+        )
+        st.session_state[treasure].visible = False
 
 
 # ------------------------------------------------------------
@@ -464,14 +488,14 @@ torches = f"""
 """
 
 if "chest1" not in st.session_state:
-    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.png")
+    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.png", True)
+if "chest2" not in st.session_state:
+    st.session_state["chest2"] = thingo(20, 25, "chest_golden_open_full.png", True)
 
 chests = (
-    st.session_state["chest1"].html
-    + f"""
-<img src="{tileset["CGOF"]}" style="grid-column-start: 20; grid-row-start: 25">
-"""
-)
+    st.session_state["chest1"].html if st.session_state["chest1"].visible else ""
+) + (st.session_state["chest2"].html if st.session_state["chest2"].visible else "")
+
 
 # ---------------- creating visual layers textboxes ----------------
 
