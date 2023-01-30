@@ -61,6 +61,28 @@ class Character:
         )
 
 
+class thingo:
+    def __init__(self, x, y, file):
+        self.x = x
+        self.y = y
+        self.file = (
+            "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/"
+            + file
+        )
+
+    @property
+    def html(self):
+        return (
+            "<img src='"
+            + str(self.file)
+            + "' style='grid-column-start: "
+            + str(self.x)
+            + "; grid-row-start: "
+            + str(self.y)
+            + ";'>"
+        )
+
+
 # ------------------------------------------------------------
 #
 #                        Objects
@@ -404,6 +426,7 @@ if "monster1" not in st.session_state:
 if "monster2" not in st.session_state:
     st.session_state["monster2"] = Character(24, 22, "imp.gif", 5, True)
 
+
 enemies = (
     f"""
         <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
@@ -439,10 +462,15 @@ torches = f"""
 <img src="{tileset["T"]}" style="grid-column-start: 33; grid-row-start: 13">
 """
 
-chests = f"""
-<img src="{tileset["CGOF"]}" style="grid-column-start: 18; grid-row-start: 6">
+if "chest1" not in st.session_state:
+    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.gif")
+
+chests = (
+    st.session_state["chest1"].html
+    + f"""
 <img src="{tileset["CGOF"]}" style="grid-column-start: 20; grid-row-start: 25">
 """
+)
 
 # ---------------- creating visual layers textboxes ----------------
 
