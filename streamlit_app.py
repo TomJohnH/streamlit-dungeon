@@ -438,11 +438,11 @@ torches = f"""
 
 
 def text_bubble_html(text, x, y):
-    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
+    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
 
 
 if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
-    # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://oshi.at/CdmB/LqME.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
+    # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
     text_boxes = text_bubble_html("What?", 10, 4)
 elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
     text_boxes = text_bubble_html("Strange", 16, 10)
