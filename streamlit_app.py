@@ -310,6 +310,9 @@ tileset = {
     "FMN1": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_1.png",  # floor_mud_n_1
     "FMN2": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_n_2.png",  # floor_mud_n_2
     "FMNE": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/floor_mud_ne.png",  # floor_mud_ne
+    "CGOF": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/chest_golden_open_full.png",  # chest_golden_open_full
+    "CGOO": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/chest_open_empty.png",  # chest_open_empty
+    "FL": "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/Floor_ladder.png",  # Floor_ladder
 }
 
 tileset_movable = {
@@ -338,6 +341,7 @@ tileset_movable = {
     "FMN1": True,  # floor mud n1
     "FMN2": True,
     "FMNE": True,  # floor mud ne
+    "FL": True,
 }
 
 # ---------------- level renderer ----------------
@@ -402,7 +406,7 @@ if "monster2" not in st.session_state:
 
 enemies = (
     f"""
-        <img src="{cat}" style="grid-column-start: 33; grid-row-start: 3;">
+        <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
     """
     + (st.session_state["monster1"].html if st.session_state["monster1"].alive else "")
     + (st.session_state["monster2"].html if st.session_state["monster2"].alive else "")
@@ -429,10 +433,15 @@ voids = f"""
 """
 torches = f"""
 <img src="{tileset["T"]}" style="grid-column-start: 21; grid-row-start: 5">
-<img src="{tileset["T"]}" style="grid-column-start: 19; grid-row-start: 25">
+<img src="{tileset["T"]}" style="grid-column-start: 18; grid-row-start: 25">
 <img src="{tileset["T"]}" style="grid-column-start: 22; grid-row-start: 25">
 <img src="{tileset["T"]}" style="grid-column-start: 46; grid-row-start: 30">
 <img src="{tileset["T"]}" style="grid-column-start: 33; grid-row-start: 13">
+"""
+
+chests = f"""
+<img src="{tileset["CGOF"]}" style="grid-column-start: 18; grid-row-start: 6">
+<img src="{tileset["CGOF"]}" style="grid-column-start: 20; grid-row-start: 25">
 """
 
 # ---------------- creating visual layers textboxes ----------------
@@ -506,9 +515,15 @@ with tab1:
 
 with tab2:
 
+    ####################################################
+    #
+    #            THIS PART RENDERS MAIN SCREEN
+    #
+    ####################################################
+
     html = level_renderer(
         st.session_state["level"],
-        player + enemies + boxes + voids + torches + text_boxes,
+        player + enemies + boxes + voids + torches + text_boxes + chests,
     )
 
     display_html = st.empty()
