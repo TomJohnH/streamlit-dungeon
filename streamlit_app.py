@@ -463,7 +463,7 @@ torches = f"""
 """
 
 if "chest1" not in st.session_state:
-    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.gif")
+    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.png")
 
 chests = (
     st.session_state["chest1"].html
