@@ -21,7 +21,7 @@ import time
 # ------------------------------------------------------------
 
 st.set_page_config(
-    page_title="The Shadows’s Den 2", page_icon="🗡️", initial_sidebar_state="collapsed"
+    page_title="The Dunegon", page_icon="🗡️", initial_sidebar_state="collapsed"
 )
 
 
