@@ -7,8 +7,6 @@ import numpy as np
 import json
 import time
 
-# import hydralit_components as hc
-
 # -------------- refrence docs: --------------
 
 # https://www.pythonmorsels.com/making-auto-updating-attribute/
@@ -36,6 +34,8 @@ def local_css(file_name):
 #
 # ------------------------------------------------------------
 
+# object constructor for player and monsters
+
 
 class Character:
     def __init__(self, x, y, file, hp, alive):
@@ -59,6 +59,9 @@ class Character:
             + str(self.y)
             + ";'>"
         )
+
+
+# object constructor for chests and other inanimate objects
 
 
 class thingo:
@@ -97,9 +100,6 @@ class thingo:
 #
 # ------------------------------------------------------------
 
-# variable responsible for checking if player provided his name and game can be started
-start = False
-
 # ---------------- initiat session states ----------------
 
 if "left_clicked" not in st.session_state:
@@ -123,13 +123,14 @@ if "bubble_text" not in st.session_state:
 if "cold_start" not in st.session_state:
     st.session_state["cold_start"] = True
 
+if "end" not in st.session_state:
+    st.session_state["end"] = False
+
 
 # ---------------- links ----------------
 
 cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
 player = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/player.gif"
-chort = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/monster.gif"
-imp = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/imp.gif"
 
 # ------------------------------------------------------------
 #
@@ -152,10 +153,12 @@ def left_callback():
         st.session_state.left_clicked = True
         st.session_state["steps"] += 1
 
-    random_move("monster1")
-    random_move("monster2")
-    encounter("monster1")
-    encounter("monster2")
+    random_move(st.session_state["monsters"][0])
+    random_move(st.session_state["monsters"][1])
+    random_move(st.session_state["monsters"][2])
+    encounter(st.session_state["monsters"][0])
+    encounter(st.session_state["monsters"][1])
+    encounter(st.session_state["monsters"][2])
     treasures("chest1")
     treasures("chest2")
 
@@ -171,10 +174,12 @@ def right_callback():
         st.session_state.right_clicked = True
         st.session_state["steps"] += 1
 
-    random_move("monster1")
-    random_move("monster2")
-    encounter("monster1")
-    encounter("monster2")
+    random_move(st.session_state["monsters"][0])
+    random_move(st.session_state["monsters"][1])
+    random_move(st.session_state["monsters"][2])
+    encounter(st.session_state["monsters"][0])
+    encounter(st.session_state["monsters"][1])
+    encounter(st.session_state["monsters"][2])
     treasures("chest1")
     treasures("chest2")
 
@@ -189,10 +194,12 @@ def up_callback():
         st.session_state.up_clicked = True
         st.session_state["steps"] += 1
 
-    random_move("monster1")
-    random_move("monster2")
-    encounter("monster1")
-    encounter("monster2")
+    random_move(st.session_state["monsters"][0])
+    random_move(st.session_state["monsters"][1])
+    random_move(st.session_state["monsters"][2])
+    encounter(st.session_state["monsters"][0])
+    encounter(st.session_state["monsters"][1])
+    encounter(st.session_state["monsters"][2])
     treasures("chest1")
     treasures("chest2")
 
@@ -207,10 +214,12 @@ def down_callback():
         st.session_state.down_clicked = True
         st.session_state["steps"] += 1
 
-    random_move("monster1")
-    random_move("monster2")
-    encounter("monster1")
-    encounter("monster2")
+    random_move(st.session_state["monsters"][0])
+    random_move(st.session_state["monsters"][1])
+    random_move(st.session_state["monsters"][2])
+    encounter(st.session_state["monsters"][0])
+    encounter(st.session_state["monsters"][1])
+    encounter(st.session_state["monsters"][2])
     treasures("chest1")
     treasures("chest2")
 
@@ -252,31 +261,31 @@ def random_move(movable_object):
     if rnd_move < 25:
         if character_can_move(
             st.session_state["level"],
-            st.session_state[movable_object].y,
-            st.session_state[movable_object].x + 1,
+            movable_object.y,
+            movable_object.x + 1,
         ):
-            st.session_state[movable_object].x += 1
+            movable_object.x += 1
     if rnd_move >= 25 and rnd_move < 50:
         if character_can_move(
             st.session_state["level"],
-            st.session_state[movable_object].y,
-            st.session_state[movable_object].x - 1,
+            movable_object.y,
+            movable_object.x - 1,
         ):
-            st.session_state[movable_object].x -= 1
+            movable_object.x -= 1
     if rnd_move >= 50 and rnd_move < 75:
         if character_can_move(
             st.session_state["level"],
-            st.session_state[movable_object].y + 1,
-            st.session_state[movable_object].x,
+            movable_object.y + 1,
+            movable_object.x,
         ):
-            st.session_state[movable_object].y += 1
+            movable_object.y += 1
     if rnd_move >= 75 and rnd_move < 100:
         if character_can_move(
             st.session_state["level"],
-            st.session_state[movable_object].y - 1,
-            st.session_state[movable_object].x,
+            movable_object.y - 1,
+            movable_object.x,
         ):
-            st.session_state[movable_object].y -= 1
+            movable_object.y -= 1
 
 
 # ---------------- encounter with monster ----------------
@@ -284,9 +293,9 @@ def random_move(movable_object):
 
 def encounter(enemy):
     if (
-        st.session_state["player"].x == st.session_state[enemy].x
-        and st.session_state["player"].y == st.session_state[enemy].y
-        and st.session_state[enemy].alive == True
+        st.session_state["player"].x == enemy.x
+        and st.session_state["player"].y == enemy.y
+        and enemy.alive == True
     ):
         damage = randrange(30)
         st.session_state["bubble_text"] = text_bubble_html(
@@ -295,7 +304,7 @@ def encounter(enemy):
             st.session_state["player"].y - 1,
         )
         st.session_state["player"].hp = st.session_state["player"].hp - damage
-        st.session_state[enemy].alive = False
+        enemy.alive = False
 
 
 def treasures(treasure):
@@ -445,19 +454,32 @@ player = f"""
 
 # ---------------- creating monsters html ----------------
 
-if "monster1" not in st.session_state:
-    st.session_state["monster1"] = Character(42, 30, "monster.gif", 10, True)
-
-if "monster2" not in st.session_state:
-    st.session_state["monster2"] = Character(24, 22, "imp.gif", 5, True)
-
+if "monsters" not in st.session_state:
+    st.session_state["monsters"] = [
+        Character(42, 30, "monster.gif", 10, True),
+        Character(24, 22, "imp.gif", 5, True),
+        Character(40, 12, "mimic.png", 5, True),
+    ]
 
 enemies = (
     f"""
         <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
     """
-    + (st.session_state["monster1"].html if st.session_state["monster1"].alive else "")
-    + (st.session_state["monster2"].html if st.session_state["monster2"].alive else "")
+    + (
+        st.session_state["monsters"][0].html
+        if st.session_state["monsters"][0].alive
+        else ""
+    )
+    + (
+        st.session_state["monsters"][1].html
+        if st.session_state["monsters"][1].alive
+        else ""
+    )
+    + (
+        st.session_state["monsters"][2].html
+        if st.session_state["monsters"][2].alive
+        else ""
+    )
 )
 
 # ---------------- creating visual layers ----------------
@@ -511,6 +533,8 @@ elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
     text_boxes = text_bubble_html("Strange", 16, 10)
 elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
     text_boxes = text_bubble_html("Monsters?", 5, 20)
+elif st.session_state["player"].x == 4 and st.session_state["player"].y == 17:
+    text_boxes = text_bubble_html("Empty box", 4, 16)
 elif st.session_state["bubble_text"] != "":
     text_boxes = st.session_state["bubble_text"]
     st.session_state["bubble_text"] = ""
@@ -524,6 +548,11 @@ else:
 df = fetch_data("level1.csv")
 if "level" not in st.session_state:  # or st.session_state["level_change"]:
     st.session_state["level"] = df.values
+
+
+# ---------------- END CONDITION ----------------
+if st.session_state["player"].x == 33 and st.session_state["player"].y == 4:
+    st.session_state["end"] = True
 
 # ------------------------------------------------------------
 #
@@ -580,7 +609,13 @@ with tab2:
     )
 
     display_html = st.empty()
-    display_html = st.markdown(html, unsafe_allow_html=True)
+
+    if st.session_state["end"] == False:
+        display_html = st.markdown(html, unsafe_allow_html=True)
+    if st.session_state["end"] == True:
+        display_html = st.markdown(
+            "Thank your for playing The Dungeon", unsafe_allow_html=True
+        )
 
     st.button("L", on_click=left_callback, key="L")
     st.button("R", on_click=right_callback, key="R")
@@ -731,22 +766,22 @@ with tab2:
     #       WORK IN PROGRESS
     #
 
-    level_config = """
-    {
-        "level1": {
-            "player_xy": [4,5],
-            "monsters": {
-                "monster1":[42,30,"monster.gif"],
-                "monster2":[20,22,"imp.gif"]},
-            "relatives": [
-                {
-                    "name": ["Zaphod Beeblebrox","xxxx"],
-                    "species": "Betelgeusian"
-                }
-            ]
-        }
-    }
-    """
+    # level_config = """
+    # {
+    #     "level1": {
+    #         "player_xy": [4,5],
+    #         "monsters": {
+    #             "monster1":[42,30,"monster.gif"],
+    #             "monster2":[20,22,"imp.gif"]},
+    #         "relatives": [
+    #             {
+    #                 "name": ["Zaphod Beeblebrox","xxxx"],
+    #                 "species": "Betelgeusian"
+    #             }
+    #         ]
+    #     }
+    # }
+    # """
     # data = json.loads(level_config)
     # st.write(data["level1"]["player_xy"][0])
     # st.write(data["level1"]["monsters"]["monster1"])
