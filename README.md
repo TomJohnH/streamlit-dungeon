@@ -10,6 +10,9 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 Change log:
 
+31.01.2023
+- new enemy added - mimic
+
 29.01.2023
 - added intro screen
 - added damage mechanics
