@@ -38,7 +38,7 @@ def local_css(file_name):
 
 
 class Character:
-    def __init__(self, x, y, file, hp, alive):
+    def __init__(self, x, y, file, hp, alive, gold):
         self.x = x
         self.y = y
         self.file = (
@@ -47,6 +47,7 @@ class Character:
         )
         self.hp = hp
         self.alive = alive
+        self.gold = gold
 
     @property
     def html(self):
@@ -305,6 +306,8 @@ def encounter(enemy):
         )
         st.session_state["player"].hp = st.session_state["player"].hp - damage
         enemy.alive = False
+        if st.session_state["player"].hp <= 0:
+            st.session_state["player"].alive = False
 
 
 def treasures(treasure):
@@ -320,6 +323,7 @@ def treasures(treasure):
             st.session_state["player"].y - 1,
         )
         st.session_state[treasure].visible = False
+        st.session_state["player"].gold = st.session_state["player"].gold + gold
 
 
 # ------------------------------------------------------------
@@ -447,7 +451,7 @@ def level_renderer(df, game_objects):
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
-    st.session_state["player"] = Character(4, 5, "player.gif", 20, True)
+    st.session_state["player"] = Character(4, 5, "player.gif", 20, True, 0)
 
 player = f"""
 <img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
@@ -456,9 +460,9 @@ player = f"""
 
 if "monsters" not in st.session_state:
     st.session_state["monsters"] = [
-        Character(42, 30, "monster.gif", 10, True),
-        Character(24, 22, "imp.gif", 5, True),
-        Character(40, 12, "mimic.png", 5, True),
+        Character(42, 30, "monster.gif", 10, True, 0),
+        Character(24, 22, "imp.gif", 5, True, 0),
+        Character(40, 12, "mimic.png", 5, True, 0),
     ]
 
 enemies = (
@@ -533,8 +537,10 @@ elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
     text_boxes = text_bubble_html("Strange", 16, 10)
 elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
     text_boxes = text_bubble_html("Monsters?", 5, 20)
+elif st.session_state["player"].x == 47 and st.session_state["player"].y == 12:
+    text_boxes = text_bubble_html("Meow!", 48, 10)
 elif st.session_state["player"].x == 4 and st.session_state["player"].y == 17:
-    text_boxes = text_bubble_html("Empty box", 4, 16)
+    text_boxes = text_bubble_html("box (ツ)", 4, 16)
 elif st.session_state["bubble_text"] != "":
     text_boxes = st.session_state["bubble_text"]
     st.session_state["bubble_text"] = ""
@@ -615,7 +621,13 @@ with tab2:
     display_html = st.empty()
 
     if st.session_state["end"] == False:
-        display_html = st.markdown(html, unsafe_allow_html=True)
+        if st.session_state["player"].alive == True:
+            display_html = st.markdown(html, unsafe_allow_html=True)
+        else:
+            display_html = st.markdown(
+                "You have fallen in battle. Your journey ends here",
+                unsafe_allow_html=True,
+            )
     if st.session_state["end"] == True:
         display_html = st.markdown(
             "Thank your for playing The Dungeon", unsafe_allow_html=True
@@ -625,11 +637,6 @@ with tab2:
     st.button("R", on_click=right_callback, key="R")
     st.button("U", on_click=up_callback, key="U")
     st.button("D", on_click=down_callback, key="D")
-
-    # st.markdown(
-    #     '<div class="console-container">Hp: 20/20<br> Exp: 0/30<br> Gold: 0 </div>',
-    #     unsafe_allow_html=True,
-    # )
 
     # ------------------------------------------------------------
     #
@@ -666,7 +673,7 @@ with tab2:
 
     st.markdown(
         f"""
-        <div class="bpad" id="bpad">HP: {st.session_state["player"].hp}/20 | Exp: 0/30 | Steps: {st.session_state["steps"]}</div>""",
+        <div class="bpad" id="bpad">HP: {st.session_state["player"].hp}/20 | Gold: {st.session_state["player"].gold} | Exp: 0 | Steps: {st.session_state["steps"]}</div>""",
         unsafe_allow_html=True,
     )
 
@@ -789,5 +796,5 @@ with tab2:
     # data = json.loads(level_config)
     # st.write(data["level1"]["player_xy"][0])
     # st.write(data["level1"]["monsters"]["monster1"])
-    # st.write("Player x:" + str(st.session_state["player"].x))
-    # st.write("Player y:" + str(st.session_state["player"].y))
+    st.caption("Player x: " + str(st.session_state["player"].x))
+    st.caption("Player y: " + str(st.session_state["player"].y))
