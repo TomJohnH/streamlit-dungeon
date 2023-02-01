@@ -12,6 +12,7 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 01.02.2023
 - added intro audio
+- now you can gather gold
 
 31.01.2023
 - new enemy added - mimic
