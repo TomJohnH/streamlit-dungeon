@@ -222,6 +222,7 @@ audio {
 }
 
 
-audio::-webkit-media-controls-panel {
+audio::-webkit-media-controls-panel,
+audio::-webkit-media-controls-enclosure {
     background-color: #9c9d9f;
 }
