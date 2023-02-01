@@ -215,3 +215,13 @@ div.stTabs>div>div:nth-of-type(3) p {
     padding-right: 10px;
     ;
 }
+
+audio {
+    max-height: 20px;
+    margin-top: 10px
+}
+
+
+audio::-webkit-media-controls-panel {
+    background-color: #9c9d9f;
+}
