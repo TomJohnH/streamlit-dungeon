@@ -8,7 +8,7 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 [dungeon.streamlit.app](https://dunegon.streamlit.app)
 
-Change log:
+*Change log:*
 
 01.02.2023
 - added intro audio
