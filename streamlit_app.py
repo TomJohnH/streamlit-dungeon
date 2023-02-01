@@ -673,7 +673,7 @@ with tab2:
 
     st.markdown(
         f"""
-        <div class="bpad" id="bpad">HP: {st.session_state["player"].hp}/20 | Gold: {st.session_state["player"].gold} | Exp: 0 | Steps: {st.session_state["steps"]}</div>""",
+        <div class="bpad" id="bpad">HP: {st.session_state["player"].hp}/20 | Gold: {st.session_state["player"].gold} | Exp: 0 </div>""",
         unsafe_allow_html=True,
     )
 
@@ -796,5 +796,5 @@ with tab2:
     # data = json.loads(level_config)
     # st.write(data["level1"]["player_xy"][0])
     # st.write(data["level1"]["monsters"]["monster1"])
-    st.caption("Player x: " + str(st.session_state["player"].x))
-    st.caption("Player y: " + str(st.session_state["player"].y))
+    # st.caption("Player x: " + str(st.session_state["player"].x))
+    # st.caption("Player y: " + str(st.session_state["player"].y))
