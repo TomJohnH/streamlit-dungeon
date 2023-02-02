@@ -651,7 +651,7 @@ with tab2:
         st.markdown("<br>", unsafe_allow_html=True)
         left_col, middle_col, right_col = st.columns([1, 1, 1])
         with middle_col:
-            st.button("&nbsp;UP&nbsp;", on_click=up_callback, key="UP")
+            st.button("UP", on_click=up_callback, key="UP")
         st.markdown("<br>", unsafe_allow_html=True)
 
         left_col, middle_col, right_col = st.columns([1, 1, 1])
@@ -695,7 +695,7 @@ with tab2:
     buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
     const left_button = buttons.find(el => el.innerText === 'LEFT');
     const right_button = buttons.find(el => el.innerText === 'RIGHT');
-    const up_button = buttons.find(el => el.innerText === String.fromCharCode(160)+'UP'+String.fromCharCode(160));
+    const up_button = buttons.find(el => el.innerText === 'UP');
     const down_button = buttons.find(el => el.innerText === 'DOWN');
 
     const left_button2 = buttons.find(el => el.innerText === 'L');
