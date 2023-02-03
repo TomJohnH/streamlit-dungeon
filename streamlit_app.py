@@ -1,11 +1,12 @@
+import json
+import random
+import time
+from random import randrange
+
+import numpy as np
+import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
-import pandas as pd
-import random
-from random import randrange
-import numpy as np
-import json
-import time
 
 # -------------- refrence docs: --------------
 
@@ -582,10 +583,10 @@ with tab1:
         )
     with col2:
         intro_text = """
-        Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game! 
-        Navigate through dangerous traps, defeat fearsome monsters and uncover the secrets of the DuNgeOn. 
-        With intuitive controls and beautiful graphics, this game will keep you entertained for hours. 
-        Experience the thrill of adventure as you progress through levels and uncover powerful treasures. 
+        Explore the depths of an ancient dungeon in the first streamlit-based dungeon crawler game!
+        Navigate through dangerous traps, defeat fearsome monsters and uncover the secrets of the DuNgeOn.
+        With intuitive controls and beautiful graphics, this game will keep you entertained for hours.
+        Experience the thrill of adventure as you progress through levels and uncover powerful treasures.
         Join the adventure today and become the hero of the dungeon!
         """
         st.write(f'<p style="color:#9c9d9f">{intro_text}</p>', unsafe_allow_html=True)
@@ -630,7 +631,7 @@ with tab2:
             )
     if st.session_state["end"] == True:
         display_html = st.markdown(
-            "Thank your for playing The Dungeon", unsafe_allow_html=True
+            "Thank you for playing The Dungeon", unsafe_allow_html=True
         )
 
     st.button("L", on_click=left_callback, key="L")
