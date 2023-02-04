@@ -600,7 +600,7 @@ with tab1:
     )
     st.subheader("| Controls")
     st.write(
-        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile (Android, Chrome): please use on-screen buttons | iOS: unfortunatelly auto-scrolling feature does not work yet for iOS.</p><br>',
+        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile (Android, Chrome): please use on-screen buttons | iOS: unfortunately, the auto-scrolling feature does not work yet for iOS.</p><br>',
         unsafe_allow_html=True,
     )
 
