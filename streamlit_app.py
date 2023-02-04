@@ -2,7 +2,6 @@ import json
 import random
 import time
 from random import randrange
-
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -601,7 +600,7 @@ with tab1:
     )
     st.subheader("| Controls")
     st.write(
-        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile: please use on-screen buttons | iOS: scrolling JS does not work yet.</p><br>',
+        '<p style="color:#9c9d9f">Desktop: please use keyboard arrows | Mobile (Android, Chrome): please use on-screen buttons | iOS: unfortunatelly auto-scrolling feature does not work yet for iOS.</p><br>',
         unsafe_allow_html=True,
     )
 
@@ -626,12 +625,22 @@ with tab2:
             display_html = st.markdown(html, unsafe_allow_html=True)
         else:
             display_html = st.markdown(
-                "You have fallen in battle. Your journey ends here",
+                "💀 The monster was more powerful than expected, resulting in your defeat in battle. Your journey has come to an unexpected end. To continue playing, please restart the app.",
                 unsafe_allow_html=True,
             )
     if st.session_state["end"] == True:
         display_html = st.markdown(
-            "Thank you for playing The Dungeon", unsafe_allow_html=True
+            "Thank you for playing the demo of The Dungeon. More content coming soom!",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"""
+        <div><br>
+        <a href="https://www.buymeacoffee.com/tomjohn" style="color: grey; text-decoration:none;">
+        <div style="justify-content: center;margin:0px; border:solid 2px;background-color: #0e1117; ;border-radius:10px; border-color:#21212f; width: fit-content;padding:0.425rem">
+        <img src="https://raw.githubusercontent.com/TomJohnH/streamlit-game/main/images/coffe.png" style="max-width:20px;margin-right:10px;">
+        Buy me a coffee</a></div></div>""",
+            unsafe_allow_html=True,
         )
 
     st.button("L", on_click=left_callback, key="L")
