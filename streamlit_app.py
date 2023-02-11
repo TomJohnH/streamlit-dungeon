@@ -38,7 +38,7 @@ def local_css(file_name):
 
 
 class Character:
-    def __init__(self, x, y, file, hp, alive, gold):
+    def __init__(self, x, y, file, hp, gold, alive):
         self.x = x
         self.y = y
         self.file = (
@@ -46,8 +46,8 @@ class Character:
             + file
         )
         self.hp = hp
-        self.alive = alive
         self.gold = gold
+        self.alive = alive
 
     @property
     def html(self):
@@ -65,7 +65,7 @@ class Character:
 # object constructor for chests and other inanimate objects
 
 
-class thingo:
+class InanimateObject:
     def __init__(self, x, y, file, visible):
         self.x = x
         self.y = y
@@ -451,7 +451,7 @@ def level_renderer(df, game_objects):
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
-    st.session_state["player"] = Character(4, 5, "player.gif", 20, True, 0)
+    st.session_state["player"] = Character(4, 5, "player.gif", 20, 0, True)
 
 player = f"""
 <img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
@@ -460,9 +460,9 @@ player = f"""
 
 if "monsters" not in st.session_state:
     st.session_state["monsters"] = [
-        Character(42, 30, "monster.gif", 10, True, 0),
-        Character(24, 22, "imp.gif", 5, True, 0),
-        Character(40, 12, "mimic.png", 5, True, 0),
+        Character(42, 30, "monster.gif", 10, 0, True),
+        Character(24, 22, "imp.gif", 5, 0, True),
+        Character(40, 12, "mimic.png", 5, 0, True),
     ]
 
 enemies = (
@@ -514,9 +514,13 @@ torches = f"""
 """
 
 if "chest1" not in st.session_state:
-    st.session_state["chest1"] = thingo(18, 6, "chest_golden_open_full.png", True)
+    st.session_state["chest1"] = InanimateObject(
+        18, 6, "chest_golden_open_full.png", True
+    )
 if "chest2" not in st.session_state:
-    st.session_state["chest2"] = thingo(20, 25, "chest_golden_open_full.png", True)
+    st.session_state["chest2"] = InanimateObject(
+        20, 25, "chest_golden_open_full.png", True
+    )
 
 chests = (
     st.session_state["chest1"].html if st.session_state["chest1"].visible else ""
