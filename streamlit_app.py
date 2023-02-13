@@ -595,7 +595,7 @@ with tab1:
         st.write(f'<p style="color:#9c9d9f">{intro_text}</p>', unsafe_allow_html=True)
         audio_file = open("audio/intro.mp3", "rb")
         audio_bytes = audio_file.read()
-        st.audio(audio_bytes, format="audio/mp3")
+        st.audio(audio_bytes, format="audio/mpeg")
 
     st.subheader("| Game start")
     st.write(
