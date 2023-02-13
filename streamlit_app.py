@@ -235,7 +235,7 @@ def down_callback():
 # ---------------- data fetch ----------------
 
 
-@st.experimental_memo
+@st.cache_resource
 def fetch_data(level_name):
     df = pd.read_csv(level_name, sep=",", header=None)
     return df
