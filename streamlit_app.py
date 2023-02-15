@@ -529,8 +529,6 @@ if "chest2" not in st.session_state:
         x=20, y=25, file="chest_golden_open_full.png", visible=True
     )
 
-InanimateObject()
-
 chests = (
     st.session_state["chest1"].html if st.session_state["chest1"].visible else ""
 ) + (st.session_state["chest2"].html if st.session_state["chest2"].visible else "")
