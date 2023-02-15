@@ -495,15 +495,15 @@ enemies = (
 
 # ---------------- creating visual layers ----------------
 
-
+# this little function provides html for additional layers
 def tile_html(text, x, y, z):
     return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
 
 
 boxes = (
-    tile_html(tileset["BOX"], 4, 17, 4)
-    + tile_html(tileset["BOX"], 6, 3, 6)
-    + tile_html(tileset["BOX"], 37, 29, 37)
+    tile_html(text=tileset["BOX"], x=4, y=17, z=4)
+    + tile_html(text=tileset["BOX"], x=6, y=3, z=6)
+    + tile_html(text=tileset["BOX"], x=37, y=29, z=37)
 )
 
 voids = f"""
@@ -522,12 +522,14 @@ torches = f"""
 
 if "chest1" not in st.session_state:
     st.session_state["chest1"] = InanimateObject(
-        18, 6, "chest_golden_open_full.png", True
+        x=18, y=6, file="chest_golden_open_full.png", visible=True
     )
 if "chest2" not in st.session_state:
     st.session_state["chest2"] = InanimateObject(
-        20, 25, "chest_golden_open_full.png", True
+        x=20, y=25, file="chest_golden_open_full.png", visible=True
     )
+
+InanimateObject()
 
 chests = (
     st.session_state["chest1"].html if st.session_state["chest1"].visible else ""
