@@ -257,6 +257,10 @@ def character_can_move(logic_layer, x, y):
 
 
 def random_move(movable_object):
+
+    # this function is responsible for random movement of monsters
+    # it will be changed in the future - monsters will follow the player
+
     rnd_move = randrange(100)
     # st.write("random_move" + str(rnd_move))
     if rnd_move < 25:
@@ -293,6 +297,10 @@ def random_move(movable_object):
 
 
 def encounter(enemy):
+
+    # if you encounter an enemy and enemy is alive
+    # you will lose health but enemy will die
+
     if (
         st.session_state["player"].x == enemy.x
         and st.session_state["player"].y == enemy.y
@@ -311,6 +319,9 @@ def encounter(enemy):
 
 
 def treasures(treasure):
+
+    # if you encounter treaseure you will get gold
+
     if (
         st.session_state["player"].x == st.session_state[treasure].x
         and st.session_state["player"].y == st.session_state[treasure].y
@@ -335,12 +346,6 @@ def treasures(treasure):
 # ---------------- CSS ----------------
 
 local_css("style.css")
-
-# if "player_x" not in st.session_state:
-#     st.session_state["player_x"] = 4
-
-# if "player_y" not in st.session_state:
-#     st.session_state["player_y"] = 5
 
 # ---------------- tilset dictionary ----------------
 
@@ -451,7 +456,9 @@ def level_renderer(df, game_objects):
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
-    st.session_state["player"] = Character(4, 5, "player.gif", 20, 0, True)
+    st.session_state["player"] = Character(
+        x=4, y=5, file="player.gif", hp=20, gold=0, alive=True
+    )
 
 player = f"""
 <img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
@@ -460,9 +467,9 @@ player = f"""
 
 if "monsters" not in st.session_state:
     st.session_state["monsters"] = [
-        Character(42, 30, "monster.gif", 10, 0, True),
-        Character(24, 22, "imp.gif", 5, 0, True),
-        Character(40, 12, "mimic.png", 5, 0, True),
+        Character(x=42, y=30, file="monster.gif", hp=10, gold=0, alive=True),
+        Character(x=24, y=22, file="imp.gif", hp=5, gold=0, alive=True),
+        Character(x=40, y=12, file="mimic.png", hp=5, gold=0, alive=True),
     ]
 
 enemies = (
