@@ -260,6 +260,7 @@ def random_move(movable_object):
 
     # this function is responsible for random movement of monsters
     # it will be changed in the future - monsters will follow the player
+    # is it possible? yes. check https://rogue-rpg.streamlit.app/
 
     rnd_move = randrange(100)
     # st.write("random_move" + str(rnd_move))
@@ -506,19 +507,23 @@ boxes = (
     + tile_html(text=tileset["BOX"], x=37, y=29, z=37)
 )
 
-voids = f"""
-<img src="{tileset["DR"]}" style="grid-column-start: 47; grid-row-start: 13; grid-column-end:49">
-<img src="{tileset["DR"]}" style="grid-column-start: 19; grid-row-start: 23; grid-column-end:21">
-<img src="{tileset["DR"]}" style="grid-column-start: 16; grid-row-start: 11; grid-column-end:18">
-<img src="{tileset["DR"]}" style="grid-column-start: 40; grid-row-start: 37; grid-column-end:42">
-"""
-torches = f"""
-<img src="{tileset["T"]}" style="grid-column-start: 21; grid-row-start: 5">
-<img src="{tileset["T"]}" style="grid-column-start: 18; grid-row-start: 25">
-<img src="{tileset["T"]}" style="grid-column-start: 22; grid-row-start: 25">
-<img src="{tileset["T"]}" style="grid-column-start: 46; grid-row-start: 30">
-<img src="{tileset["T"]}" style="grid-column-start: 33; grid-row-start: 13">
-"""
+
+voids = (
+    tile_html(text=tileset["DR"], x=47, y=13, z=49)
+    + tile_html(text=tileset["DR"], x=19, y=23, z=21)
+    + tile_html(text=tileset["DR"], x=16, y=11, z=18)
+    + tile_html(text=tileset["DR"], x=40, y=37, z=42)
+)
+
+
+torches = (
+    tile_html(text=tileset["T"], x=21, y=5, z=21)
+    + tile_html(text=tileset["T"], x=18, y=25, z=18)
+    + tile_html(text=tileset["T"], x=22, y=25, z=22)
+    + tile_html(text=tileset["T"], x=46, y=30, z=46)
+    + tile_html(text=tileset["T"], x=33, y=13, z=33)
+)
+
 
 if "chest1" not in st.session_state:
     st.session_state["chest1"] = InanimateObject(
@@ -672,19 +677,25 @@ with tab2:
         st.markdown("<br>", unsafe_allow_html=True)
         left_col, middle_col, right_col = st.columns([1, 1, 1])
         with middle_col:
-            st.button("UP", on_click=up_callback, key="UP")
+            st.button("UP", on_click=up_callback, key="UP", use_container_width=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
         left_col, middle_col, right_col = st.columns([1, 1, 1])
         with left_col:
-            st.button("LEFT", on_click=left_callback, key="LEFT")
+            st.button(
+                "LEFT", on_click=left_callback, key="LEFT", use_container_width=True
+            )
 
         with right_col:
-            st.button("RIGHT", on_click=right_callback, key="RIGHT")
+            st.button(
+                "RIGHT", on_click=right_callback, key="RIGHT", use_container_width=True
+            )
         st.markdown("<br>", unsafe_allow_html=True)
         left_col, middle_col, right_col = st.columns([1, 1, 1])
         with middle_col:
-            st.button("DOWN", on_click=down_callback, key="DOWN")
+            st.button(
+                "DOWN", on_click=down_callback, key="DOWN", use_container_width=True
+            )
 
     # ------------------------------------------------------------
     #
