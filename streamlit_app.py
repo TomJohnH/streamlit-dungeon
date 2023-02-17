@@ -787,42 +787,42 @@ with tab2:
 
 
     left_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("left")
     });
 
     right_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("right")
     });
 
     left_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("left")
     });
 
     right_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("right")
     });
 
     up_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("up")
     });
 
     down_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("down")
     });
 
     up_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("up")
     });
 
     down_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
+    window.parent.document.getElementById('player').scrollIntoView(true);
     console.log("down")
     });
 

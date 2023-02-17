@@ -20,6 +20,7 @@ section[tabindex="0"] {
     /* no scroll */
     overflow: hidden;
     scroll-padding: 20%;
+    scroll-behavior: smooth;
     /* scroll-margin: 60px; */
 
 }
