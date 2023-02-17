@@ -1,11 +1,11 @@
 import json
-import random
-import time
-from random import randrange
 import numpy as np
 import pandas as pd
+import random
+from random import randrange
 import streamlit as st
 import streamlit.components.v1 as components
+import time
 
 # -------------- refrence docs: --------------
 
@@ -154,12 +154,10 @@ def left_callback():
         st.session_state.left_clicked = True
         st.session_state["steps"] += 1
 
-    random_move(st.session_state["monsters"][0])
-    random_move(st.session_state["monsters"][1])
-    random_move(st.session_state["monsters"][2])
-    encounter(st.session_state["monsters"][0])
-    encounter(st.session_state["monsters"][1])
-    encounter(st.session_state["monsters"][2])
+    # this little loop is responsible for moving the monsters and reacting to encounters
+    for i in range(0, len(st.session_state["monsters"])):
+        random_move(st.session_state["monsters"][i])
+        encounter(st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -175,12 +173,9 @@ def right_callback():
         st.session_state.right_clicked = True
         st.session_state["steps"] += 1
 
-    random_move(st.session_state["monsters"][0])
-    random_move(st.session_state["monsters"][1])
-    random_move(st.session_state["monsters"][2])
-    encounter(st.session_state["monsters"][0])
-    encounter(st.session_state["monsters"][1])
-    encounter(st.session_state["monsters"][2])
+    for i in range(0, len(st.session_state["monsters"])):
+        random_move(st.session_state["monsters"][i])
+        encounter(st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -195,12 +190,9 @@ def up_callback():
         st.session_state.up_clicked = True
         st.session_state["steps"] += 1
 
-    random_move(st.session_state["monsters"][0])
-    random_move(st.session_state["monsters"][1])
-    random_move(st.session_state["monsters"][2])
-    encounter(st.session_state["monsters"][0])
-    encounter(st.session_state["monsters"][1])
-    encounter(st.session_state["monsters"][2])
+    for i in range(0, len(st.session_state["monsters"])):
+        random_move(st.session_state["monsters"][i])
+        encounter(st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -215,12 +207,9 @@ def down_callback():
         st.session_state.down_clicked = True
         st.session_state["steps"] += 1
 
-    random_move(st.session_state["monsters"][0])
-    random_move(st.session_state["monsters"][1])
-    random_move(st.session_state["monsters"][2])
-    encounter(st.session_state["monsters"][0])
-    encounter(st.session_state["monsters"][1])
-    encounter(st.session_state["monsters"][2])
+    for i in range(0, len(st.session_state["monsters"])):
+        random_move(st.session_state["monsters"][i])
+        encounter(st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -458,7 +447,12 @@ def level_renderer(df, game_objects):
 
 if "level_data" not in st.session_state:
     level_config = """
-{
+{   "players_stats": {
+    "file": "player.gif",
+    "hp": 20,
+    "gold": 0,
+    "alive": true
+    },
     "level1": {
         "level_name": "level1.csv",
         "player_xy": {
@@ -479,8 +473,9 @@ if "level_data" not in st.session_state:
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
+    ply = st.session_state.level_data["players_stats"]
     st.session_state["player"] = Character(
-        x=4, y=5, file="player.gif", hp=20, gold=0, alive=True
+        x=4, y=5, file=ply["file"], hp=ply["hp"], gold=ply["gold"], alive=ply["alive"]
     )
 
 player = f"""
@@ -837,19 +832,3 @@ with tab2:
         height=0,
         width=0,
     )
-
-    #
-    #       WORK IN PROGRESS
-    #
-
-    # st.json(level_data)
-    # st.write(level_data["level1"]["player_xy"][0])
-    # st.write(level_data["level1"]["monsters"])
-    # st.write(len(level_data["level1"]["monsters"]))
-    # st.write(level_data["level1"]["monsters"]["monster1"])
-    # st.caption("Player x: " + str(st.session_state["player"].x))
-    # st.caption("Player y: " + str(st.session_state["player"].y))
-
-    # Character(x=42, y=30, file="monster.gif", hp=10, gold=0, alive=True),
-    # Character(x=24, y=22, file="imp.gif", hp=5, gold=0, alive=True),
-    # Character(x=40, y=12, file="mimic.png", hp=5, gold=0, alive=True),
