@@ -505,26 +505,27 @@ if "monsters" not in st.session_state:
             )
         )
 
-enemies = (
-    f"""
-        <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
-    """
-    + (
-        st.session_state["monsters"][0].html
-        if st.session_state["monsters"][0].alive
-        else ""
+# we are creating monsters html
+
+
+def enemies_html(monsters_session_state):
+    # empty string
+    html = ""
+    # creating html
+    for i in range(0, len(monsters_session_state)):
+        if monsters_session_state[i].alive:
+            html = html + monsters_session_state[i].html
+    # adding a cat - don't ask why
+    html = (
+        html
+        + f"""
+            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
+        """
     )
-    + (
-        st.session_state["monsters"][1].html
-        if st.session_state["monsters"][1].alive
-        else ""
-    )
-    + (
-        st.session_state["monsters"][2].html
-        if st.session_state["monsters"][2].alive
-        else ""
-    )
-)
+    return html
+
+
+enemies = enemies_html(st.session_state["monsters"])
 
 # ---------------- creating visual layers ----------------
 
