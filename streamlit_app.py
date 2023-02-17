@@ -453,6 +453,28 @@ def level_renderer(df, game_objects):
 #
 # ------------------------------------------------------------
 
+# --------------- level config ------------------------
+
+
+if "level_data" not in st.session_state:
+    level_config = """
+{
+    "level1": {
+        "level_name": "level1.csv",
+        "player_xy": {
+            "x":4,
+            "y":5
+        },
+        "monsters": {
+            "monster1":{"x":42,"y":30,"file":"monster.gif","hp":10,"gold":0,"alive":true},
+            "monster2":{"x":24,"y":22,"file":"imp.gif","hp":5,"gold":0,"alive":true},
+            "monster3":{"x":40,"y":12,"file":"mimic.png","hp":5,"gold":0,"alive":true}
+            }
+        
+    }
+}
+"""
+    st.session_state.level_data = json.loads(level_config)
 
 # ---------------- creating player html ----------------
 
@@ -466,12 +488,22 @@ player = f"""
 
 # ---------------- creating monsters html ----------------
 
+# we are constructing monsters in iteractions based on level configuration
 if "monsters" not in st.session_state:
-    st.session_state["monsters"] = [
-        Character(x=42, y=30, file="monster.gif", hp=10, gold=0, alive=True),
-        Character(x=24, y=22, file="imp.gif", hp=5, gold=0, alive=True),
-        Character(x=40, y=12, file="mimic.png", hp=5, gold=0, alive=True),
-    ]
+    st.session_state["monsters"] = []
+    for i in range(0, len(st.session_state.level_data["level1"]["monsters"])):
+        mst = list(st.session_state.level_data["level1"]["monsters"].values())[i]
+        st.write()
+        st.session_state["monsters"].append(
+            Character(
+                x=mst["x"],
+                y=mst["y"],
+                file=mst["file"],
+                hp=mst["hp"],
+                gold=mst["gold"],
+                alive=mst["alive"],
+            )
+        )
 
 enemies = (
     f"""
@@ -567,7 +599,7 @@ else:
 # ---------------- fetching level data ----------------
 
 # fetch level with certain number
-df = fetch_data("level1.csv")
+df = fetch_data(st.session_state.level_data["level1"]["level_name"])
 if "level" not in st.session_state:  # or st.session_state["level_change"]:
     st.session_state["level"] = df.values
 
@@ -809,24 +841,14 @@ with tab2:
     #       WORK IN PROGRESS
     #
 
-    # level_config = """
-    # {
-    #     "level1": {
-    #         "player_xy": [4,5],
-    #         "monsters": {
-    #             "monster1":[42,30,"monster.gif"],
-    #             "monster2":[20,22,"imp.gif"]},
-    #         "relatives": [
-    #             {
-    #                 "name": ["Zaphod Beeblebrox","xxxx"],
-    #                 "species": "Betelgeusian"
-    #             }
-    #         ]
-    #     }
-    # }
-    # """
-    # data = json.loads(level_config)
-    # st.write(data["level1"]["player_xy"][0])
-    # st.write(data["level1"]["monsters"]["monster1"])
+    # st.json(level_data)
+    # st.write(level_data["level1"]["player_xy"][0])
+    # st.write(level_data["level1"]["monsters"])
+    # st.write(len(level_data["level1"]["monsters"]))
+    # st.write(level_data["level1"]["monsters"]["monster1"])
     # st.caption("Player x: " + str(st.session_state["player"].x))
     # st.caption("Player y: " + str(st.session_state["player"].y))
+
+    # Character(x=42, y=30, file="monster.gif", hp=10, gold=0, alive=True),
+    # Character(x=24, y=22, file="imp.gif", hp=5, gold=0, alive=True),
+    # Character(x=40, y=12, file="mimic.png", hp=5, gold=0, alive=True),
