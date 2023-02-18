@@ -10,6 +10,9 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 **Change log:**
 
+18.02.2023
+- ongoing modularization and code refactoring
+
 01.02.2023
 - added intro audio
 - now you can gather gold
