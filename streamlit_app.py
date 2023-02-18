@@ -1,4 +1,4 @@
-import dungeon_config
+import game_config
 import json
 import numpy as np
 import pandas as pd
@@ -340,9 +340,9 @@ local_css("style.css")
 
 # ---------------- tilset dictionary ----------------
 
-tileset = dungeon_config.tileset
+tileset = game_config.tileset
 
-tileset_movable = dungeon_config.tileset_movable
+tileset_movable = game_config.tileset_movable
 
 # ---------------- level renderer ----------------
 
@@ -391,28 +391,7 @@ def level_renderer(df, game_objects):
 
 
 if "level_data" not in st.session_state:
-    level_config = """
-{   "players_stats": {
-    "file": "player.gif",
-    "hp": 20,
-    "gold": 0,
-    "alive": true
-    },
-    "level1": {
-        "level_name": "level1.csv",
-        "player_xy": {
-            "x":4,
-            "y":5
-        },
-        "monsters": {
-            "monster1":{"x":42,"y":30,"file":"monster.gif","hp":10,"gold":0,"alive":true},
-            "monster2":{"x":24,"y":22,"file":"imp.gif","hp":5,"gold":0,"alive":true},
-            "monster3":{"x":40,"y":12,"file":"mimic.png","hp":5,"gold":0,"alive":true}
-            }
-        
-    }
-}
-"""
+    level_config = game_config.level_config
     st.session_state.level_data = json.loads(level_config)
 
 # ---------------- creating player html ----------------
@@ -669,6 +648,8 @@ with tab2:
             st.button(
                 "DOWN", on_click=down_callback, key="DOWN", use_container_width=True
             )
+        st.markdown("<br>", unsafe_allow_html=True)
+        dev_options = st.checkbox("Developer options")
 
     # ------------------------------------------------------------
     #
@@ -777,3 +758,7 @@ with tab2:
         height=0,
         width=0,
     )
+
+if dev_options:
+    st.caption("Player x: " + str(st.session_state["player"].x))
+    st.caption("Player y: " + str(st.session_state["player"].y))

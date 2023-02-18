@@ -1,3 +1,28 @@
+level_config = """
+{   
+    "players_stats": {
+        "file": "player.gif",
+        "hp": 20,
+        "gold": 0,
+        "alive": true
+    },
+    "level1": {
+        "level_name": "level1.csv",
+        "player_xy": {
+            "x":4,
+            "y":5
+        },
+        "monsters": {
+            "monster1":{"x":42,"y":30,"file":"monster.gif","hp":10,"gold":0,"alive":true},
+            "monster2":{"x":24,"y":22,"file":"imp.gif","hp":5,"gold":0,"alive":true},
+            "monster3":{"x":40,"y":12,"file":"mimic.png","hp":5,"gold":0,"alive":true}
+            }
+        
+    }
+}
+"""
+
+
 tileset = {
     "@": "https://oshi.at/ZMUu/avRY.gif",
     "W": "https://thumbs2.imgbox.com/10/db/7zaxbIP8_t.png",  # wall
