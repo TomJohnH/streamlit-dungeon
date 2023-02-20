@@ -445,41 +445,45 @@ def enemies_html(monsters_session_state):
 
 enemies = enemies_html(st.session_state["monsters"])
 
-# ---------------- creating visual layers ----------------
+# ---------------- creating non interactive visual layers ----------------
 
 # this little function provides html for additional layers
 def tile_html(text, x, y, z):
     return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
 
 
-if "boxes" not in st.session_state:
-    st.session_state["boxes"] = ""
-    for i in range(0, len(st.session_state.level_data["level1"]["boxes"])):
-        bx = list(st.session_state.level_data["level1"]["boxes"].values())[i]
-        st.session_state["boxes"] = st.session_state["boxes"] + tile_html(
-            text=tileset[bx["text"]], x=bx["x"], y=bx["y"], z=bx["z"]
+def additional_layers_html(level_name, layer_name):
+    name = ""
+    for i in range(0, len(st.session_state.level_data[level_name][layer_name])):
+        ob = list(st.session_state.level_data[level_name][layer_name].values())[i]
+        name = name + tile_html(
+            text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
         )
+    return name
 
+
+# ---------------- boxes ----------------
+
+if "boxes" not in st.session_state:
+    st.session_state["boxes"] = additional_layers_html("level1", "boxes")
 
 boxes = st.session_state["boxes"]
 
+# ---------------- voids ----------------
 
-voids = (
-    tile_html(text=tileset["DR"], x=47, y=13, z=49)
-    + tile_html(text=tileset["DR"], x=19, y=23, z=21)
-    + tile_html(text=tileset["DR"], x=16, y=11, z=18)
-    + tile_html(text=tileset["DR"], x=40, y=37, z=42)
-)
+if "voids" not in st.session_state:
+    st.session_state["voids"] = additional_layers_html("level1", "voids")
 
+voids = st.session_state["voids"]
 
-torches = (
-    tile_html(text=tileset["T"], x=21, y=5, z=21)
-    + tile_html(text=tileset["T"], x=18, y=25, z=18)
-    + tile_html(text=tileset["T"], x=22, y=25, z=22)
-    + tile_html(text=tileset["T"], x=46, y=30, z=46)
-    + tile_html(text=tileset["T"], x=33, y=13, z=33)
-)
+# ---------------- troches ----------------
 
+if "torches" not in st.session_state:
+    st.session_state["torches"] = additional_layers_html("level1", "torches")
+
+torches = st.session_state["torches"]
+
+# ---------------- TO BE REFACTORED ----------------
 
 if "chest1" not in st.session_state:
     st.session_state["chest1"] = InanimateObject(

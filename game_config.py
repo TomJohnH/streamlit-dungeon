@@ -21,8 +21,20 @@ level_config = """
             "box1":{"text":"BOX", "x":4, "y":17, "z":4},
             "box2":{"text":"BOX", "x":6, "y":3, "z":6},
             "box3":{"text":"BOX", "x":37, "y":29, "z":37}
-        }
-        
+        },
+        "voids": {
+            "void1":{"text":"DR", "x":47, "y":13, "z":49},
+            "void2":{"text":"DR", "x":19, "y":23, "z":21},
+            "void3":{"text":"DR", "x":16, "y":11, "z":18},
+            "void4":{"text":"DR", "x":40, "y":37, "z":42}
+        },
+        "torches": {
+            "torch1":{"text":"T", "x":21, "y":5, "z":21},
+            "torch2":{"text":"T", "x":18, "y":25, "z":18},
+            "torch3":{"text":"T", "x":22, "y":25, "z":22},
+            "torch4":{"text":"T", "x":46, "y":30, "z":46},
+            "torch5":{"text":"T", "x":33, "y":13, "z":33}
+        } 
     }
 }
 """
