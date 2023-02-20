@@ -311,7 +311,7 @@ def encounter(enemy):
 
 def treasures(treasure):
 
-    # if you encounter treaseure you will get gold
+    # if you encounter treasure you will get gold
 
     if (
         st.session_state["player"].x == st.session_state[treasure].x
@@ -412,7 +412,6 @@ if "monsters" not in st.session_state:
     st.session_state["monsters"] = []
     for i in range(0, len(st.session_state.level_data["level1"]["monsters"])):
         mst = list(st.session_state.level_data["level1"]["monsters"].values())[i]
-        st.write()
         st.session_state["monsters"].append(
             Character(
                 x=mst["x"],
@@ -453,11 +452,16 @@ def tile_html(text, x, y, z):
     return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
 
 
-boxes = (
-    tile_html(text=tileset["BOX"], x=4, y=17, z=4)
-    + tile_html(text=tileset["BOX"], x=6, y=3, z=6)
-    + tile_html(text=tileset["BOX"], x=37, y=29, z=37)
-)
+if "boxes" not in st.session_state:
+    st.session_state["boxes"] = ""
+    for i in range(0, len(st.session_state.level_data["level1"]["boxes"])):
+        bx = list(st.session_state.level_data["level1"]["boxes"].values())[i]
+        st.session_state["boxes"] = st.session_state["boxes"] + tile_html(
+            text=tileset[bx["text"]], x=bx["x"], y=bx["y"], z=bx["z"]
+        )
+
+
+boxes = st.session_state["boxes"]
 
 
 voids = (

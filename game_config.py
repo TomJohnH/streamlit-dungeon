@@ -11,12 +11,17 @@ level_config = """
         "player_xy": {
             "x":4,
             "y":5
-        },
+            },
         "monsters": {
             "monster1":{"x":42,"y":30,"file":"monster.gif","hp":10,"gold":0,"alive":true},
             "monster2":{"x":24,"y":22,"file":"imp.gif","hp":5,"gold":0,"alive":true},
             "monster3":{"x":40,"y":12,"file":"mimic.png","hp":5,"gold":0,"alive":true}
-            }
+            },
+        "boxes": {
+            "box1":{"text":"BOX", "x":4, "y":17, "z":4},
+            "box2":{"text":"BOX", "x":6, "y":3, "z":6},
+            "box3":{"text":"BOX", "x":37, "y":29, "z":37}
+        }
         
     }
 }
