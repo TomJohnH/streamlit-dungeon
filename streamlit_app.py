@@ -398,8 +398,14 @@ if "level_data" not in st.session_state:
 
 if "player" not in st.session_state:
     ply = st.session_state.level_data["players_stats"]
+    ply_xy = st.session_state.level_data["level1"]["player_xy"]
     st.session_state["player"] = Character(
-        x=4, y=5, file=ply["file"], hp=ply["hp"], gold=ply["gold"], alive=ply["alive"]
+        x=ply_xy["x"],
+        y=ply_xy["y"],
+        file=ply["file"],
+        hp=ply["hp"],
+        gold=ply["gold"],
+        alive=ply["alive"],
     )
 
 player = f"""
