@@ -458,13 +458,18 @@ def tile_html(text, x, y, z):
     return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
 
 
-def additional_layers_html(level_name, layer_name):
+def additional_layers_html(level_name, layer_name, coordinates="xy"):
     name = ""
     for i in range(0, len(st.session_state.level_data[level_name][layer_name])):
         ob = list(st.session_state.level_data[level_name][layer_name].values())[i]
-        name = name + tile_html(
-            text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
-        )
+        if coordinates == "xyz":
+            name = name + tile_html(
+                text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
+            )
+        else:
+            name = name + tile_html(
+                text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["x"]
+            )
     return name
 
 
@@ -478,7 +483,7 @@ boxes = st.session_state["boxes"]
 # ---------------- voids ----------------
 
 if "voids" not in st.session_state:
-    st.session_state["voids"] = additional_layers_html("level1", "voids")
+    st.session_state["voids"] = additional_layers_html("level1", "voids","xyz")
 
 voids = st.session_state["voids"]
 

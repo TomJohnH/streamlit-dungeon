@@ -29,11 +29,18 @@ level_config = """
             "void4":{"text":"DR", "x":40, "y":37, "z":42}
         },
         "torches": {
-            "torch1":{"text":"T", "x":21, "y":5, "z":21},
-            "torch2":{"text":"T", "x":18, "y":25, "z":18},
-            "torch3":{"text":"T", "x":22, "y":25, "z":22},
-            "torch4":{"text":"T", "x":46, "y":30, "z":46},
-            "torch5":{"text":"T", "x":33, "y":13, "z":33}
+            "torch1":{"text":"T", "x":21, "y":5},
+            "torch2":{"text":"T", "x":18, "y":25},
+            "torch3":{"text":"T", "x":22, "y":25},
+            "torch4":{"text":"T", "x":46, "y":30},
+            "torch5":{"text":"T", "x":33, "y":13}
+        }, 
+        "bubbles": {
+            "bubble1":{"text":"What?", "x":10, "y":5},
+            "bubble2":{"text":"Strange", "x":16, "y":11},
+            "bubble3":{"text":"Monsters?", "x":5, "y":21},
+            "bubble4":{"text":"Meow!", "x":47, "y":12},
+            "bubble5":{"text":"box (ツ)", "x":4, "y":17}
         } 
     }
 }
