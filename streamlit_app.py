@@ -158,7 +158,7 @@ def left_callback():
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["monsters"][i])
+        encounter(st.session_state["player"], st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -176,7 +176,7 @@ def right_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["monsters"][i])
+        encounter(st.session_state["player"], st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -193,7 +193,7 @@ def up_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["monsters"][i])
+        encounter(st.session_state["player"], st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -210,7 +210,7 @@ def down_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["monsters"][i])
+        encounter(st.session_state["player"], st.session_state["monsters"][i])
     treasures("chest1")
     treasures("chest2")
 
@@ -287,26 +287,23 @@ def random_move(movable_object):
 # ---------------- encounter with monster ----------------
 
 
-def encounter(enemy):
+def encounter(player, enemy):
 
     # if you encounter an enemy and enemy is alive
     # you will lose health but enemy will die
+    # player = st.session_state["player"]
 
-    if (
-        st.session_state["player"].x == enemy.x
-        and st.session_state["player"].y == enemy.y
-        and enemy.alive == True
-    ):
+    if player.x == enemy.x and player.y == enemy.y and enemy.alive == True:
         damage = randrange(30)
         st.session_state["bubble_text"] = text_bubble_html(
             "OMG -" + str(damage) + "hp",
-            st.session_state["player"].x,
-            st.session_state["player"].y - 1,
+            player.x,
+            player.y - 1,
         )
-        st.session_state["player"].hp = st.session_state["player"].hp - damage
+        player.hp = player.hp - damage
         enemy.alive = False
-        if st.session_state["player"].hp <= 0:
-            st.session_state["player"].alive = False
+        if player.hp <= 0:
+            player.alive = False
 
 
 def treasures(treasure):
@@ -483,7 +480,7 @@ boxes = st.session_state["boxes"]
 # ---------------- voids ----------------
 
 if "voids" not in st.session_state:
-    st.session_state["voids"] = additional_layers_html("level1", "voids","xyz")
+    st.session_state["voids"] = additional_layers_html("level1", "voids", "xyz")
 
 voids = st.session_state["voids"]
 
