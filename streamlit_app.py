@@ -159,8 +159,8 @@ def left_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures("chest1")
-    treasures("chest2")
+    treasures(st.session_state["player"], "chest1")
+    treasures(st.session_state["player"], "chest2")
 
 
 def right_callback():
@@ -177,8 +177,8 @@ def right_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures("chest1")
-    treasures("chest2")
+    treasures(st.session_state["player"], "chest1")
+    treasures(st.session_state["player"], "chest2")
 
 
 def up_callback():
@@ -194,8 +194,8 @@ def up_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures("chest1")
-    treasures("chest2")
+    treasures(st.session_state["player"], "chest1")
+    treasures(st.session_state["player"], "chest2")
 
 
 def down_callback():
@@ -211,8 +211,8 @@ def down_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures("chest1")
-    treasures("chest2")
+    treasures(st.session_state["player"], "chest1")
+    treasures(st.session_state["player"], "chest2")
 
 
 # ------------------------------------------------------------
@@ -306,23 +306,23 @@ def encounter(player, enemy):
             player.alive = False
 
 
-def treasures(treasure):
+def treasures(player, treasure):
 
     # if you encounter treasure you will get gold
 
     if (
-        st.session_state["player"].x == st.session_state[treasure].x
-        and st.session_state["player"].y == st.session_state[treasure].y
+        player.x == st.session_state[treasure].x
+        and player.y == st.session_state[treasure].y
         and st.session_state[treasure].visible
     ):
         gold = randrange(20)
         st.session_state["bubble_text"] = text_bubble_html(
             "yeah! +" + str(gold) + " g",
-            st.session_state["player"].x,
-            st.session_state["player"].y - 1,
+            player.x,
+            player.y - 1,
         )
         st.session_state[treasure].visible = False
-        st.session_state["player"].gold = st.session_state["player"].gold + gold
+        player.gold = player.gold + gold
 
 
 # ------------------------------------------------------------
