@@ -41,6 +41,10 @@ level_config = """
             "bubble3":{"text":"Monsters?", "x":5, "y":21},
             "bubble4":{"text":"Meow!", "x":47, "y":12},
             "bubble5":{"text":"box (ツ)", "x":4, "y":17}
+        },
+        "chests": {
+            "chest1":{"x":18, "y":6, "file":"chest_golden_open_full.png", "visible":true},
+            "chest2":{"x":20, "y":25, "file":"chest_golden_open_full.png", "visible":true}
         } 
     }
 }

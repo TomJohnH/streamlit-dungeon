@@ -1,4 +1,5 @@
 import game_config
+import game_js
 import json
 import numpy as np
 import pandas as pd
@@ -7,6 +8,7 @@ from random import randrange
 import streamlit as st
 import streamlit.components.v1 as components
 import time
+
 
 # -------------- refrence docs: --------------
 
@@ -159,8 +161,8 @@ def left_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures(st.session_state["player"], "chest1")
-    treasures(st.session_state["player"], "chest2")
+    for i in range(0, len(st.session_state["chests"])):
+        treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def right_callback():
@@ -177,8 +179,8 @@ def right_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures(st.session_state["player"], "chest1")
-    treasures(st.session_state["player"], "chest2")
+    for i in range(0, len(st.session_state["chests"])):
+        treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def up_callback():
@@ -194,8 +196,8 @@ def up_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures(st.session_state["player"], "chest1")
-    treasures(st.session_state["player"], "chest2")
+    for i in range(0, len(st.session_state["chests"])):
+        treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def down_callback():
@@ -211,8 +213,8 @@ def down_callback():
     for i in range(0, len(st.session_state["monsters"])):
         random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
-    treasures(st.session_state["player"], "chest1")
-    treasures(st.session_state["player"], "chest2")
+    for i in range(0, len(st.session_state["chests"])):
+        treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 # ------------------------------------------------------------
@@ -310,18 +312,14 @@ def treasures(player, treasure):
 
     # if you encounter treasure you will get gold
 
-    if (
-        player.x == st.session_state[treasure].x
-        and player.y == st.session_state[treasure].y
-        and st.session_state[treasure].visible
-    ):
+    if player.x == treasure.x and player.y == treasure.y and treasure.visible:
         gold = randrange(20)
         st.session_state["bubble_text"] = text_bubble_html(
             "yeah! +" + str(gold) + " g",
             player.x,
             player.y - 1,
         )
-        st.session_state[treasure].visible = False
+        treasure.visible = False
         player.gold = player.gold + gold
 
 
@@ -493,19 +491,39 @@ torches = st.session_state["torches"]
 
 # ---------------- TO BE REFACTORED ----------------
 
-if "chest1" not in st.session_state:
-    st.session_state["chest1"] = InanimateObject(
-        x=18, y=6, file="chest_golden_open_full.png", visible=True
-    )
-if "chest2" not in st.session_state:
-    st.session_state["chest2"] = InanimateObject(
-        x=20, y=25, file="chest_golden_open_full.png", visible=True
-    )
+# we are constructing monsters in iteractions based on level configuration
+if "chests" not in st.session_state:
+    st.session_state["chests"] = []
+    for i in range(0, len(st.session_state.level_data["level1"]["chests"])):
+        chs = list(st.session_state.level_data["level1"]["chests"].values())[i]
+        st.session_state["chests"].append(
+            InanimateObject(
+                x=chs["x"],
+                y=chs["y"],
+                file=chs["file"],
+                visible=chs["visible"],
+            )
+        )
 
-chests = (
-    st.session_state["chest1"].html if st.session_state["chest1"].visible else ""
-) + (st.session_state["chest2"].html if st.session_state["chest2"].visible else "")
 
+def chests_html(chests_ss_st):
+    # empty string
+    html = ""
+    # creating html
+    for i in range(0, len(chests_ss_st)):
+        if chests_ss_st[i].visible:
+            html = html + chests_ss_st[i].html
+    # adding a cat - don't ask why
+    html = (
+        html
+        + f"""
+            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
+        """
+    )
+    return html
+
+
+chests = chests_html(st.session_state["chests"])
 
 # ---------------- creating visual layers textboxes ----------------
 
@@ -686,91 +704,7 @@ with tab2:
     # ------------------------------------------------------------
 
     components.html(
-        """
-    <script>
-    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'L').classList.add('bbutton-left');
-    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'R').classList.add('bbutton-right');
-    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'U').classList.add('bbutton-up');
-    Array.from(window.parent.document.querySelectorAll('button[kind=secondary]')).find(el => el.innerText === 'D').classList.add('bbutton-down');
-
-    const doc = window.parent.document;
-    buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
-    const left_button = buttons.find(el => el.innerText === 'LEFT');
-    const right_button = buttons.find(el => el.innerText === 'RIGHT');
-    const up_button = buttons.find(el => el.innerText === 'UP');
-    const down_button = buttons.find(el => el.innerText === 'DOWN');
-
-    const left_button2 = buttons.find(el => el.innerText === 'L');
-    const right_button2 = buttons.find(el => el.innerText === 'R');
-    const up_button2 = buttons.find(el => el.innerText === 'U');
-    const down_button2 = buttons.find(el => el.innerText === 'D');
-
-
-    doc.addEventListener('keydown', function(e) {
-    switch (e.keyCode) {
-        case 37: // (37 = left arrow)
-            left_button.click();
-            window.parent.document.getElementById('player').scrollIntoView();
-            break;
-        case 39: // (39 = right arrow)
-            right_button.click();
-            window.parent.document.getElementById('player').scrollIntoView();
-            break;
-        case 38: // (39 = right arrow)
-            up_button.click();
-            window.parent.document.getElementById('player').scrollIntoView();
-            break;
-        case 40: // (39 = right arrow)
-            down_button.click();
-            window.parent.document.getElementById('player').scrollIntoView();
-            break;
-    }
-    });
-
-
-    left_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("left")
-    });
-
-    right_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("right")
-    });
-
-    left_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("left")
-    });
-
-    right_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("right")
-    });
-
-    up_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("up")
-    });
-
-    down_button.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("down")
-    });
-
-    up_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("up")
-    });
-
-    down_button2.addEventListener("click",function() {
-    window.parent.document.getElementById('player').scrollIntoView();
-    console.log("down")
-    });
-
-
-    </script>
-    """,
+        game_js.js_script,
         height=0,
         width=0,
     )
