@@ -1,5 +1,6 @@
 import game_config
 import game_js
+import game_def
 import json
 import numpy as np
 import pandas as pd
@@ -145,11 +146,12 @@ player = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/grap
 
 def left_callback():
 
-    if character_can_move(
+    if game_def.character_can_move(
         st.session_state[
             "level"
         ],  # note the different order of x and y. Done to confuse myself in the future.
         # good luck future me
+        tileset_movable,
         st.session_state["player"].y,
         st.session_state["player"].x - 1,
     ):
@@ -167,8 +169,9 @@ def left_callback():
 
 def right_callback():
     # player movement
-    if character_can_move(
+    if game_def.character_can_move(
         st.session_state["level"],
+        tileset_movable,
         st.session_state["player"].y,
         st.session_state["player"].x + 1,
     ):
@@ -184,8 +187,9 @@ def right_callback():
 
 
 def up_callback():
-    if character_can_move(
+    if game_def.character_can_move(
         st.session_state["level"],
+        tileset_movable,
         st.session_state["player"].y - 1,
         st.session_state["player"].x,
     ):
@@ -201,8 +205,9 @@ def up_callback():
 
 
 def down_callback():
-    if character_can_move(
+    if game_def.character_can_move(
         st.session_state["level"],
+        tileset_movable,
         st.session_state["player"].y + 1,
         st.session_state["player"].x,
     ):
@@ -233,18 +238,6 @@ def fetch_data(level_name):
     return df
 
 
-# ---------------- check surroundings ----------------
-
-# this function checks all potential moves
-
-
-def character_can_move(logic_layer, x, y):
-    if tileset_movable[logic_layer[x - 1, y - 1]] == True:
-        return True
-    else:
-        pass
-
-
 # ---------------- random moves ----------------
 
 
@@ -257,29 +250,33 @@ def random_move(movable_object):
     rnd_move = randrange(100)
     # st.write("random_move" + str(rnd_move))
     if rnd_move < 25:
-        if character_can_move(
+        if game_def.character_can_move(
             st.session_state["level"],
+            tileset_movable,
             movable_object.y,
             movable_object.x + 1,
         ):
             movable_object.x += 1
     if rnd_move >= 25 and rnd_move < 50:
-        if character_can_move(
+        if game_def.character_can_move(
             st.session_state["level"],
+            tileset_movable,
             movable_object.y,
             movable_object.x - 1,
         ):
             movable_object.x -= 1
     if rnd_move >= 50 and rnd_move < 75:
-        if character_can_move(
+        if game_def.character_can_move(
             st.session_state["level"],
+            tileset_movable,
             movable_object.y + 1,
             movable_object.x,
         ):
             movable_object.y += 1
     if rnd_move >= 75 and rnd_move < 100:
-        if character_can_move(
+        if game_def.character_can_move(
             st.session_state["level"],
+            tileset_movable,
             movable_object.y - 1,
             movable_object.x,
         ):
