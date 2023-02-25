@@ -7,7 +7,7 @@ level_config = """
         "alive": true
     },
     "level1": {
-        "level_name": "level1.csv",
+        "level_csv": "level1.csv",
         "player_xy": {
             "x":4,
             "y":5

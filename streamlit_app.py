@@ -151,7 +151,7 @@ def left_callback():
             "level"
         ],  # note the different order of x and y. Done to confuse myself in the future.
         # good luck future me
-        tileset_movable,
+        game_config.tileset_movable,
         st.session_state["player"].y,
         st.session_state["player"].x - 1,
     ):
@@ -161,7 +161,7 @@ def left_callback():
 
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
-        random_move(st.session_state["monsters"][i])
+        game_def.random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -171,7 +171,7 @@ def right_callback():
     # player movement
     if game_def.character_can_move(
         st.session_state["level"],
-        tileset_movable,
+        game_config.tileset_movable,
         st.session_state["player"].y,
         st.session_state["player"].x + 1,
     ):
@@ -180,7 +180,7 @@ def right_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        random_move(st.session_state["monsters"][i])
+        game_def.random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -189,7 +189,7 @@ def right_callback():
 def up_callback():
     if game_def.character_can_move(
         st.session_state["level"],
-        tileset_movable,
+        game_config.tileset_movable,
         st.session_state["player"].y - 1,
         st.session_state["player"].x,
     ):
@@ -198,7 +198,7 @@ def up_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        random_move(st.session_state["monsters"][i])
+        game_def.random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -207,7 +207,7 @@ def up_callback():
 def down_callback():
     if game_def.character_can_move(
         st.session_state["level"],
-        tileset_movable,
+        game_config.tileset_movable,
         st.session_state["player"].y + 1,
         st.session_state["player"].x,
     ):
@@ -216,7 +216,7 @@ def down_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        random_move(st.session_state["monsters"][i])
+        game_def.random_move(st.session_state["monsters"][i])
         encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -239,48 +239,6 @@ def fetch_data(level_name):
 
 
 # ---------------- random moves ----------------
-
-
-def random_move(movable_object):
-
-    # this function is responsible for random movement of monsters
-    # it will be changed in the future - monsters will follow the player
-    # is it possible? yes. check https://rogue-rpg.streamlit.app/
-
-    rnd_move = randrange(100)
-    # st.write("random_move" + str(rnd_move))
-    if rnd_move < 25:
-        if game_def.character_can_move(
-            st.session_state["level"],
-            tileset_movable,
-            movable_object.y,
-            movable_object.x + 1,
-        ):
-            movable_object.x += 1
-    if rnd_move >= 25 and rnd_move < 50:
-        if game_def.character_can_move(
-            st.session_state["level"],
-            tileset_movable,
-            movable_object.y,
-            movable_object.x - 1,
-        ):
-            movable_object.x -= 1
-    if rnd_move >= 50 and rnd_move < 75:
-        if game_def.character_can_move(
-            st.session_state["level"],
-            tileset_movable,
-            movable_object.y + 1,
-            movable_object.x,
-        ):
-            movable_object.y += 1
-    if rnd_move >= 75 and rnd_move < 100:
-        if game_def.character_can_move(
-            st.session_state["level"],
-            tileset_movable,
-            movable_object.y - 1,
-            movable_object.x,
-        ):
-            movable_object.y -= 1
 
 
 # ---------------- encounter with monster ----------------
@@ -332,9 +290,9 @@ local_css("style.css")
 
 # ---------------- tilset dictionary ----------------
 
-tileset = game_config.tileset
+# tileset = game_config.tileset
 
-tileset_movable = game_config.tileset_movable
+# tileset_movable = game_config.tileset_movable
 
 # ---------------- level renderer ----------------
 
@@ -360,7 +318,7 @@ def level_renderer(df, game_objects):
             level_html = (
                 level_html
                 + '<img src="'
-                + tileset[y]  # tilset_tile
+                + game_config.tileset[y]  # tilset_tile
                 + '" style="grid-column-start: '
                 + str(j + 1)
                 + "; grid-row-start: "
@@ -456,11 +414,11 @@ def additional_layers_html(level_name, layer_name, coordinates="xy"):
         ob = list(st.session_state.level_data[level_name][layer_name].values())[i]
         if coordinates == "xyz":
             name = name + tile_html(
-                text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
+                text=game_config.tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
             )
         else:
             name = name + tile_html(
-                text=tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["x"]
+                text=game_config.tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["x"]
             )
     return name
 
@@ -550,7 +508,7 @@ else:
 # ---------------- fetching level data ----------------
 
 # fetch level with certain number
-df = fetch_data(st.session_state.level_data["level1"]["level_name"])
+df = fetch_data(st.session_state.level_data["level1"]["level_csv"])
 if "level" not in st.session_state:  # or st.session_state["level_change"]:
     st.session_state["level"] = df.values
 
