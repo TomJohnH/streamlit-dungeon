@@ -1,3 +1,5 @@
+# ---------------- levels configuration ----------------
+
 level_config = """
 {   
     "players_stats": {
@@ -50,6 +52,7 @@ level_config = """
 }
 """
 
+# ---------------- tilset dictionary ----------------
 
 tileset = {
     "@": "https://oshi.at/ZMUu/avRY.gif",

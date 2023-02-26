@@ -162,9 +162,9 @@ def left_callback():
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
         game_def.random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["player"], st.session_state["monsters"][i])
+        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
-        treasures(st.session_state["player"], st.session_state["chests"][i])
+        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def right_callback():
@@ -181,9 +181,9 @@ def right_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         game_def.random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["player"], st.session_state["monsters"][i])
+        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
-        treasures(st.session_state["player"], st.session_state["chests"][i])
+        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def up_callback():
@@ -199,9 +199,9 @@ def up_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         game_def.random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["player"], st.session_state["monsters"][i])
+        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
-        treasures(st.session_state["player"], st.session_state["chests"][i])
+        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 def down_callback():
@@ -217,9 +217,9 @@ def down_callback():
 
     for i in range(0, len(st.session_state["monsters"])):
         game_def.random_move(st.session_state["monsters"][i])
-        encounter(st.session_state["player"], st.session_state["monsters"][i])
+        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
-        treasures(st.session_state["player"], st.session_state["chests"][i])
+        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
 
 
 # ------------------------------------------------------------
@@ -238,46 +238,6 @@ def fetch_data(level_name):
     return df
 
 
-# ---------------- random moves ----------------
-
-
-# ---------------- encounter with monster ----------------
-
-
-def encounter(player, enemy):
-
-    # if you encounter an enemy and enemy is alive
-    # you will lose health but enemy will die
-    # player = st.session_state["player"]
-
-    if player.x == enemy.x and player.y == enemy.y and enemy.alive == True:
-        damage = randrange(30)
-        st.session_state["bubble_text"] = text_bubble_html(
-            "OMG -" + str(damage) + "hp",
-            player.x,
-            player.y - 1,
-        )
-        player.hp = player.hp - damage
-        enemy.alive = False
-        if player.hp <= 0:
-            player.alive = False
-
-
-def treasures(player, treasure):
-
-    # if you encounter treasure you will get gold
-
-    if player.x == treasure.x and player.y == treasure.y and treasure.visible:
-        gold = randrange(20)
-        st.session_state["bubble_text"] = text_bubble_html(
-            "yeah! +" + str(gold) + " g",
-            player.x,
-            player.y - 1,
-        )
-        treasure.visible = False
-        player.gold = player.gold + gold
-
-
 # ------------------------------------------------------------
 #
 #                        Graphics engine
@@ -287,12 +247,6 @@ def treasures(player, treasure):
 # ---------------- CSS ----------------
 
 local_css("style.css")
-
-# ---------------- tilset dictionary ----------------
-
-# tileset = game_config.tileset
-
-# tileset_movable = game_config.tileset_movable
 
 # ---------------- level renderer ----------------
 
@@ -483,21 +437,17 @@ chests = chests_html(st.session_state["chests"])
 # ---------------- creating visual layers textboxes ----------------
 
 
-def text_bubble_html(text, x, y):
-    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
-
-
 if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
     # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
-    text_boxes = text_bubble_html("What?", 10, 4)
+    text_boxes = game_def.text_bubble_html("What?", 10, 4)
 elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
-    text_boxes = text_bubble_html("Strange", 16, 10)
+    text_boxes = game_def.text_bubble_html("Strange", 16, 10)
 elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
-    text_boxes = text_bubble_html("Monsters?", 5, 20)
+    text_boxes = game_def.text_bubble_html("Monsters?", 5, 20)
 elif st.session_state["player"].x == 47 and st.session_state["player"].y == 12:
-    text_boxes = text_bubble_html("Meow!", 48, 10)
+    text_boxes = game_def.text_bubble_html("Meow!", 48, 10)
 elif st.session_state["player"].x == 4 and st.session_state["player"].y == 17:
-    text_boxes = text_bubble_html("box (ツ)", 4, 16)
+    text_boxes = game_def.text_bubble_html("box (ツ)", 4, 16)
 elif st.session_state["bubble_text"] != "":
     text_boxes = st.session_state["bubble_text"]
     st.session_state["bubble_text"] = ""
@@ -582,9 +532,14 @@ with tab2:
             display_html = st.markdown(html, unsafe_allow_html=True)
         else:
             display_html = st.markdown(
-                "💀 The monster was more powerful than expected, resulting in your defeat in battle. Your journey has come to an unexpected end. To continue playing, please restart the app.",
+                "💀 The monster was more powerful than expected, resulting in your defeat in battle. Your journey has come to an unexpected end. To continue playing, please restart the app.<br>",
                 unsafe_allow_html=True,
             )
+            if st.button("restart"):
+                for key in st.session_state.keys():
+                    del st.session_state[key]
+                st.experimental_rerun()
+                st.experimental_rerun()
     if st.session_state["end"] == True:
         display_html = st.markdown(
             "Thank you for playing the demo of The Dungeon. More content coming soom!",

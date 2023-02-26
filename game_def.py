@@ -14,6 +14,9 @@ def character_can_move(level_matrix, tileset_movable, x, y):
         pass
 
 
+# ---------------- random moves ----------------
+
+
 def random_move(movable_object):
 
     # this function is responsible for random movement of monsters
@@ -54,3 +57,47 @@ def random_move(movable_object):
             movable_object.x,
         ):
             movable_object.y -= 1
+
+
+# ---------------- encounter with monster ----------------
+
+
+def encounter(player, enemy):
+
+    # if you encounter an enemy and enemy is alive
+    # you will lose health but enemy will die
+    # player = st.session_state["player"]
+
+    if player.x == enemy.x and player.y == enemy.y and enemy.alive == True:
+        damage = randrange(30)
+        st.session_state["bubble_text"] = text_bubble_html(
+            "OMG -" + str(damage) + "hp",
+            player.x,
+            player.y - 1,
+        )
+        player.hp = player.hp - damage
+        enemy.alive = False
+        if player.hp <= 0:
+            player.alive = False
+
+
+def treasures(player, treasure):
+
+    # if you encounter treasure you will get gold
+
+    if player.x == treasure.x and player.y == treasure.y and treasure.visible:
+        gold = randrange(20)
+        st.session_state["bubble_text"] = text_bubble_html(
+            "yeah! +" + str(gold) + " g",
+            player.x,
+            player.y - 1,
+        )
+        treasure.visible = False
+        player.gold = player.gold + gold
+
+
+# ---------------- visual gimmicks ----------------
+
+
+def text_bubble_html(text, x, y):
+    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
