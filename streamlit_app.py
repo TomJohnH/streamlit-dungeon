@@ -248,42 +248,6 @@ def fetch_data(level_name):
 
 local_css("style.css")
 
-# ---------------- level renderer ----------------
-
-# this is the heart of graphical engine
-# whole game is based on a grid div with x & y columns
-# placement of objects is done by manipulating grid-column-start: & grid-row-start:
-
-
-def level_renderer(df, game_objects):
-    i = 0
-    j = 0
-    level_html = '<div class="container"><div class="gamegrid">'
-    for x in df:  # array from data frame: df.values
-        # st.write(x)
-        j = 0
-        for y in x:
-
-            # if y == "FP" and random.uniform(0, 1) > 0.7:
-            #     tilset_tile = tileset["DK"]
-            # else:
-            #     tilset_tile = tileset[y]
-
-            level_html = (
-                level_html
-                + '<img src="'
-                + game_config.tileset[y]  # tilset_tile
-                + '" style="grid-column-start: '
-                + str(j + 1)
-                + "; grid-row-start: "
-                + str(i + 1)
-                + ';">'
-            )
-            j = j + 1
-        i = i + 1
-    level_html = level_html + game_objects + "</div></div>"
-    return level_html
-
 
 # ------------------------------------------------------------
 #
@@ -520,7 +484,7 @@ with tab2:
     #
     ####################################################
 
-    html = level_renderer(
+    html = game_def.level_renderer(
         st.session_state["level"],
         player + enemies + boxes + voids + torches + text_boxes + chests,
     )

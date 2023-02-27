@@ -2,19 +2,22 @@ import game_config
 import streamlit as st
 from random import randrange
 
-# ---------------- check surroundings ----------------
 
-# this function checks if move is "legal"
+# ------------------------------------------------------------
+#
+#                MOVEMENT FUNCTIONS
+#
+# ------------------------------------------------------------
 
 
 def character_can_move(level_matrix, tileset_movable, x, y):
+
+    # this function checks if move is "legal"
+
     if tileset_movable[level_matrix[x - 1, y - 1]] == True:
         return True
     else:
         pass
-
-
-# ---------------- random moves ----------------
 
 
 def random_move(movable_object):
@@ -59,7 +62,11 @@ def random_move(movable_object):
             movable_object.y -= 1
 
 
-# ---------------- encounter with monster ----------------
+# ------------------------------------------------------------
+#
+#                INTERACTION FUNCTIONS
+#
+# ------------------------------------------------------------
 
 
 def encounter(player, enemy):
@@ -96,7 +103,53 @@ def treasures(player, treasure):
         player.gold = player.gold + gold
 
 
-# ---------------- visual gimmicks ----------------
+# ------------------------------------------------------------
+#
+#                RENDERING FUNCTIONS
+#
+# ------------------------------------------------------------
+
+
+def level_renderer(df, game_objects):
+
+    # this is the heart of graphical engine
+    # whole game is based on a grid div with x & y columns
+    # placement of objects is done by manipulating grid-column-start: & grid-row-start:
+
+    i = 0
+    j = 0
+    level_html = '<div class="container"><div class="gamegrid">'
+    for x in df:  # array from data frame: df.values
+        # st.write(x)
+        j = 0
+        for y in x:
+
+            # if y == "FP" and random.uniform(0, 1) > 0.7:
+            #     tilset_tile = tileset["DK"]
+            # else:
+            #     tilset_tile = tileset[y]
+
+            level_html = (
+                level_html
+                + '<img src="'
+                + game_config.tileset[y]  # tilset_tile
+                + '" style="grid-column-start: '
+                + str(j + 1)
+                + "; grid-row-start: "
+                + str(i + 1)
+                + ';">'
+            )
+            j = j + 1
+        i = i + 1
+    level_html = level_html + game_objects + "</div></div>"
+    return level_html
+
+
+# ------------------------------------------------------------
+#
+#                visual gimmicks
+#
+# ------------------------------------------------------------
 
 
 def text_bubble_html(text, x, y):
