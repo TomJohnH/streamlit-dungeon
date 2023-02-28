@@ -147,6 +147,45 @@ def level_renderer(df, game_objects):
 
 # ------------------------------------------------------------
 #
+#                game objects functions
+#
+# ------------------------------------------------------------
+
+
+def monsters_html(monsters_session_state):
+
+    # this function creates html for monsters
+
+    cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
+
+    # empty string
+    html = ""
+    # creating html
+    for i in range(0, len(monsters_session_state)):
+        if monsters_session_state[i].alive:
+            html = html + monsters_session_state[i].html
+    # adding a cat - don't ask why
+    html = (
+        html
+        + f"""
+            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
+        """
+    )
+    return html
+
+
+def chests_html(chests_ss_st):
+    # empty string
+    html = ""
+    # creating html
+    for i in range(0, len(chests_ss_st)):
+        if chests_ss_st[i].visible:
+            html = html + chests_ss_st[i].html
+    return html
+
+
+# ------------------------------------------------------------
+#
 #                visual gimmicks
 #
 # ------------------------------------------------------------

@@ -134,7 +134,6 @@ if "end" not in st.session_state:
 
 # ---------------- links ----------------
 
-cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
 player = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/player.gif"
 
 # ------------------------------------------------------------
@@ -300,24 +299,7 @@ if "monsters" not in st.session_state:
 # we are creating monsters html
 
 
-def enemies_html(monsters_session_state):
-    # empty string
-    html = ""
-    # creating html
-    for i in range(0, len(monsters_session_state)):
-        if monsters_session_state[i].alive:
-            html = html + monsters_session_state[i].html
-    # adding a cat - don't ask why
-    html = (
-        html
-        + f"""
-            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
-        """
-    )
-    return html
-
-
-enemies = enemies_html(st.session_state["monsters"])
+monsters = game_def.monsters_html(st.session_state["monsters"])
 
 # ---------------- creating non interactive visual layers ----------------
 
@@ -379,24 +361,7 @@ if "chests" not in st.session_state:
         )
 
 
-def chests_html(chests_ss_st):
-    # empty string
-    html = ""
-    # creating html
-    for i in range(0, len(chests_ss_st)):
-        if chests_ss_st[i].visible:
-            html = html + chests_ss_st[i].html
-    # adding a cat - don't ask why
-    html = (
-        html
-        + f"""
-            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
-        """
-    )
-    return html
-
-
-chests = chests_html(st.session_state["chests"])
+chests = game_def.chests_html(st.session_state["chests"])
 
 # ---------------- creating visual layers textboxes ----------------
 
@@ -466,7 +431,7 @@ with tab1:
 
     st.subheader("| Game start")
     st.write(
-        '<p style="color:#9c9d9f">To start the game go to the "start game" tab.</p>',
+        '<p style="color:#9c9d9f">To start the game go to the "start game" tab. Please be sure to switch to <b>dark mode</b> or the custom theme. The Dungeon is meant to be played in the dark! </p>',
         unsafe_allow_html=True,
     )
     st.subheader("| Controls")
@@ -486,7 +451,7 @@ with tab2:
 
     html = game_def.level_renderer(
         st.session_state["level"],
-        player + enemies + boxes + voids + torches + text_boxes + chests,
+        player + monsters + boxes + voids + torches + text_boxes + chests,
     )
 
     display_html = st.empty()
