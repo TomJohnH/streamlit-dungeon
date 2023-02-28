@@ -6,7 +6,7 @@ Explore the depths of an ancient dungeon in the first streamlit-based dungeon cr
 
 Streamlit recalculates whole app in response to user input. This feature can be used to create interactive applications, such as a dungeon crawler game, where the user interacts with the page and the page updates in real-time to reflect the changes.
 
-[dungeon.streamlit.app](https://dunegon.streamlit.app)
+[dungeon.streamlit.app](https://dungeon.streamlit.app)
 
 **Change log:**
 
