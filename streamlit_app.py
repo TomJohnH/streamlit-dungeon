@@ -347,6 +347,17 @@ torches = st.session_state["torches"]
 # ---------------- TO BE REFACTORED ----------------
 
 # we are constructing monsters in iteractions based on level configuration
+
+# REFACTOR THIS!
+# this should look like this:
+# dd = {"one":"red", "two":"red", "three":"blue", "four":"yellow", "five":"blue"}
+# for number in dd:
+#      if 'blue' in dd.values():
+#           print("The number "+number+", likes color blue!")
+#      else:
+#           print("I'm a number that do not like color blue")
+
+
 if "chests" not in st.session_state:
     st.session_state["chests"] = []
     for i in range(0, len(st.session_state.level_data["level1"]["chests"])):
@@ -366,22 +377,29 @@ chests = game_def.chests_html(st.session_state["chests"])
 # ---------------- creating visual layers textboxes ----------------
 
 
-if st.session_state["player"].x == 10 and st.session_state["player"].y == 5:
-    # text_boxes = f"""<div class="container_text" style="position: relative; grid-column-start: 10; grid-row-start: 4; grid-column-end: 14;"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);">What?</div></div>"""
-    text_boxes = game_def.text_bubble_html("What?", 10, 4)
-elif st.session_state["player"].x == 16 and st.session_state["player"].y == 11:
-    text_boxes = game_def.text_bubble_html("Strange", 16, 10)
-elif st.session_state["player"].x == 5 and st.session_state["player"].y == 21:
-    text_boxes = game_def.text_bubble_html("Monsters?", 5, 20)
-elif st.session_state["player"].x == 47 and st.session_state["player"].y == 12:
-    text_boxes = game_def.text_bubble_html("Meow!", 48, 10)
-elif st.session_state["player"].x == 4 and st.session_state["player"].y == 17:
-    text_boxes = game_def.text_bubble_html("box (ツ)", 4, 16)
-elif st.session_state["bubble_text"] != "":
-    text_boxes = st.session_state["bubble_text"]
-    st.session_state["bubble_text"] = ""
-else:
-    text_boxes = ""
+def text_boxes(player_x, player_y):
+    result = ""
+    for bubble_name in st.session_state.level_data["level1"]["bubbles"]:
+        if (
+            st.session_state.level_data["level1"]["bubbles"][bubble_name]["x"]
+            == player_x
+        ) and (
+            st.session_state.level_data["level1"]["bubbles"][bubble_name]["y"]
+            == player_y
+        ):
+            result = game_def.text_bubble_html(
+                st.session_state.level_data["level1"]["bubbles"][bubble_name]["text"],
+                player_x,
+                player_y - 1,
+            )
+
+    if st.session_state["bubble_text"] != "":
+        result = st.session_state["bubble_text"]
+        st.session_state["bubble_text"] = ""
+    return result
+
+
+text_boxes_html = text_boxes(st.session_state["player"].x, st.session_state["player"].y)
 
 
 # ---------------- fetching level data ----------------
@@ -451,7 +469,7 @@ with tab2:
 
     html = game_def.level_renderer(
         st.session_state["level"],
-        player + monsters + boxes + voids + torches + text_boxes + chests,
+        player + monsters + boxes + voids + torches + text_boxes_html + chests,
     )
 
     display_html = st.empty()
