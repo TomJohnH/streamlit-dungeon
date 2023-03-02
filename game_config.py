@@ -113,3 +113,5 @@ tileset_movable = {
     "FMNE": True,  # floor mud ne
     "FL": True,
 }
+
+player_img = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/player.gif"

@@ -134,7 +134,6 @@ if "end" not in st.session_state:
 
 # ---------------- links ----------------
 
-player = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/player.gif"
 
 # ------------------------------------------------------------
 #
@@ -276,7 +275,7 @@ if "player" not in st.session_state:
     )
 
 player = f"""
-<img src="{player}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
+<img src="{game_config.player_img}" id="player" class="player" style="grid-column-start: {st.session_state["player"].x}; grid-row-start: {st.session_state["player"].y};">"""
 
 # ---------------- creating monsters html ----------------
 
@@ -479,7 +478,7 @@ with tab2:
             display_html = st.markdown(html, unsafe_allow_html=True)
         else:
             display_html = st.markdown(
-                "💀 The monster was more powerful than expected, resulting in your defeat in battle. Your journey has come to an unexpected end. To continue playing, please restart the app.<br>",
+                "💀 The monster was more powerful than expected, resulting in your defeat in battle. Your journey has come to an unexpected end. To continue playing, please restart the app.<br><br>",
                 unsafe_allow_html=True,
             )
             if st.button("restart"):
