@@ -157,6 +157,8 @@ def left_callback():
         st.session_state.left_clicked = True
         st.session_state["steps"] += 1
 
+    # REFACTOR THIS!
+
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
         game_def.random_move(st.session_state["monsters"][i])
@@ -260,6 +262,9 @@ if "level_data" not in st.session_state:
     level_config = game_config.level_config
     st.session_state.level_data = json.loads(level_config)
 
+
+# ---------------- INTERACTIVE LEVEL ELEMENTS ----------------
+
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
@@ -282,6 +287,9 @@ player = f"""
 # we are constructing monsters in iteractions based on level configuration
 if "monsters" not in st.session_state:
     st.session_state["monsters"] = []
+
+    # REFACTOR THIS! Do not use indexes
+
     for i in range(0, len(st.session_state.level_data["level1"]["monsters"])):
         mst = list(st.session_state.level_data["level1"]["monsters"].values())[i]
         st.session_state["monsters"].append(
@@ -300,7 +308,28 @@ if "monsters" not in st.session_state:
 
 monsters = game_def.monsters_html(st.session_state["monsters"])
 
-# ---------------- creating non interactive visual layers ----------------
+
+# ---------------- chests ----------------
+
+# chests are interactive therfore we are creating objects
+
+if "chests" not in st.session_state:
+    st.session_state["chests"] = []
+
+    for chests_name in st.session_state.level_data["level1"]["chests"]:
+        chs = st.session_state.level_data["level1"]["chests"][chests_name]
+        st.session_state["chests"].append(
+            InanimateObject(
+                x=chs["x"],
+                y=chs["y"],
+                file=chs["file"],
+                visible=chs["visible"],
+            )
+        )
+
+chests = game_def.chests_html(st.session_state["chests"])
+
+# ---------------- NON-INTERACTIVE LEVEL ELEMENTS ----------------
 
 # this little function provides html for additional layers
 def tile_html(text, x, y, z):
@@ -342,36 +371,6 @@ if "torches" not in st.session_state:
     st.session_state["torches"] = additional_layers_html("level1", "torches")
 
 torches = st.session_state["torches"]
-
-# ---------------- TO BE REFACTORED ----------------
-
-# we are constructing monsters in iteractions based on level configuration
-
-# REFACTOR THIS!
-# this should look like this:
-# dd = {"one":"red", "two":"red", "three":"blue", "four":"yellow", "five":"blue"}
-# for number in dd:
-#      if 'blue' in dd.values():
-#           print("The number "+number+", likes color blue!")
-#      else:
-#           print("I'm a number that do not like color blue")
-
-
-if "chests" not in st.session_state:
-    st.session_state["chests"] = []
-    for i in range(0, len(st.session_state.level_data["level1"]["chests"])):
-        chs = list(st.session_state.level_data["level1"]["chests"].values())[i]
-        st.session_state["chests"].append(
-            InanimateObject(
-                x=chs["x"],
-                y=chs["y"],
-                file=chs["file"],
-                visible=chs["visible"],
-            )
-        )
-
-
-chests = game_def.chests_html(st.session_state["chests"])
 
 # ---------------- creating visual layers textboxes ----------------
 
