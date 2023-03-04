@@ -268,15 +268,15 @@ if "level_data" not in st.session_state:
 # ---------------- creating player html ----------------
 
 if "player" not in st.session_state:
-    ply = st.session_state.level_data["players_stats"]
-    ply_xy = st.session_state.level_data["level1"]["player_xy"]
+    temp = st.session_state.level_data["players_stats"]
+    temp_xy = st.session_state.level_data["level1"]["player_xy"]
     st.session_state["player"] = Character(
-        x=ply_xy["x"],
-        y=ply_xy["y"],
-        file=ply["file"],
-        hp=ply["hp"],
-        gold=ply["gold"],
-        alive=ply["alive"],
+        x=temp_xy["x"],
+        y=temp_xy["y"],
+        file=temp["file"],
+        hp=temp["hp"],
+        gold=temp["gold"],
+        alive=temp["alive"],
     )
 
 player = f"""
@@ -291,15 +291,15 @@ if "monsters" not in st.session_state:
     # REFACTOR THIS! Do not use indexes
 
     for i in range(0, len(st.session_state.level_data["level1"]["monsters"])):
-        mst = list(st.session_state.level_data["level1"]["monsters"].values())[i]
+        temp = list(st.session_state.level_data["level1"]["monsters"].values())[i]
         st.session_state["monsters"].append(
             Character(
-                x=mst["x"],
-                y=mst["y"],
-                file=mst["file"],
-                hp=mst["hp"],
-                gold=mst["gold"],
-                alive=mst["alive"],
+                x=temp["x"],
+                y=temp["y"],
+                file=temp["file"],
+                hp=temp["hp"],
+                gold=temp["gold"],
+                alive=temp["alive"],
             )
         )
 
@@ -317,13 +317,13 @@ if "chests" not in st.session_state:
     st.session_state["chests"] = []
 
     for chests_name in st.session_state.level_data["level1"]["chests"]:
-        chs = st.session_state.level_data["level1"]["chests"][chests_name]
+        temp = st.session_state.level_data["level1"]["chests"][chests_name]
         st.session_state["chests"].append(
             InanimateObject(
-                x=chs["x"],
-                y=chs["y"],
-                file=chs["file"],
-                visible=chs["visible"],
+                x=temp["x"],
+                y=temp["y"],
+                file=temp["file"],
+                visible=temp["visible"],
             )
         )
 
@@ -338,15 +338,22 @@ def tile_html(text, x, y, z):
 
 def additional_layers_html(level_name, layer_name, coordinates="xy"):
     name = ""
-    for i in range(0, len(st.session_state.level_data[level_name][layer_name])):
-        ob = list(st.session_state.level_data[level_name][layer_name].values())[i]
+
+    for layer_item in st.session_state.level_data[level_name][layer_name]:
+        temp = st.session_state.level_data[level_name][layer_name][layer_item]
         if coordinates == "xyz":
             name = name + tile_html(
-                text=game_config.tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["z"]
+                text=game_config.tileset[temp["text"]],
+                x=temp["x"],
+                y=temp["y"],
+                z=temp["z"],
             )
         else:
             name = name + tile_html(
-                text=game_config.tileset[ob["text"]], x=ob["x"], y=ob["y"], z=ob["x"]
+                text=game_config.tileset[temp["text"]],
+                x=temp["x"],
+                y=temp["y"],
+                z=temp["x"],
             )
     return name
 
