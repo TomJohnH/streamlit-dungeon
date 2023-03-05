@@ -290,8 +290,8 @@ if "monsters" not in st.session_state:
 
     # REFACTOR THIS! Do not use indexes
 
-    for i in range(0, len(st.session_state.level_data["level1"]["monsters"])):
-        temp = list(st.session_state.level_data["level1"]["monsters"].values())[i]
+    for monsters_name in st.session_state.level_data["level1"]["monsters"]:
+        temp = st.session_state.level_data["level1"]["monsters"][monsters_name]
         st.session_state["monsters"].append(
             Character(
                 x=temp["x"],
@@ -331,51 +331,26 @@ chests = game_def.chests_html(st.session_state["chests"])
 
 # ---------------- NON-INTERACTIVE LEVEL ELEMENTS ----------------
 
-# this little function provides html for additional layers
-def tile_html(text, x, y, z):
-    return f"""<img src="{text}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
-
-
-def additional_layers_html(level_name, layer_name, coordinates="xy"):
-    name = ""
-
-    for layer_item in st.session_state.level_data[level_name][layer_name]:
-        temp = st.session_state.level_data[level_name][layer_name][layer_item]
-        if coordinates == "xyz":
-            name = name + tile_html(
-                text=game_config.tileset[temp["text"]],
-                x=temp["x"],
-                y=temp["y"],
-                z=temp["z"],
-            )
-        else:
-            name = name + tile_html(
-                text=game_config.tileset[temp["text"]],
-                x=temp["x"],
-                y=temp["y"],
-                z=temp["x"],
-            )
-    return name
-
-
 # ---------------- boxes ----------------
 
 if "boxes" not in st.session_state:
-    st.session_state["boxes"] = additional_layers_html("level1", "boxes")
+    st.session_state["boxes"] = game_def.additional_layers_html("level1", "boxes")
 
 boxes = st.session_state["boxes"]
 
 # ---------------- voids ----------------
 
 if "voids" not in st.session_state:
-    st.session_state["voids"] = additional_layers_html("level1", "voids", "xyz")
+    st.session_state["voids"] = game_def.additional_layers_html(
+        "level1", "voids", "xyz"
+    )
 
 voids = st.session_state["voids"]
 
 # ---------------- troches ----------------
 
 if "torches" not in st.session_state:
-    st.session_state["torches"] = additional_layers_html("level1", "torches")
+    st.session_state["torches"] = game_def.additional_layers_html("level1", "torches")
 
 torches = st.session_state["torches"]
 

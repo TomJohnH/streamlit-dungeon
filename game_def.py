@@ -124,11 +124,6 @@ def level_renderer(df, game_objects):
         j = 0
         for y in x:
 
-            # if y == "FP" and random.uniform(0, 1) > 0.7:
-            #     tilset_tile = tileset["DK"]
-            # else:
-            #     tilset_tile = tileset[y]
-
             level_html = (
                 level_html
                 + '<img src="'
@@ -143,6 +138,38 @@ def level_renderer(df, game_objects):
         i = i + 1
     level_html = level_html + game_objects + "</div></div>"
     return level_html
+
+
+def tile_html(src, x, y, z):
+
+    # this little function provides html for additional layers
+
+    return f"""<img src="{src}" style="grid-column-start: {x}; grid-row-start: {y}; grid-column-end:{z}">"""
+
+
+def additional_layers_html(level_name, layer_name, coordinates="xy"):
+
+    # this function will generate html for torches, boxes and voids
+
+    name = ""
+
+    for layer_item in st.session_state.level_data[level_name][layer_name]:
+        temp = st.session_state.level_data[level_name][layer_name][layer_item]
+        if coordinates == "xyz":
+            name = name + tile_html(
+                src=game_config.tileset[temp["text"]],
+                x=temp["x"],
+                y=temp["y"],
+                z=temp["z"],
+            )
+        else:
+            name = name + tile_html(
+                src=game_config.tileset[temp["text"]],
+                x=temp["x"],
+                y=temp["y"],
+                z=temp["x"],
+            )
+    return name
 
 
 # ------------------------------------------------------------
