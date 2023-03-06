@@ -357,29 +357,9 @@ torches = st.session_state["torches"]
 # ---------------- creating visual layers textboxes ----------------
 
 
-def text_boxes(player_x, player_y):
-    result = ""
-    for bubble_name in st.session_state.level_data["level1"]["bubbles"]:
-        if (
-            st.session_state.level_data["level1"]["bubbles"][bubble_name]["x"]
-            == player_x
-        ) and (
-            st.session_state.level_data["level1"]["bubbles"][bubble_name]["y"]
-            == player_y
-        ):
-            result = game_def.text_bubble_html(
-                st.session_state.level_data["level1"]["bubbles"][bubble_name]["text"],
-                player_x,
-                player_y - 1,
-            )
-
-    if st.session_state["bubble_text"] != "":
-        result = st.session_state["bubble_text"]
-        st.session_state["bubble_text"] = ""
-    return result
-
-
-text_boxes_html = text_boxes(st.session_state["player"].x, st.session_state["player"].y)
+text_boxes_html = game_def.text_boxes(
+    st.session_state["player"].x, st.session_state["player"].y, "level1"
+)
 
 
 # ---------------- fetching level data ----------------

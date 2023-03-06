@@ -220,3 +220,25 @@ def chests_html(chests_ss_st):
 
 def text_bubble_html(text, x, y):
     return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
+
+
+def text_boxes(player_x, player_y, level_name):
+    result = ""
+    for bubble_name in st.session_state.level_data[level_name]["bubbles"]:
+        if (
+            st.session_state.level_data[level_name]["bubbles"][bubble_name]["x"]
+            == player_x
+        ) and (
+            st.session_state.level_data[level_name]["bubbles"][bubble_name]["y"]
+            == player_y
+        ):
+            result = text_bubble_html(
+                st.session_state.level_data[level_name]["bubbles"][bubble_name]["text"],
+                player_x,
+                player_y - 1,
+            )
+
+    if st.session_state["bubble_text"] != "":
+        result = st.session_state["bubble_text"]
+        st.session_state["bubble_text"] = ""
+    return result
