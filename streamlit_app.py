@@ -290,8 +290,6 @@ player = f"""
 if "monsters" not in st.session_state:
     st.session_state["monsters"] = []
 
-    # REFACTOR THIS! Do not use indexes
-
     for monsters_name in st.session_state.level_data[current_level_name]["monsters"]:
         temp = st.session_state.level_data[current_level_name]["monsters"][
             monsters_name
@@ -370,8 +368,11 @@ text_boxes_html = game_def.text_boxes(
 )
 
 
-# ---------------- fetching level data ----------------
-
+# ------------------------------------------------------------
+#
+#             fetching level data from csv
+#
+# ------------------------------------------------------------
 
 # fetch level with certain number
 df = fetch_data(st.session_state.level_data[current_level_name]["level_csv"])
