@@ -258,6 +258,8 @@ local_css("style.css")
 # --------------- level config ------------------------
 
 
+current_level_name = "level1"
+
 if "level_data" not in st.session_state:
     level_config = game_config.level_config
     st.session_state.level_data = json.loads(level_config)
@@ -269,7 +271,7 @@ if "level_data" not in st.session_state:
 
 if "player" not in st.session_state:
     temp = st.session_state.level_data["players_stats"]
-    temp_xy = st.session_state.level_data["level1"]["player_xy"]
+    temp_xy = st.session_state.level_data[current_level_name]["player_xy"]
     st.session_state["player"] = Character(
         x=temp_xy["x"],
         y=temp_xy["y"],
@@ -290,8 +292,10 @@ if "monsters" not in st.session_state:
 
     # REFACTOR THIS! Do not use indexes
 
-    for monsters_name in st.session_state.level_data["level1"]["monsters"]:
-        temp = st.session_state.level_data["level1"]["monsters"][monsters_name]
+    for monsters_name in st.session_state.level_data[current_level_name]["monsters"]:
+        temp = st.session_state.level_data[current_level_name]["monsters"][
+            monsters_name
+        ]
         st.session_state["monsters"].append(
             Character(
                 x=temp["x"],
@@ -316,8 +320,8 @@ monsters = game_def.monsters_html(st.session_state["monsters"])
 if "chests" not in st.session_state:
     st.session_state["chests"] = []
 
-    for chests_name in st.session_state.level_data["level1"]["chests"]:
-        temp = st.session_state.level_data["level1"]["chests"][chests_name]
+    for chests_name in st.session_state.level_data[current_level_name]["chests"]:
+        temp = st.session_state.level_data[current_level_name]["chests"][chests_name]
         st.session_state["chests"].append(
             InanimateObject(
                 x=temp["x"],
@@ -334,7 +338,9 @@ chests = game_def.chests_html(st.session_state["chests"])
 # ---------------- boxes ----------------
 
 if "boxes" not in st.session_state:
-    st.session_state["boxes"] = game_def.additional_layers_html("level1", "boxes")
+    st.session_state["boxes"] = game_def.additional_layers_html(
+        current_level_name, "boxes"
+    )
 
 boxes = st.session_state["boxes"]
 
@@ -342,7 +348,7 @@ boxes = st.session_state["boxes"]
 
 if "voids" not in st.session_state:
     st.session_state["voids"] = game_def.additional_layers_html(
-        "level1", "voids", "xyz"
+        current_level_name, "voids", "xyz"
     )
 
 voids = st.session_state["voids"]
@@ -350,7 +356,9 @@ voids = st.session_state["voids"]
 # ---------------- troches ----------------
 
 if "torches" not in st.session_state:
-    st.session_state["torches"] = game_def.additional_layers_html("level1", "torches")
+    st.session_state["torches"] = game_def.additional_layers_html(
+        current_level_name, "torches"
+    )
 
 torches = st.session_state["torches"]
 
@@ -358,14 +366,15 @@ torches = st.session_state["torches"]
 
 
 text_boxes_html = game_def.text_boxes(
-    st.session_state["player"].x, st.session_state["player"].y, "level1"
+    st.session_state["player"].x, st.session_state["player"].y, current_level_name
 )
 
 
 # ---------------- fetching level data ----------------
 
+
 # fetch level with certain number
-df = fetch_data(st.session_state.level_data["level1"]["level_csv"])
+df = fetch_data(st.session_state.level_data[current_level_name]["level_csv"])
 if "level" not in st.session_state:  # or st.session_state["level_change"]:
     st.session_state["level"] = df.values
 
