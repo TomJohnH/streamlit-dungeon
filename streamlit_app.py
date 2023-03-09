@@ -161,7 +161,10 @@ def left_callback():
 
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
-        game_def.random_move(st.session_state["monsters"][i])
+        # game_def.random_move(st.session_state["monsters"][i])
+        game_def.move_to_player(
+            st.session_state["player"], st.session_state["monsters"][i]
+        )
         game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -180,7 +183,10 @@ def right_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        game_def.random_move(st.session_state["monsters"][i])
+        # game_def.random_move(st.session_state["monsters"][i])
+        game_def.move_to_player(
+            st.session_state["player"], st.session_state["monsters"][i]
+        )
         game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -198,7 +204,10 @@ def up_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        game_def.random_move(st.session_state["monsters"][i])
+        # game_def.random_move(st.session_state["monsters"][i])
+        game_def.move_to_player(
+            st.session_state["player"], st.session_state["monsters"][i]
+        )
         game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -216,7 +225,10 @@ def down_callback():
         st.session_state["steps"] += 1
 
     for i in range(0, len(st.session_state["monsters"])):
-        game_def.random_move(st.session_state["monsters"][i])
+        # game_def.random_move(st.session_state["monsters"][i])
+        game_def.move_to_player(
+            st.session_state["player"], st.session_state["monsters"][i]
+        )
         game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
     for i in range(0, len(st.session_state["chests"])):
         game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
@@ -539,3 +551,13 @@ with tab2:
 if dev_options:
     st.caption("Player x: " + str(st.session_state["player"].x))
     st.caption("Player y: " + str(st.session_state["player"].y))
+    st.caption(
+        game_def.distance_from_player(
+            st.session_state.player, st.session_state["monsters"][0]
+        )
+    )
+    st.caption(
+        game_def.move_to_player(
+            st.session_state.player, st.session_state["monsters"][0]
+        )
+    )

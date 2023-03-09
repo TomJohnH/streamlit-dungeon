@@ -20,6 +20,67 @@ def character_can_move(level_matrix, tileset_movable, x, y):
         pass
 
 
+def distance_from_player(player, movable_object):
+    distance = (player.x - movable_object.x) ** 2 + (player.y - movable_object.y) ** 2
+    distance_l = (player.x - movable_object.x + 1) ** 2 + (
+        player.y - movable_object.y
+    ) ** 2
+    distance_r = (player.x - movable_object.x - 1) ** 2 + (
+        player.y - movable_object.y
+    ) ** 2
+    distance_u = (player.x - movable_object.x) ** 2 + (
+        player.y - movable_object.y + 1
+    ) ** 2
+    distance_d = (player.x - movable_object.x) ** 2 + (
+        player.y - movable_object.y - 1
+    ) ** 2
+    return distance, distance_l, distance_r, distance_u, distance_d
+
+
+def move_to_player(player, movable_object):
+
+    selected_move_index = distance_from_player(player, movable_object).index(
+        min(distance_from_player(player, movable_object))
+    )
+
+    if randrange(10) < 5:
+
+        if selected_move_index == 1:
+            if character_can_move(
+                st.session_state["level"],
+                game_config.tileset_movable,
+                movable_object.y,
+                movable_object.x - 1,
+            ):
+                movable_object.x -= 1
+        if selected_move_index == 2:
+            if character_can_move(
+                st.session_state["level"],
+                game_config.tileset_movable,
+                movable_object.y,
+                movable_object.x + 1,
+            ):
+                movable_object.x += 1
+        if selected_move_index == 3:
+            if character_can_move(
+                st.session_state["level"],
+                game_config.tileset_movable,
+                movable_object.y - 1,
+                movable_object.x,
+            ):
+                movable_object.y -= 1
+        if selected_move_index == 4:
+            if character_can_move(
+                st.session_state["level"],
+                game_config.tileset_movable,
+                movable_object.y + 1,
+                movable_object.x,
+            ):
+                movable_object.y += 1
+    else:
+        random_move(movable_object)
+
+
 def random_move(movable_object):
 
     # this function is responsible for random movement of monsters
