@@ -10,6 +10,10 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 **Change log:**
 
+09.03.2023
+- added aggressive monsters - monsters are pursuing the player
+- refactored almost whole code
+
 18.02.2023
 - ongoing modularization and code refactoring
 

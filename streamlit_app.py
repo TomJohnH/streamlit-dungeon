@@ -551,13 +551,3 @@ with tab2:
 if dev_options:
     st.caption("Player x: " + str(st.session_state["player"].x))
     st.caption("Player y: " + str(st.session_state["player"].y))
-    st.caption(
-        game_def.distance_from_player(
-            st.session_state.player, st.session_state["monsters"][0]
-        )
-    )
-    st.caption(
-        game_def.move_to_player(
-            st.session_state.player, st.session_state["monsters"][0]
-        )
-    )
