@@ -393,7 +393,12 @@ if "level" not in st.session_state:  # or st.session_state["level_change"]:
 
 
 # ---------------- END CONDITION ----------------
-if st.session_state["player"].x == 33 and st.session_state["player"].y == 4:
+if (
+    st.session_state["player"].x
+    == st.session_state.level_data[current_level_name]["exit"]["x"]
+    and st.session_state["player"].y
+    == st.session_state.level_data[current_level_name]["exit"]["y"]
+):
     st.session_state["end"] = True
 
 # ------------------------------------------------------------
@@ -523,6 +528,7 @@ with tab2:
             )
         st.markdown("<br>", unsafe_allow_html=True)
         dev_options = st.checkbox("Developer options")
+        god_mode = st.checkbox("God mode")
 
     # ------------------------------------------------------------
     #
@@ -551,3 +557,5 @@ with tab2:
 if dev_options:
     st.caption("Player x: " + str(st.session_state["player"].x))
     st.caption("Player y: " + str(st.session_state["player"].y))
+if god_mode:
+    st.session_state["player"].hp = 999

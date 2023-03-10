@@ -14,6 +14,10 @@ level_config = """
             "x":4,
             "y":5
             },
+        "exit":{
+            "x":33,
+            "y":4
+        },
         "monsters": {
             "monster1":{"x":42,"y":30,"file":"monster.gif","hp":10,"gold":0,"alive":true},
             "monster2":{"x":24,"y":22,"file":"imp.gif","hp":5,"gold":0,"alive":true},
