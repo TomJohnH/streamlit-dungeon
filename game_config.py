@@ -52,6 +52,45 @@ level_config = """
             "chest1":{"x":18, "y":6, "file":"chest_golden_open_full.png", "visible":true},
             "chest2":{"x":20, "y":25, "file":"chest_golden_open_full.png", "visible":true}
         } 
+    },
+    "level2": {
+        "level_csv": "level2.csv",
+        "player_xy": {
+            "x":8,
+            "y":7
+            },
+        "exit":{
+            "x":33,
+            "y":4
+        },
+        "monsters": {
+            "monster1":{"x":12,"y":15,"file":"monster.gif","hp":10,"gold":0,"alive":true},
+            "monster2":{"x":12,"y":15,"file":"monster.gif","hp":5,"gold":0,"alive":true},
+            "monster3":{"x":12,"y":15,"file":"monster.gif","hp":5,"gold":0,"alive":true}
+            },
+        "boxes": {
+            "box1":{"text":"BOX", "x":10, "y":6, "z":10}
+        },
+        "voids": {
+            "void1":{"text":"DR", "x":47, "y":13, "z":49},
+            "void2":{"text":"DR", "x":19, "y":23, "z":21},
+            "void3":{"text":"DR", "x":16, "y":11, "z":18},
+            "void4":{"text":"DR", "x":40, "y":37, "z":42}
+        },
+        "torches": {
+            "torch1":{"text":"T", "x":15, "y":12}
+        }, 
+        "bubbles": {
+            "bubble1":{"text":"What?", "x":10, "y":5},
+            "bubble2":{"text":"Strange", "x":16, "y":11},
+            "bubble3":{"text":"Monsters?", "x":5, "y":21},
+            "bubble4":{"text":"Meow!", "x":47, "y":12},
+            "bubble5":{"text":"box (ツ)", "x":4, "y":17}
+        },
+        "chests": {
+            "chest1":{"x":15, "y":18, "file":"chest_golden_open_full.png", "visible":true}
+        } 
+
     }
 }
 """
