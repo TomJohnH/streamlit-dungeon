@@ -14,7 +14,9 @@ def character_can_move(level_matrix, tileset_movable, x, y):
 
     # this function checks if move is "legal"
 
-    if tileset_movable[level_matrix[x - 1, y - 1]] == True:
+    if (tileset_movable[level_matrix[x - 1, y - 1]] == True) or st.session_state[
+        "fly_mode"
+    ]:
         return True
     else:
         pass

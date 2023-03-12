@@ -131,6 +131,9 @@ if "cold_start" not in st.session_state:
 if "end" not in st.session_state:
     st.session_state["end"] = False
 
+if "fly_mode" not in st.session_state:
+    st.session_state["fly_mode"] = False
+
 
 # ---------------- links ----------------
 
@@ -157,7 +160,7 @@ def left_callback():
         st.session_state.left_clicked = True
         st.session_state["steps"] += 1
 
-    # REFACTOR THIS!
+    # Consider refactoring this loop
 
     # this little loop is responsible for moving the monsters and reacting to encounters
     for i in range(0, len(st.session_state["monsters"])):
@@ -529,6 +532,7 @@ with tab2:
         st.markdown("<br>", unsafe_allow_html=True)
         dev_options = st.checkbox("Developer options")
         god_mode = st.checkbox("God mode")
+        fly_mode = st.checkbox("Fly mode")
 
     # ------------------------------------------------------------
     #
@@ -559,3 +563,5 @@ if dev_options:
     st.caption("Player y: " + str(st.session_state["player"].y))
 if god_mode:
     st.session_state["player"].hp = 999
+if fly_mode:
+    st.session_state["fly_mode"] = True
