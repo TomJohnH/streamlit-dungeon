@@ -533,6 +533,10 @@ with tab2:
         dev_options = st.checkbox("Developer options")
         god_mode = st.checkbox("God mode")
         fly_mode = st.checkbox("Fly mode")
+        st.markdown(
+            "<br>Check the level editor<br> [The Dungeon Level Editor](https://dungeon-editor.streamlit.app/)",
+            unsafe_allow_html=True,
+        )
 
     # ------------------------------------------------------------
     #
