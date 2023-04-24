@@ -255,12 +255,12 @@ def monsters_html(monsters_session_state):
         if monsters_session_state[i].alive:
             html = html + monsters_session_state[i].html
     # adding a cat - don't ask why
-    html = (
-        html
-        + f"""
-            <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
-        """
-    )
+    # html = (
+    #     html
+    #     + f"""
+    #         <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
+    #     """
+    # )
     return html
 
 

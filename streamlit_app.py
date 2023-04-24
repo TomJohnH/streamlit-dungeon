@@ -273,7 +273,7 @@ local_css("style.css")
 # --------------- level config ------------------------
 
 
-current_level_name = "level1"
+current_level_name = "level2"
 
 if "level_data" not in st.session_state:
     level_config = game_config.level_config

@@ -42,11 +42,10 @@ level_config = """
             "torch5":{"text":"T", "x":33, "y":13}
         }, 
         "bubbles": {
-            "bubble1":{"text":"What?", "x":10, "y":5},
+            "bubble1":{"text":"What?", "x":7, "y":5},
             "bubble2":{"text":"Strange", "x":16, "y":11},
-            "bubble3":{"text":"Monsters?", "x":5, "y":21},
-            "bubble4":{"text":"Meow!", "x":47, "y":12},
-            "bubble5":{"text":"box (ツ)", "x":4, "y":17}
+            "bubble3":{"text":"Monsters?", "x":13, "y":3},
+            "bubble4":{"text":"box (ツ)", "x":10, "y":6}
         },
         "chests": {
             "chest1":{"x":18, "y":6, "file":"chest_golden_open_full.png", "visible":true},
@@ -60,14 +59,15 @@ level_config = """
             "y":5
             },
         "exit":{
-            "x":33,
-            "y":4
+            "x":24,
+            "y":5
         },
         "monsters": {
             "monster1":{"x":4,"y":28,"file":"monster.gif","hp":10,"gold":0,"alive":true},
             "monster2":{"x":17,"y":13,"file":"monster.gif","hp":5,"gold":0,"alive":true},
-            "monster3":{"x":17,"y":21,"file":"monster.gif","hp":5,"gold":0,"alive":true},
-            "monster4":{"x":24,"y":27,"file":"monster.gif","hp":5,"gold":0,"alive":true}
+            "monster3":{"x":17,"y":21,"file":"imp.gif","hp":5,"gold":0,"alive":true},
+            "monster4":{"x":24,"y":27,"file":"monster.gif","hp":5,"gold":0,"alive":true},
+            "monster5":{"x":10,"y":27,"file":"mimic.png","hp":5,"gold":0,"alive":true}
             },
         "boxes": {
             "box1":{"text":"BOX", "x":10, "y":6, "z":10}
@@ -81,11 +81,11 @@ level_config = """
             "torch2":{"text":"T", "x":21, "y":11}
         }, 
         "bubbles": {
-            "bubble1":{"text":"What?", "x":10, "y":5},
-            "bubble2":{"text":"Strange", "x":16, "y":11},
-            "bubble3":{"text":"Monsters?", "x":5, "y":21},
+            "bubble1":{"text":"What?", "x":7, "y":7},
+            "bubble2":{"text":"Strange", "x":11, "y":11},
+            "bubble3":{"text":"Monsters?", "x":13, "y":3},
             "bubble4":{"text":"Meow!", "x":47, "y":12},
-            "bubble5":{"text":"box (ツ)", "x":4, "y":17}
+            "bubble5":{"text":"box (ツ)", "x":10, "y":6}
         },
         "chests": {
             "chest1":{"x":4, "y":14, "file":"chest_golden_open_full.png", "visible":true},
