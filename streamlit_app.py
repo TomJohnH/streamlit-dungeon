@@ -439,7 +439,7 @@ with tab1:
 
     st.subheader("| Game start")
     st.write(
-        '<p style="color:#9c9d9f">To start the game go to the "start game" tab. Please be sure to switch to <b>dark mode</b> or the custom theme. The Dungeon is meant to be played in the dark! </p>',
+        '<p style="color:#9c9d9f">To start the game go to the "start game" tab. Please be sure to switch to <b>dark mode</b> or the custom theme. The Dungeon is meant to be played in the dark! </p><p style="color:#9c9d9f">Game update (april 2023): currently testing level2</p>',
         unsafe_allow_html=True,
     )
     st.subheader("| Controls")
