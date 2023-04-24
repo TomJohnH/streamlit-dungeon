@@ -10,6 +10,9 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 **Change log:**
 
+24.04.2023
+Level2 beta-tests are now live
+
 14.04.2023
 Updated to streamlit 1.21.0
 
