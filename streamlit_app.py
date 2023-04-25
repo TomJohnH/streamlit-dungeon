@@ -323,7 +323,7 @@ if "monsters" not in st.session_state:
 # we are creating monsters html
 
 
-monsters = game_def.monsters_html(st.session_state["monsters"])
+monsters = game_def.generate_monsters_html(st.session_state["monsters"])
 
 
 # ---------------- chests ----------------

@@ -242,26 +242,26 @@ def additional_layers_html(level_name, layer_name, coordinates="xy"):
 # ------------------------------------------------------------
 
 
-def monsters_html(monsters_session_state):
+def generate_monsters_html(monsters_session_state):
+    """Generates HTML for monsters.
 
-    # this function creates html for monsters
+    Args:
+        monsters_state (list): A list of monster objects from the session state
 
-    cat = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/cat.gif"
+    Returns:
+        str: The generated HTML string.
+    """
 
-    # empty string
-    html = ""
+    # Initialize an empty string for HTML content
+    html_content = ""
     # creating html
-    for i in range(0, len(monsters_session_state)):
-        if monsters_session_state[i].alive:
-            html = html + monsters_session_state[i].html
-    # adding a cat - don't ask why
-    # html = (
-    #     html
-    #     + f"""
-    #         <img src="{cat}" style="grid-column-start: 47; grid-row-start: 11;">
-    #     """
-    # )
-    return html
+
+    # Iterate through the list of monsters and append their HTML content if they are alive
+    for monster in monsters_session_state:
+        if monster.alive:
+            html_content += monster.html
+            
+    return html_content
 
 
 def chests_html(chests_ss_st):
