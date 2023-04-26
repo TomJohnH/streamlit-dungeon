@@ -344,7 +344,7 @@ if "chests" not in st.session_state:
             )
         )
 
-chests = game_def.chests_html(st.session_state["chests"])
+chests = game_def.generate_chests_html(st.session_state["chests"])
 
 # ---------------- NON-INTERACTIVE LEVEL ELEMENTS ----------------
 

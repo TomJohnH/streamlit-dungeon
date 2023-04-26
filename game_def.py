@@ -242,7 +242,7 @@ def additional_layers_html(level_name, layer_name, coordinates="xy"):
 # ------------------------------------------------------------
 
 
-def generate_monsters_html(monsters_session_state):
+def generate_monsters_html(monsters_list):
     """Generates HTML for monsters.
 
     Args:
@@ -254,24 +254,24 @@ def generate_monsters_html(monsters_session_state):
 
     # Initialize an empty string for HTML content
     html_content = ""
-    # creating html
 
     # Iterate through the list of monsters and append their HTML content if they are alive
-    for monster in monsters_session_state:
+    for monster in monsters_list:
         if monster.alive:
             html_content += monster.html
             
     return html_content
 
 
-def chests_html(chests_ss_st):
-    # empty string
-    html = ""
-    # creating html
-    for i in range(0, len(chests_ss_st)):
-        if chests_ss_st[i].visible:
-            html = html + chests_ss_st[i].html
-    return html
+def generate_chests_html(chests_list):
+
+    html_content = ""
+
+    for chest in chests_list:
+        if chest.visible:
+            html_content += chest.html
+
+    return html_content
 
 
 # ------------------------------------------------------------
