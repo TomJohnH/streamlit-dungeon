@@ -145,96 +145,49 @@ if "fly_mode" not in st.session_state:
 # ------------------------------------------------------------
 
 
-def left_callback():
+def move_callback(direction):
+    x_offset, y_offset = 0, 0
+
+    if direction == "left":
+        x_offset = -1
+    elif direction == "right":
+        x_offset = 1
+    elif direction == "up":
+        y_offset = -1
+    elif direction == "down":
+        y_offset = 1
 
     if game_def.character_can_move(
-        st.session_state[
-            "level"
-        ],  # note the different order of x and y. Done to confuse myself in the future.
-        # good luck future me
+        st.session_state["level"],
         game_config.tileset_movable,
-        st.session_state["player"].y,
-        st.session_state["player"].x - 1,
+        st.session_state["player"].y + y_offset,
+        st.session_state["player"].x + x_offset,
     ):
-        st.session_state["player"].x -= 1
-        st.session_state.left_clicked = True
+        st.session_state["player"].x += x_offset
+        st.session_state["player"].y += y_offset
+        st.session_state[direction + "_clicked"] = True
         st.session_state["steps"] += 1
-
-    # Consider refactoring this loop
-
-    # this little loop is responsible for moving the monsters and reacting to encounters
+    
     for i in range(0, len(st.session_state["monsters"])):
-        # game_def.random_move(st.session_state["monsters"][i])
         game_def.move_to_player(
             st.session_state["player"], st.session_state["monsters"][i]
         )
         game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
+
     for i in range(0, len(st.session_state["chests"])):
         game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
 
+def left_callback():
+    move_callback("left")
 
 def right_callback():
-    # player movement
-    if game_def.character_can_move(
-        st.session_state["level"],
-        game_config.tileset_movable,
-        st.session_state["player"].y,
-        st.session_state["player"].x + 1,
-    ):
-        st.session_state["player"].x += 1
-        st.session_state.right_clicked = True
-        st.session_state["steps"] += 1
-
-    for i in range(0, len(st.session_state["monsters"])):
-        # game_def.random_move(st.session_state["monsters"][i])
-        game_def.move_to_player(
-            st.session_state["player"], st.session_state["monsters"][i]
-        )
-        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
-    for i in range(0, len(st.session_state["chests"])):
-        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
-
+    move_callback("right")
 
 def up_callback():
-    if game_def.character_can_move(
-        st.session_state["level"],
-        game_config.tileset_movable,
-        st.session_state["player"].y - 1,
-        st.session_state["player"].x,
-    ):
-        st.session_state["player"].y -= 1
-        st.session_state.up_clicked = True
-        st.session_state["steps"] += 1
-
-    for i in range(0, len(st.session_state["monsters"])):
-        # game_def.random_move(st.session_state["monsters"][i])
-        game_def.move_to_player(
-            st.session_state["player"], st.session_state["monsters"][i]
-        )
-        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
-    for i in range(0, len(st.session_state["chests"])):
-        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
-
+    move_callback("up")
 
 def down_callback():
-    if game_def.character_can_move(
-        st.session_state["level"],
-        game_config.tileset_movable,
-        st.session_state["player"].y + 1,
-        st.session_state["player"].x,
-    ):
-        st.session_state["player"].y += 1
-        st.session_state.down_clicked = True
-        st.session_state["steps"] += 1
-
-    for i in range(0, len(st.session_state["monsters"])):
-        # game_def.random_move(st.session_state["monsters"][i])
-        game_def.move_to_player(
-            st.session_state["player"], st.session_state["monsters"][i]
-        )
-        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
-    for i in range(0, len(st.session_state["chests"])):
-        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
+    move_callback("down")
 
 
 # ------------------------------------------------------------
