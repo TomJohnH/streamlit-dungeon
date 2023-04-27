@@ -10,11 +10,14 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 **Change log:**
 
+27.04.2023
+- major refactor in progress
+
 24.04.2023
-Level2 beta-tests are now live
+- Level2 beta-tests are now live
 
 14.04.2023
-Updated to streamlit 1.21.0
+- Updated to streamlit 1.21.0
 
 12.03.2023
 - additional developer options available: god mode and fly mode. God mode gives the player 999 hp, fly mode ignores walls
