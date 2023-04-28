@@ -146,6 +146,7 @@ if "fly_mode" not in st.session_state:
 
 
 def move_callback(direction):
+    
     x_offset, y_offset = 0, 0
 
     if direction == "left":
