@@ -38,92 +38,114 @@ def distance_from_player(player, movable_object):
     ) ** 2
     return distance, distance_l, distance_r, distance_u, distance_d
 
+# ------------------------------------------------------------
+#
+#                move to player modularization
+#
+# ------------------------------------------------------------
+
+def get_move_index(player, movable_object):
+    """
+    Get the index of the move with the shortest distance to the player.
+
+    Args:
+        player (object): The player object containing its x and y coordinates.
+        movable_object (object): The movable object containing its x and y coordinates.
+
+    Returns:
+        int: The index of the move with the shortest distance to the player.
+    """
+    distances = distance_from_player(player, movable_object)
+    return distances.index(min(distances))
+
+
+def move_object(movable_object, direction, distance):
+    """
+    Move the object in the given direction by the given distance.
+
+    Args:
+        movable_object (object): The object to be moved containing its x and y coordinates.
+        direction (str): The direction to move the object in ("left", "right", "up", or "down").
+        distance (int): The distance to move the object.
+    """
+    if direction == "left":
+        movable_object.x -= distance
+    elif direction == "right":
+        movable_object.x += distance
+    elif direction == "up":
+        movable_object.y -= distance
+    elif direction == "down":
+        movable_object.y += distance
+
+
+def is_valid_move(movable_object, direction):
+    """
+    Check if a move in the given direction is valid for the movable_object.
+
+    Args:
+        movable_object (object): The object to be moved containing its x and y coordinates.
+        direction (str): The direction to check the move in ("left", "right", "up", or "down").
+
+    Returns:
+        bool: True if the move is valid, False otherwise.
+    """
+    new_x = movable_object.x
+    new_y = movable_object.y
+
+    if direction == "left":
+        new_x -= 1
+    elif direction == "right":
+        new_x += 1
+    elif direction == "up":
+        new_y -= 1
+    elif direction == "down":
+        new_y += 1
+
+    return character_can_move(st.session_state["level"], game_config.tileset_movable, new_y, new_x)
+
 
 def move_to_player(player, movable_object):
+    """
+    Move the movable_object towards the player or perform a random move based on a random probability.
 
-    selected_move_index = distance_from_player(player, movable_object).index(
-        min(distance_from_player(player, movable_object))
-    )
+    Args:
+        player (object): The player object containing its x and y coordinates.
+        movable_object (object): The movable object containing its x and y coordinates.
+    """
+    selected_move_index = get_move_index(player, movable_object)
+    directions = {1: "left", 2: "right", 3: "up", 4: "down"}
 
     if randrange(10) < 5:
+        direction = directions.get(selected_move_index)
 
-        if selected_move_index == 1:
-            if character_can_move(
-                st.session_state["level"],
-                game_config.tileset_movable,
-                movable_object.y,
-                movable_object.x - 1,
-            ):
-                movable_object.x -= 1
-        if selected_move_index == 2:
-            if character_can_move(
-                st.session_state["level"],
-                game_config.tileset_movable,
-                movable_object.y,
-                movable_object.x + 1,
-            ):
-                movable_object.x += 1
-        if selected_move_index == 3:
-            if character_can_move(
-                st.session_state["level"],
-                game_config.tileset_movable,
-                movable_object.y - 1,
-                movable_object.x,
-            ):
-                movable_object.y -= 1
-        if selected_move_index == 4:
-            if character_can_move(
-                st.session_state["level"],
-                game_config.tileset_movable,
-                movable_object.y + 1,
-                movable_object.x,
-            ):
-                movable_object.y += 1
+        if direction and is_valid_move(movable_object, direction):
+            move_object(movable_object, direction, 1)
     else:
         random_move(movable_object)
 
-
 def random_move(movable_object):
+    """
+    Move the movable_object in a random direction.
 
-    # this function is responsible for random movement of monsters
-    # it will be changed in the future - monsters will follow the player
-    # is it possible? yes. check https://rogue-rpg.streamlit.app/
+    Args:
+        movable_object (object): The movable object containing its x and y coordinates.
+    """
 
-    rnd_move = randrange(100)
-    # st.write("random_move" + str(rnd_move))
-    if rnd_move < 25:
-        if character_can_move(
-            st.session_state["level"],
-            game_config.tileset_movable,
-            movable_object.y,
-            movable_object.x + 1,
-        ):
-            movable_object.x += 1
-    if rnd_move >= 25 and rnd_move < 50:
-        if character_can_move(
-            st.session_state["level"],
-            game_config.tileset_movable,
-            movable_object.y,
-            movable_object.x - 1,
-        ):
-            movable_object.x -= 1
-    if rnd_move >= 50 and rnd_move < 75:
-        if character_can_move(
-            st.session_state["level"],
-            game_config.tileset_movable,
-            movable_object.y + 1,
-            movable_object.x,
-        ):
-            movable_object.y += 1
-    if rnd_move >= 75 and rnd_move < 100:
-        if character_can_move(
-            st.session_state["level"],
-            game_config.tileset_movable,
-            movable_object.y - 1,
-            movable_object.x,
-        ):
-            movable_object.y -= 1
+    def random_direction():
+        return ["right", "left", "down", "up"][randrange(4)]
 
+    direction = random_direction()
+    directions = {
+        "right": (movable_object.y, movable_object.x + 1),
+        "left": (movable_object.y, movable_object.x - 1),
+        "down": (movable_object.y + 1, movable_object.x),
+        "up": (movable_object.y - 1, movable_object.x),
+    }
+
+    new_y, new_x = directions[direction]
+
+    if character_can_move(st.session_state["level"], game_config.tileset_movable, new_y, new_x):
+        movable_object.y, movable_object.x = new_y, new_x
 
 # ------------------------------------------------------------
 #
