@@ -22,20 +22,42 @@ def character_can_move(level_matrix, tileset_movable, x, y):
         pass
 
 
+def squared_distance(x1, y1, x2, y2):
+    """
+    Calculate the squared distance between two points.
+
+    Args:
+        x1: The x-coordinate of the first point.
+        y1: The y-coordinate of the first point.
+        x2: The x-coordinate of the second point.
+        y2: The y-coordinate of the second point.
+
+    Returns:
+        The squared distance between the two points.
+    """
+    return (x1 - x2) ** 2 + (y1 - y2) ** 2
+
 def distance_from_player(player, movable_object):
-    distance = (player.x - movable_object.x) ** 2 + (player.y - movable_object.y) ** 2
-    distance_l = (player.x - movable_object.x + 1) ** 2 + (
-        player.y - movable_object.y
-    ) ** 2
-    distance_r = (player.x - movable_object.x - 1) ** 2 + (
-        player.y - movable_object.y
-    ) ** 2
-    distance_u = (player.x - movable_object.x) ** 2 + (
-        player.y - movable_object.y + 1
-    ) ** 2
-    distance_d = (player.x - movable_object.x) ** 2 + (
-        player.y - movable_object.y - 1
-    ) ** 2
+    """
+    Calculate the squared distances between a player and a movable object
+    for current position and four possible moves (left, right, up, down).
+
+    Args:
+        player: The player object with x and y attributes.
+        movable_object: The movable object with x and y attributes.
+
+    Returns:
+        A tuple with the squared distances for current position, left, right, up, and down moves.
+    """
+    px, py = player.x, player.y
+    mx, my = movable_object.x, movable_object.y
+    
+    distance = squared_distance(px, py, mx, my)
+    distance_l = squared_distance(px + 1, py, mx, my)
+    distance_r = squared_distance(px - 1, py, mx, my)
+    distance_u = squared_distance(px, py + 1, mx, my)
+    distance_d = squared_distance(px, py - 1, mx, my)
+    
     return distance, distance_l, distance_r, distance_u, distance_d
 
 # ------------------------------------------------------------
