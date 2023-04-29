@@ -11,15 +11,21 @@ from random import randrange
 
 
 def character_can_move(level_matrix, tileset_movable, x, y):
+    """
+    This function checks if the move is "legal" for a character in a given level matrix.
 
-    # this function checks if move is "legal"
+    Args:
+        level_matrix (numpy.ndarray): A 2D array representing the level grid.
+        tileset_movable (list): A dictionary of tileset names and booleans representing the movability of each tile type in the level.
+        x (int): The x-coordinate of the character's desired position.
+        y (int): The y-coordinate of the character's desired position.
 
-    if (tileset_movable[level_matrix[x - 1, y - 1]] == True) or st.session_state[
-        "fly_mode"
-    ]:
-        return True
-    else:
-        pass
+    Returns:
+        bool: True if the character can move to the desired position, False otherwise.
+    """
+
+    is_movable = tileset_movable[level_matrix[x - 1, y - 1]]
+    return is_movable or st.session_state["fly_mode"]
 
 
 def squared_distance(x1, y1, x2, y2):
