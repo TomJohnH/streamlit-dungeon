@@ -41,55 +41,80 @@ def local_css(file_name):
 # object constructor for player and monsters
 
 
-class Character:
-    def __init__(self, x, y, file, hp, gold, alive):
+class GameObject:
+    """
+    Base class for game objects, containing common properties and methods
+    for characters and inanimate objects.
+    """
+    def __init__(self, x, y, file, base_url):
+        """
+        Initialize a new game object instance.
+
+        :param x: x-coordinate of the object
+        :param y: y-coordinate of the object
+        :param file: filename of the object's image
+        :param base_url: base URL for the object's image
+        """
         self.x = x
         self.y = y
-        self.file = (
-            "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/"
-            + file
+        self.file = base_url + file
+
+    @property
+    def html(self):
+        """
+        Generate the HTML code to display the game object.
+
+        :return: string with the HTML code
+        """
+        return (
+            "<img src='"
+            + str(self.file)
+            + "' style='grid-column-start: "
+            + str(self.x)
+            + "; grid-row-start: "
+            + str(self.y)
+            + ";'>"
         )
+
+
+class Character(GameObject):
+    """
+    Class representing a character in the game, inheriting from GameObject.
+    """
+    def __init__(self, x, y, file, hp, gold, alive):
+        """
+        Initialize a new character instance.
+
+        :param x: x-coordinate of the character
+        :param y: y-coordinate of the character
+        :param file: filename of the character's image
+        :param hp: character's health points
+        :param gold: character's gold count
+        :param alive: character's alive status (True or False)
+        """
+        base_url = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/"
+        super().__init__(x, y, file, base_url)
         self.hp = hp
         self.gold = gold
         self.alive = alive
 
-    @property
-    def html(self):
-        return (
-            "<img src='"
-            + str(self.file)
-            + "' style='grid-column-start: "
-            + str(self.x)
-            + "; grid-row-start: "
-            + str(self.y)
-            + ";'>"
-        )
 
-
-# object constructor for chests and other inanimate objects
-
-
-class InanimateObject:
+class InanimateObject(GameObject):
+    """
+    Class representing an inanimate object in the game, inheriting from GameObject.
+    """
     def __init__(self, x, y, file, visible):
-        self.x = x
-        self.y = y
-        self.file = (
-            "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/"
-            + file
-        )
-        self.visible = visible
+        """
+        Initialize a new inanimate object instance.
 
-    @property
-    def html(self):
-        return (
-            "<img src='"
-            + str(self.file)
-            + "' style='grid-column-start: "
-            + str(self.x)
-            + "; grid-row-start: "
-            + str(self.y)
-            + ";'>"
-        )
+        :param x: x-coordinate of the object
+        :param y: y-coordinate of the object
+        :param file: filename of the object's image
+        :param visible: object's visibility status (True or False)
+        """
+        base_url = "https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/tileset/"
+        super().__init__(x, y, file, base_url)
+        self.visible = visible
 
 
 # ------------------------------------------------------------
