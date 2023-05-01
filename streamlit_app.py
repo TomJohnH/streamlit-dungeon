@@ -236,6 +236,14 @@ def fetch_data(level_name):
     df = pd.read_csv(level_name, sep=",", header=None)
     return df
 
+# ---------------- game restart ----------------
+
+def restart_game():
+    for key in st.session_state.keys():
+        del st.session_state[key]
+    st.experimental_rerun()
+    st.experimental_rerun()
+
 
 # ------------------------------------------------------------
 #
@@ -447,9 +455,10 @@ with tab2:
     )
 
     display_html = st.empty()
+    
 
-    if st.session_state["end"] == False:
-        if st.session_state["player"].alive == True:
+    if not st.session_state["end"]:
+        if st.session_state["player"].alive:
             display_html = st.markdown(html, unsafe_allow_html=True)
         else:
             display_html = st.markdown(
@@ -457,10 +466,7 @@ with tab2:
                 unsafe_allow_html=True,
             )
             if st.button("restart"):
-                for key in st.session_state.keys():
-                    del st.session_state[key]
-                st.experimental_rerun()
-                st.experimental_rerun()
+                restart_game()
     if st.session_state["end"] == True:
         display_html = st.markdown(
             "Thank you for playing the demo of The Dungeon. More content coming soom!",
