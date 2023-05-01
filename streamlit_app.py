@@ -171,7 +171,14 @@ if "fly_mode" not in st.session_state:
 
 
 def move_callback(direction):
-    
+    """
+    Args:
+        direction (str): The direction to move the player in. Possible values are "left", "right", "up", and "down".
+        
+    Returns:
+        None
+    """
+
     x_offset, y_offset = 0, 0
 
     if direction == "left":
@@ -193,15 +200,13 @@ def move_callback(direction):
         st.session_state["player"].y += y_offset
         st.session_state[direction + "_clicked"] = True
         st.session_state["steps"] += 1
-    
-    for i in range(0, len(st.session_state["monsters"])):
-        game_def.move_to_player(
-            st.session_state["player"], st.session_state["monsters"][i]
-        )
-        game_def.encounter(st.session_state["player"], st.session_state["monsters"][i])
 
-    for i in range(0, len(st.session_state["chests"])):
-        game_def.treasures(st.session_state["player"], st.session_state["chests"][i])
+    for monster in st.session_state["monsters"]:
+        game_def.move_to_player(st.session_state["player"], monster)
+        game_def.encounter(st.session_state["player"], monster)
+
+    for chest in st.session_state["chests"]:
+        game_def.treasures(st.session_state["player"], chest)
 
 def left_callback():
     move_callback("left")
