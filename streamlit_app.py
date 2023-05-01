@@ -547,7 +547,7 @@ with tab2:
     # ------------------------------------------------------------
 
     components.html(
-        game_js.js_script,
+        game_js.js_script_optimized,
         height=0,
         width=0,
     )

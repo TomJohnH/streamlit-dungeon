@@ -83,3 +83,59 @@ js_script = """
 
     </script>
     """
+
+js_script_optimized = """<script>
+const doc = window.parent.document;
+const buttons = Array.from(doc.querySelectorAll('button[kind=secondary]'));
+
+function addButtonClass(button, className) {
+  button.classList.add(className);
+}
+
+function scrollPlayerIntoView() {
+  doc.getElementById('player').scrollIntoView();
+}
+
+const buttonMapping = {
+  'L': 'bbutton-left',
+  'R': 'bbutton-right',
+  'U': 'bbutton-up',
+  'D': 'bbutton-down',
+  'LEFT': 'left_button',
+  'RIGHT': 'right_button',
+  'UP': 'up_button',
+  'DOWN': 'down_button',
+};
+
+const buttonRefs = {};
+
+buttons.forEach((button) => {
+  const className = buttonMapping[button.innerText];
+  if (className) {
+    addButtonClass(button, className);
+    buttonRefs[className] = button;
+  }
+});
+
+doc.addEventListener('keydown', (e) => {
+  const keyCodeMapping = {
+    37: buttonRefs.left_button,
+    38: buttonRefs.up_button,
+    39: buttonRefs.right_button,
+    40: buttonRefs.down_button,
+  };
+
+  const button = keyCodeMapping[e.keyCode];
+  if (button) {
+    button.click();
+    scrollPlayerIntoView();
+  }
+});
+
+Object.values(buttonRefs).forEach((button) => {
+  button.addEventListener('click', () => {
+    scrollPlayerIntoView();
+    console.log(button.innerText.toLowerCase());
+  });
+});
+</script>"""
