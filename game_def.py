@@ -223,33 +223,77 @@ def treasures(player, treasure):
 # ------------------------------------------------------------
 
 
+# def level_renderer(df, game_objects):
+#
+#     # non-optimized
+#      
+#     # this is the heart of graphical engine
+#     # whole game is based on a grid div with x & y columns
+#     # placement of objects is done by manipulating grid-column-start: & grid-row-start:
+
+#     i = 0
+#     j = 0
+#     level_html = '<div class="container"><div class="gamegrid">'
+#     for x in df:  # array from data frame: df.values
+#         # st.write(x)
+#         j = 0
+#         for y in x:
+
+#             level_html = (
+#                 level_html
+#                 + '<img src="'
+#                 + game_config.tileset[y]  # tilset_tile
+#                 + '" style="grid-column-start: '
+#                 + str(j + 1)
+#                 + "; grid-row-start: "
+#                 + str(i + 1)
+#                 + ';">'
+#             )
+#             j = j + 1
+#         i = i + 1
+#     level_html = level_html + game_objects + "</div></div>"
+#     return level_html
+
+# def level_renderer(df, game_objects):
+#     """
+#     The heart of graphical engine
+
+#     Generates the HTML for rendering a game level based on a dataframe and game objects.
+
+#     :param df: A dataframe representing the game level grid, with each cell containing an index for the tileset.
+#     :param game_objects: A string containing the HTML for game objects to be added to the level.
+#     :return: A string with the generated HTML for the game level.
+#     """
+#     def generate_tile_html(tile, col, row):
+#         return f'<img src="{game_config.tileset[tile]}" style="grid-column-start: {col}; grid-row-start: {row};">'
+
+#     level_html = '<div class="container"><div class="gamegrid">'
+
+#     for i, row in enumerate(df):
+#         for j, tile in enumerate(row):
+#             level_html += generate_tile_html(tile, j + 1, i + 1)
+
+#     level_html += game_objects + "</div></div>"
+#     return level_html
+
 def level_renderer(df, game_objects):
+    """
+    The heart of graphical engine, More optimized version.
 
-    # this is the heart of graphical engine
-    # whole game is based on a grid div with x & y columns
-    # placement of objects is done by manipulating grid-column-start: & grid-row-start:
+    Generates the HTML for rendering a game level based on a dataframe and game objects.
 
-    i = 0
-    j = 0
-    level_html = '<div class="container"><div class="gamegrid">'
-    for x in df:  # array from data frame: df.values
-        # st.write(x)
-        j = 0
-        for y in x:
+    :param df: A dataframe representing the game level grid, with each cell containing an index for the tileset.
+    :param game_objects: A string containing the HTML for game objects to be added to the level.
+    :return: A string with the generated HTML for the game level.
+    """
+    def generate_tile_html(tile, col, row):
+        return f'<img src="{game_config.tileset[tile]}" style="grid-column-start: {col}; grid-row-start: {row};">'
 
-            level_html = (
-                level_html
-                + '<img src="'
-                + game_config.tileset[y]  # tilset_tile
-                + '" style="grid-column-start: '
-                + str(j + 1)
-                + "; grid-row-start: "
-                + str(i + 1)
-                + ';">'
-            )
-            j = j + 1
-        i = i + 1
-    level_html = level_html + game_objects + "</div></div>"
+    level_rows = [
+        "".join(generate_tile_html(tile, j + 1, i + 1) for j, tile in enumerate(row))
+        for i, row in enumerate(df)
+    ]
+    level_html = f'<div class="container"><div class="gamegrid">{" ".join(level_rows)}{game_objects}</div></div>'
     return level_html
 
 
