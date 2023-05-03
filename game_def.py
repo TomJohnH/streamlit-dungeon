@@ -190,7 +190,7 @@ def encounter(player, enemy):
 
     if player.x == enemy.x and player.y == enemy.y and enemy.alive == True:
         damage = randrange(30)
-        st.session_state["bubble_text"] = text_bubble_html(
+        st.session_state["bubble_text"] = create_text_bubble_html(
             "OMG -" + str(damage) + "hp",
             player.x,
             player.y - 1,
@@ -207,7 +207,7 @@ def treasures(player, treasure):
 
     if player.x == treasure.x and player.y == treasure.y and treasure.visible:
         gold = randrange(20)
-        st.session_state["bubble_text"] = text_bubble_html(
+        st.session_state["bubble_text"] = create_text_bubble_html(
             "yeah! +" + str(gold) + " g",
             player.x,
             player.y - 1,
@@ -305,29 +305,34 @@ def tile_html(src, x, y, z):
 
 
 def additional_layers_html(level_name, layer_name, coordinates="xy"):
+    """
+    Generate HTML for additional layer elements such as torches, boxes, and voids.
 
-    # this function will generate html for torches, boxes and voids
+    Args:
+        level_name (str): The name of the level for which the additional layers are to be generated.
+        layer_name (str): The name of the layer within the level for which the additional layers are to be generated.
+        coordinates (str, optional): The coordinate system to be used. Default is 'xy', which sets z = x.
+                                      If set to 'xyz', the z-coordinate from the layer data will be used.
 
+    Returns:
+        str: The generated HTML string for the specified additional layer elements.
+    """
     name = ""
 
     for layer_item in st.session_state.level_data[level_name][layer_name]:
         temp = st.session_state.level_data[level_name][layer_name][layer_item]
-        if coordinates == "xyz":
-            name = name + tile_html(
-                src=game_config.tileset[temp["text"]],
-                x=temp["x"],
-                y=temp["y"],
-                z=temp["z"],
-            )
-        else:
-            name = name + tile_html(
-                src=game_config.tileset[temp["text"]],
-                x=temp["x"],
-                y=temp["y"],
-                z=temp["x"],
-            )
-    return name
 
+        # Set z-coordinate based on input
+        z = temp["z"] if coordinates == "xyz" else temp["x"]
+
+        name += tile_html(
+            src=game_config.tileset[temp["text"]],
+            x=temp["x"],
+            y=temp["y"],
+            z=z,
+        )
+
+    return name
 
 # ------------------------------------------------------------
 #
@@ -375,27 +380,71 @@ def generate_chests_html(chests_list):
 # ------------------------------------------------------------
 
 
-def text_bubble_html(text, x, y):
-    return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
+# def text_bubble_html(text, x, y):
+#     return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
 
 
-def text_boxes(player_x, player_y, level_name):
+# def text_boxes(player_x, player_y, level_name):
+#     result = ""
+#     for bubble_name in st.session_state.level_data[level_name]["bubbles"]:
+#         if (
+#             st.session_state.level_data[level_name]["bubbles"][bubble_name]["x"]
+#             == player_x
+#         ) and (
+#             st.session_state.level_data[level_name]["bubbles"][bubble_name]["y"]
+#             == player_y
+#         ):
+#             result = text_bubble_html(
+#                 st.session_state.level_data[level_name]["bubbles"][bubble_name]["text"],
+#                 player_x,
+#                 player_y - 1,
+#             )
+
+#     if st.session_state["bubble_text"] != "":
+#         result = st.session_state["bubble_text"]
+#         st.session_state["bubble_text"] = ""
+#     return result
+
+def create_text_bubble_html(text, x, y):
+    """Create an HTML text bubble with the given text and position.
+
+    Args:
+        text: A string representing the text to be displayed in the bubble.
+        x: An integer representing the starting x position of the bubble.
+        y: An integer representing the starting y position of the bubble.
+
+    Returns:
+        A string containing the HTML code for the text bubble.
+    """
+    return f"""
+        <div class="container_text" style="position: relative; 
+        grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};">
+            <img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png">
+            <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size:0.875rem;">{text}</div>
+        </div>
+    """
+
+
+def get_text_boxes(player_x, player_y, level_name):
+    """Get the text bubble at the player's current position in the given level.
+
+    Args:
+        player_x: An integer representing the x position of the player.
+        player_y: An integer representing the y position of the player.
+        level_name: A string representing the name of the level.
+
+    Returns:
+        A string containing the HTML code for the text bubble at the player's position.
+    """
     result = ""
-    for bubble_name in st.session_state.level_data[level_name]["bubbles"]:
-        if (
-            st.session_state.level_data[level_name]["bubbles"][bubble_name]["x"]
-            == player_x
-        ) and (
-            st.session_state.level_data[level_name]["bubbles"][bubble_name]["y"]
-            == player_y
-        ):
-            result = text_bubble_html(
-                st.session_state.level_data[level_name]["bubbles"][bubble_name]["text"],
-                player_x,
-                player_y - 1,
-            )
+    level_data = st.session_state.level_data.get(level_name, {})
+    bubble_data = level_data.get("bubbles", {})
+    for bubble_name, data in bubble_data.items():
+        if data.get("x") == player_x and data.get("y") == player_y:
+            result = create_text_bubble_html(data.get("text"), player_x, player_y - 1)
 
-    if st.session_state["bubble_text"] != "":
-        result = st.session_state["bubble_text"]
-        st.session_state["bubble_text"] = ""
+    if st.session_state.bubble_text:
+        result = st.session_state.bubble_text
+        st.session_state.bubble_text = ""
+
     return result

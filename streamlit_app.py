@@ -370,7 +370,7 @@ torches = st.session_state["torches"]
 # ---------------- creating visual layers textboxes ----------------
 
 
-text_boxes_html = game_def.text_boxes(
+text_boxes_html = game_def.get_text_boxes(
     st.session_state["player"].x, st.session_state["player"].y, current_level_name
 )
 
