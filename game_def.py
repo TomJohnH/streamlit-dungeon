@@ -222,60 +222,6 @@ def treasures(player, treasure):
 #
 # ------------------------------------------------------------
 
-
-# def level_renderer(df, game_objects):
-#
-#     # non-optimized
-#      
-#     # this is the heart of graphical engine
-#     # whole game is based on a grid div with x & y columns
-#     # placement of objects is done by manipulating grid-column-start: & grid-row-start:
-
-#     i = 0
-#     j = 0
-#     level_html = '<div class="container"><div class="gamegrid">'
-#     for x in df:  # array from data frame: df.values
-#         # st.write(x)
-#         j = 0
-#         for y in x:
-
-#             level_html = (
-#                 level_html
-#                 + '<img src="'
-#                 + game_config.tileset[y]  # tilset_tile
-#                 + '" style="grid-column-start: '
-#                 + str(j + 1)
-#                 + "; grid-row-start: "
-#                 + str(i + 1)
-#                 + ';">'
-#             )
-#             j = j + 1
-#         i = i + 1
-#     level_html = level_html + game_objects + "</div></div>"
-#     return level_html
-
-# def level_renderer(df, game_objects):
-#     """
-#     The heart of graphical engine
-
-#     Generates the HTML for rendering a game level based on a dataframe and game objects.
-
-#     :param df: A dataframe representing the game level grid, with each cell containing an index for the tileset.
-#     :param game_objects: A string containing the HTML for game objects to be added to the level.
-#     :return: A string with the generated HTML for the game level.
-#     """
-#     def generate_tile_html(tile, col, row):
-#         return f'<img src="{game_config.tileset[tile]}" style="grid-column-start: {col}; grid-row-start: {row};">'
-
-#     level_html = '<div class="container"><div class="gamegrid">'
-
-#     for i, row in enumerate(df):
-#         for j, tile in enumerate(row):
-#             level_html += generate_tile_html(tile, j + 1, i + 1)
-
-#     level_html += game_objects + "</div></div>"
-#     return level_html
-
 def level_renderer(df, game_objects):
     """
     The heart of graphical engine, More optimized version.
@@ -378,32 +324,6 @@ def generate_chests_html(chests_list):
 #                visual gimmicks
 #
 # ------------------------------------------------------------
-
-
-# def text_bubble_html(text, x, y):
-#     return f"""<div class="container_text" style="position: relative; grid-column-start: {x}; grid-row-start: {y}; grid-column-end: {x+4};"><img src="https://raw.githubusercontent.com/TomJohnH/streamlit-dungeon/main/graphics/other/message.png"><div style="position: absolute; top: 40%;left: 50%;transform: translate(-50%, -50%);font-size:0.875rem;">{text}</div></div>"""
-
-
-# def text_boxes(player_x, player_y, level_name):
-#     result = ""
-#     for bubble_name in st.session_state.level_data[level_name]["bubbles"]:
-#         if (
-#             st.session_state.level_data[level_name]["bubbles"][bubble_name]["x"]
-#             == player_x
-#         ) and (
-#             st.session_state.level_data[level_name]["bubbles"][bubble_name]["y"]
-#             == player_y
-#         ):
-#             result = text_bubble_html(
-#                 st.session_state.level_data[level_name]["bubbles"][bubble_name]["text"],
-#                 player_x,
-#                 player_y - 1,
-#             )
-
-#     if st.session_state["bubble_text"] != "":
-#         result = st.session_state["bubble_text"]
-#         st.session_state["bubble_text"] = ""
-#     return result
 
 def create_text_bubble_html(text, x, y):
     """Create an HTML text bubble with the given text and position.
