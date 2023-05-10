@@ -1,4 +1,6 @@
+import csv
 import random
+import pandas as pd
 
 # Constants
 FLOOR = "FP,"
@@ -30,7 +32,9 @@ def random_walk(dungeon, start_x, start_y, num_steps):
 # Print the dungeon in a human-readable format
 def print_dungeon(dungeon):
     for row in dungeon:
-        print("".join(row))
+        row_str = "".join(row)
+        print(row_str[:-1])  # Removes the last character, which is the comma
+
 
 # Generate a dungeon using the Random Walk algorithm
 def generate_dungeon():
@@ -46,6 +50,52 @@ def generate_dungeon():
 
     return dungeon
 
+
+# Convert the dungeon to a pandas DataFrame
+def dungeon_to_dataframe(dungeon):
+    cleaned_dungeon = []
+
+    for row in dungeon:
+        # Remove the last comma from each element
+        cleaned_row = [element[:-1] for element in row]
+        cleaned_dungeon.append(cleaned_row)
+
+    return pd.DataFrame(cleaned_dungeon)
+
+
+
+
+# Save the dungeon to a CSV file
+def save_dungeon_to_csv(dungeon, filename="dungeon.csv"):
+    with open(filename, mode="w", newline='') as csvfile:
+        csv_writer = csv.writer(csvfile)
+
+        for row in dungeon:
+            # Remove the last comma from each element and split by comma
+            cleaned_row = [element[:-1] for element in row]
+            csv_writer.writerow(cleaned_row)
+
+# Process the dungeon according to the given logic
+def process_dungeon(dungeon):
+    for y in range(1, HEIGHT):  # Start from 1 to avoid checking out-of-bounds index
+        for x in range(WIDTH):
+            if dungeon[y][x] == WALL and dungeon[y-1][x] == FLOOR:
+                dungeon[y][x] = "FE3,"
+
+
+
+
 # Generate and print the dungeon
 dungeon = generate_dungeon()
+
+# Process the dungeon
+process_dungeon(dungeon)
+
+
 print_dungeon(dungeon)
+
+# Convert the dungeon to a pandas DataFrame
+dungeon_df = dungeon_to_dataframe(dungeon)
+print(dungeon_df)
+
+save_dungeon_to_csv(dungeon)
