@@ -10,6 +10,9 @@ Streamlit recalculates whole app in response to user input. This feature can be 
 
 **Change log:**
 
+11.05.2023
+- working on procedurally generated levels
+
 27.04.2023
 - major refactor in progress
 
