@@ -50,7 +50,6 @@ def generate_dungeon():
 
     return dungeon
 
-
 # Convert the dungeon to a pandas DataFrame
 def dungeon_to_dataframe(dungeon):
     cleaned_dungeon = []
@@ -61,9 +60,6 @@ def dungeon_to_dataframe(dungeon):
         cleaned_dungeon.append(cleaned_row)
 
     return pd.DataFrame(cleaned_dungeon)
-
-
-
 
 # Save the dungeon to a CSV file
 def save_dungeon_to_csv(dungeon, filename="dungeon.csv"):
@@ -90,7 +86,6 @@ dungeon = generate_dungeon()
 
 # Process the dungeon
 process_dungeon(dungeon)
-
 
 print_dungeon(dungeon)
 
