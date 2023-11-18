@@ -26,7 +26,7 @@ st.set_page_config(
     page_title="The Dungeon", page_icon="🗡️", initial_sidebar_state="collapsed"
 )
 
-
+@st.cache_resource
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -241,8 +241,8 @@ def fetch_data(level_name):
 def restart_game():
     for key in st.session_state.keys():
         del st.session_state[key]
-    st.experimental_rerun()
-    st.experimental_rerun()
+    st.rerun()
+    st.rerun()
 
 
 # ------------------------------------------------------------
