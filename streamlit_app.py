@@ -9,7 +9,6 @@ from random import randrange
 import streamlit as st
 import streamlit.components.v1 as components
 import time
-import functools
 
 # -------------- refrence docs: --------------
 
