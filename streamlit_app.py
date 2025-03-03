@@ -9,7 +9,7 @@ from random import randrange
 import streamlit as st
 import streamlit.components.v1 as components
 import time
-
+import functools
 
 # -------------- refrence docs: --------------
 
@@ -202,7 +202,7 @@ def move_callback(direction):
         st.session_state["steps"] += 1
 
     for monster in st.session_state["monsters"]:
-        game_def.move_to_player(st.session_state["player"], monster)
+        game_def.move_to_player_optimized(st.session_state["player"], monster)
         game_def.encounter(st.session_state["player"], monster)
 
     for chest in st.session_state["chests"]:
@@ -454,7 +454,7 @@ with tab2:
     #
     ####################################################
 
-    html = game_def.level_renderer(
+    html = game_def.level_renderer_optimized(
         st.session_state["level"],
         player + monsters + boxes + voids + torches + text_boxes_html + chests,
     )
@@ -552,7 +552,7 @@ with tab2:
     # ------------------------------------------------------------
 
     components.html(
-        game_js.js_script_optimized,
+        game_js.js_script_highly_optimized ,
         height=0,
         width=0,
     )

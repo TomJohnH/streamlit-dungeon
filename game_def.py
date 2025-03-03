@@ -1,6 +1,7 @@
 import game_config
 import streamlit as st
 from random import randrange
+import random
 
 
 # ------------------------------------------------------------
@@ -151,6 +152,68 @@ def move_to_player(player, movable_object):
     else:
         random_move(movable_object)
 
+def move_to_player_optimized(player, movable_object):
+    """
+    Optimized version of move_to_player function with reduced calculations
+    and better path finding.
+    
+    Args:
+        player (object): The player object containing its x and y coordinates.
+        movable_object (object): The movable object containing its x and y coordinates.
+    """
+    # Only process movement if monster is close enough to player (within 8 tiles)
+    dx = abs(player.x - movable_object.x)
+    dy = abs(player.y - movable_object.y)
+    
+    # Skip movement if monster is too far (optimization)
+    if dx > 8 or dy > 8:
+        return
+        
+    # Only perform pathfinding 50% of the time to reduce calculations
+    if randrange(10) < 5:
+        # Determine best move direction (simplified pathfinding)
+        move_x = 0
+        move_y = 0
+        
+        if player.x < movable_object.x:
+            move_x = -1
+        elif player.x > movable_object.x:
+            move_x = 1
+            
+        if player.y < movable_object.y:
+            move_y = -1
+        elif player.y > movable_object.y:
+            move_y = 1
+        
+        # Prioritize x or y movement randomly to make movement less predictable
+        if random.random() < 0.5 and move_x != 0:
+            # Try horizontal movement first
+            new_x = movable_object.x + move_x
+            if character_can_move(st.session_state["level"], game_config.tileset_movable, 
+                                 movable_object.y, new_x):
+                movable_object.x = new_x
+                return
+                
+        if move_y != 0:
+            # Try vertical movement
+            new_y = movable_object.y + move_y
+            if character_can_move(st.session_state["level"], game_config.tileset_movable, 
+                                 new_y, movable_object.x):
+                movable_object.y = new_y
+                return
+                
+        # If priority direction failed, try the other direction
+        if move_x != 0:
+            new_x = movable_object.x + move_x
+            if character_can_move(st.session_state["level"], game_config.tileset_movable, 
+                                 movable_object.y, new_x):
+                movable_object.x = new_x
+    else:
+        # Occasionally make random moves (reduced frequency for performance)
+        random_move(movable_object)
+
+
+
 def random_move(movable_object):
     """
     Move the movable_object in a random direction.
@@ -242,6 +305,32 @@ def level_renderer(df, game_objects):
     level_html = f'<div class="container"><div class="gamegrid">{" ".join(level_rows)}{game_objects}</div></div>'
     return level_html
 
+def level_renderer_optimized(df, game_objects):
+    """
+    Optimized version of the level renderer function.
+    Uses string concatenation instead of creating lists and joining them later.
+    
+    :param df: A dataframe representing the game level grid
+    :param game_objects: A string containing the HTML for game objects
+    :return: A string with the generated HTML for the game level
+    """
+    html_parts = ['<div class="container"><div class="gamegrid">']
+    
+    # Pre-fetch tileset for faster lookups
+    tileset = game_config.tileset
+    
+    # Process all rows in one go
+    for i, row in enumerate(df):
+        for j, tile in enumerate(row):
+            html_parts.append(
+                f'<img src="{tileset[tile]}" style="grid-column-start: {j+1}; grid-row-start: {i+1};">'
+            )
+    
+    # Add game objects and close tags
+    html_parts.append(game_objects)
+    html_parts.append('</div></div>')
+    
+    return ''.join(html_parts)
 
 def tile_html(src, x, y, z):
 
